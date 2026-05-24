@@ -1,0 +1,7 @@
+*.zip
+_contacts.py
+_patch_contact.py
+_find.py
+scan_bumper.py
+update_bumper.py
+*.py
