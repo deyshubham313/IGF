@@ -1371,6 +1371,7 @@
   </div>
 </div>
 
+<script src="assets/products-data.js"></script>
 <script>
 // ══════════════════════════════════════════════════════════════════
 // CURSOR
@@ -1938,6 +1939,24 @@ function viewCatalogProducts(id) { showPanel('products'); setTimeout(()=>{ docum
 // PRODUCTS
 // ══════════════════════════════════════════════════════════════════
 function loadAllProducts() {
+  const prods = getD('catalogProducts', {});
+  let updated = false;
+  
+  if (typeof CATEGORIES !== 'undefined') {
+    Object.keys(CATEGORIES).forEach(catId => {
+      if (!prods[catId] || prods[catId].length === 0) {
+        if (CATEGORIES[catId] && CATEGORIES[catId].products) {
+          prods[catId] = JSON.parse(JSON.stringify(CATEGORIES[catId].products));
+          updated = true;
+        }
+      }
+    });
+  }
+  
+  if (updated) {
+    setD('catalogProducts', prods);
+  }
+
   const cats=getD('catalogMeta',DEFAULT_CATS);
   const sel=document.getElementById('productCatFilter');
   sel.innerHTML='<option value="">All Categories</option>'+cats.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
