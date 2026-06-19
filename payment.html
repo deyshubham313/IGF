@@ -4,11 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Secure Payment — Indian Game Factory</title>
-  <meta name="description" content="Make a secure payment to Indian Game Factory via Razorpay — Cards, UPI, Net Banking, Wallets." />
+  <meta name="description" content="Make a secure payment to Indian Game Factory via UPI, QR Code, Net Banking and Wallets." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-  <!-- Razorpay SDK -->
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -213,7 +211,7 @@
 <!-- SECURE STRIP -->
 <div class="secure-strip">
   <div class="secure-item"><span class="secure-dot"></span> SSL SECURED</div>
-  <div class="secure-item"><span class="secure-dot"></span> POWERED BY RAZORPAY</div>
+  <div class="secure-item"><span class="secure-dot"></span> UPI / QR PAYMENT</div>
   <div class="secure-item"><span class="secure-dot"></span> PCI DSS COMPLIANT</div>
   <div class="secure-item"><span class="secure-dot"></span> INSTANT CONFIRMATION</div>
 </div>
@@ -222,7 +220,7 @@
 <div class="payment-wrap">
   <div class="page-header fade-up">
     <div class="page-tag">Secure Checkout</div>
-    <div class="page-sub">100% SECURE PAYMENT POWERED BY RAZORPAY</div>
+    <div class="page-sub">100% SECURE UPI / QR CODE PAYMENT</div>
   </div>
 
   <div class="pay-card fade-up-2">
@@ -328,14 +326,17 @@
           <line x1="1" y1="10" x2="23" y2="10" stroke="currentColor"/>
         </svg>
         <span id="payBtnText">PAY NOW</span>
-        <svg width="22" height="14" viewBox="0 0 207 44" fill="none">
-          <rect width="207" height="44" rx="4" fill="white" opacity="0.12"/>
-          <text x="10" y="30" font-family="Arial" font-size="18" font-weight="bold" fill="white">Razorpay</text>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="5" y="5" width="6" height="6" rx="1" fill="currentColor" opacity="0.7"/>
+          <rect x="13" y="5" width="6" height="6" rx="1" fill="currentColor" opacity="0.7"/>
+          <rect x="5" y="13" width="6" height="6" rx="1" fill="currentColor" opacity="0.7"/>
+          <rect x="13" y="13" width="4" height="2" rx="0.5" fill="currentColor" opacity="0.7"/>
+          <rect x="17" y="17" width="2" height="2" rx="0.5" fill="currentColor" opacity="0.7"/>
         </svg>
       </button>
       <div class="rzp-badge">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <span>Secured by Razorpay — RBI Compliant · 256-bit SSL</span>
+        <span>Secured UPI Payment — RBI Compliant · 256-bit SSL</span>
       </div>
     </div>
   </div>
@@ -357,10 +358,10 @@
 
   <div class="security-row">
     <span class="security-badge">RBI APPROVED</span>
-    <span class="security-badge">PCI DSS</span>
+    <span class="security-badge">UPI ENABLED</span>
     <span class="security-badge">SSL SECURED</span>
     <span class="security-badge">256-BIT</span>
-    <span class="security-badge">RAZORPAY</span>
+    <span class="security-badge">NPCI</span>
   </div>
 </div>
 
@@ -573,13 +574,8 @@ function initiatePayment() {
     return;
   }
 
-  // If Razorpay key is configured, use Razorpay
-  if(RZP_KEY && RZP_KEY.trim() !== '') {
-    openRazorpay(amount, name, email, phone);
-  } else {
-    // Show manual UPI payment overlay
-    openManualUpiPayment(amount);
-  }
+  // UPI payment only
+  openManualUpiPayment(amount);
 }
 
 function openManualUpiPayment(amount) {
@@ -633,41 +629,7 @@ function submitManualPayment() {
   }, 2000);
 }
 
-function openRazorpay(amount, name, email, phone) {
-  const options = {
-    key: RZP_KEY,
-    amount: Math.round(amount * 100), // in paise
-    currency: 'INR',
-    name: BUSINESS_NAME,
-    description: 'Payment to Indian Game Factory',
-    prefill: {
-      name: name,
-      email: email,
-      contact: phone
-    },
-    theme: {
-      color: '#ff5722'
-    },
-    handler: function(response) {
-      showSuccess(amount, response.razorpay_payment_id || ('IGF-' + Date.now()), false);
-      sendNotification(amount, name, email, phone, response.razorpay_payment_id || 'Razorpay');
-    },
-    modal: {
-      ondismiss: function() {}
-    }
-  };
-
-  try {
-    const rzp = new Razorpay(options);
-    rzp.on('payment.failed', function(response) {
-      alert('Payment failed: ' + (response.error.description || 'Please try again.'));
-    });
-    rzp.open();
-  } catch(e) {
-    console.error('Razorpay error:', e);
-    alert('Could not open Razorpay. Please check the Razorpay Key in admin settings or use UPI payment manually.');
-  }
-}
+// UPI-only: Razorpay removed
 
 function showSuccess(amount, ref, isManual = false) {
   document.getElementById('successAmount').textContent = '₹' + parseFloat(amount).toLocaleString('en-IN');

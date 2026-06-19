@@ -1131,17 +1131,16 @@
 
     <!-- ══ PAYMENT SETTINGS ══ -->
     <div class="panel" id="panel-payment">
-      <div class="panel-header"><div class="panel-tag">Payment</div><div class="panel-title">Payment <span class="accent">Settings</span></div><div class="panel-desc">Configure Razorpay integration, preset amounts shown on the payment page, and contact info.</div></div>
+      <div class="panel-header"><div class="panel-tag">Payment</div><div class="panel-title">Payment <span class="accent">Settings</span></div><div class="panel-desc">Configure UPI payment settings, preset amounts shown on the payment page, and contact info.</div></div>
       <div class="g-card">
-        <div class="card-title">Razorpay Integration</div>
+        <div class="card-title">UPI / Direct Payment Setup</div>
         <div class="field-row">
-          <div class="field-group"><label class="field-label">Razorpay Key ID</label><input class="field-input" id="rzpKey" placeholder="rzp_live_XXXXXXXXXXXX or rzp_test_XXXX" /></div>
           <div class="field-group"><label class="field-label">Business Name</label><input class="field-input" id="rzpBizName" placeholder="Indian Game Factory" /></div>
         </div>
         <div style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;line-height:1.7;">
-          ℹ️ Get your Key ID from <strong style="color:var(--igf-orange);">Razorpay Dashboard → Settings → API Keys</strong>. Use <code style="background:rgba(255,87,34,0.1);padding:2px 6px;border-radius:3px;font-size:0.8em;">rzp_test_</code> for testing, <code style="background:rgba(255,87,34,0.1);padding:2px 6px;border-radius:3px;font-size:0.8em;">rzp_live_</code> for production.
+          ℹ️ Set your business name shown on payment confirmation screens and receipts.
         </div>
-        <div class="btn-row"><button class="btn btn-primary" onclick="savePaymentSettings()">Save Razorpay Config</button></div>
+        <div class="btn-row"><button class="btn btn-primary" onclick="savePaymentSettings()">Save Payment Config</button></div>
       </div>
 
       <div class="g-card">
@@ -2247,7 +2246,6 @@ const DEFAULT_PRESETS = [
 
 function loadPaymentSettings() {
   const ps = getD('paymentSettings', {});
-  if(document.getElementById('rzpKey')) document.getElementById('rzpKey').value = ps.razorpayKey || '';
   if(document.getElementById('rzpBizName')) document.getElementById('rzpBizName').value = ps.businessName || 'Indian Game Factory';
   if(document.getElementById('payUpiId')) document.getElementById('payUpiId').value = ps.upiId || '9262260376@ptsbi';
   if(document.getElementById('payPhone')) document.getElementById('payPhone').value = ps.contactPhone || '+91 92622 60376';
@@ -2312,12 +2310,11 @@ function savePresetAmounts() {
 
 function savePaymentSettings() {
   const ps = getD('paymentSettings', {});
-  ps.razorpayKey = document.getElementById('rzpKey').value.trim();
   ps.businessName = document.getElementById('rzpBizName').value.trim() || 'Indian Game Factory';
   setD('paymentSettings', ps);
   markSaved('payment');
   broadcast('paymentSettings', ps);
-  toast('Razorpay config saved!');
+  toast('Payment config saved!');
 }
 
 function savePaymentContact() {
