@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Details — Indian Game Factory</title>
+  <meta name="description" content="Premium Amusement and Arcade Machines" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  
+  <!-- Font Awesome for stars and icons (using a cdn for simulation) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --igf-orange: #ff5722; --igf-red: #c0392b; --igf-amber: #ffab40;
+      --bg-void: #0d0705; --bg-deep: #120905; --bg-card: #1a0e08;
+      --border-glow: rgba(255,87,34,0.25); --text-primary: #fff0ea;
+      --text-muted: #8a6050; --text-dim: #4a2a1a;
+      --success: #4ade80; --warning: #fbbf24; --info: #60a5fa;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg-void); color: var(--text-primary); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; cursor: none; }
+    
+    /* CURSOR & BG */
+    .cursor { position: fixed; width: 10px; height: 10px; border-radius: 50%; background: var(--igf-orange); pointer-events: none; z-index: 9999; mix-blend-mode: screen; transition: transform 0.1s; }
+    .cursor-ring { position: fixed; width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,87,34,0.6); pointer-events: none; z-index: 9998; transition: transform 0.3s cubic-bezier(0.23,1,0.32,1); }
+    .grid-bg { position: fixed; inset: 0; z-index: 0; background-image: linear-gradient(rgba(255,87,34,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,87,34,0.04) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; }
+    .grid-bg::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255,87,34,0.06) 0%, transparent 60%); }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 72px; background: rgba(13,7,5,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,87,34,0.15); }
+    .nav-logo { display: flex; align-items: center; gap: 12px; font-family: 'Orbitron', sans-serif; font-weight: 900; text-decoration: none; line-height: 1.1; }
+    .nav-logo-line1 { color: #ff5722; font-size: 1.05rem; display: block; text-shadow: 0 0 16px rgba(255,87,34,0.7); }
+    .nav-logo-line2 { color: #fff0ea; font-size: 0.65rem; letter-spacing: 0.25em; opacity: 0.85; display: block; }
+    .nav-back { padding: 8px 20px; border: 1px solid rgba(255,87,34,0.3); background: transparent; color: var(--text-muted); font-family: 'Orbitron', sans-serif; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: none; transition: all 0.3s; text-decoration: none; }
+    .nav-back:hover { border-color: var(--igf-orange); color: var(--igf-orange); }
+    .nav-actions { display: flex; gap: 15px; align-items: center; }
+    .nav-icon-btn { color: var(--text-muted); text-decoration: none; font-size: 1.1rem; position: relative; transition: color 0.3s; cursor: none; }
+    .nav-icon-btn:hover { color: var(--igf-orange); }
+    .nav-badge { position: absolute; top: -6px; right: -8px; background: var(--igf-red); color: #fff; font-size: 0.55rem; font-family: 'Orbitron', sans-serif; padding: 2px 5px; border-radius: 10px; font-weight: 700; }
+
+    /* BREADCRUMBS */
+    .breadcrumbs { position: relative; z-index: 2; padding: 100px 5% 0; font-size: 0.75rem; color: var(--text-muted); font-family: 'Syne', sans-serif; }
+    .breadcrumbs a { color: var(--igf-orange); text-decoration: none; }
+    .breadcrumbs span { margin: 0 8px; opacity: 0.5; }
+
+    .pdp-main { position: relative; z-index: 2; padding: 20px 5% 60px; max-width: 1500px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; }
+    .pdp-gallery { grid-column: 1; grid-row: 1 / span 2; }
+    .pdp-info { grid-column: 2; }
+    .pdp-purchase-col { grid-column: 2; display: flex; flex-direction: column; gap: 24px; margin-top: -16px; }
+    .purchase-card, .delivery-card { flex: none; width: 100%; margin-bottom: 0; }
+    @media(max-width: 1200px) { .pdp-main { grid-template-columns: 1fr 1fr; } .pdp-gallery { grid-column: 1 / -1; grid-row: auto; } .pdp-info { grid-column: 1 / -1; } .pdp-purchase-col { grid-column: 1 / -1; } }
+    @media(max-width: 900px) { .pdp-main { grid-template-columns: 1fr; } }
+
+    /* GALLERY COL (LEFT) */
+    .pdp-gallery { display: flex; flex-direction: column; gap: 15px; }
+    .main-image-wrap { background: var(--bg-card); border: 1px solid var(--border-glow); border-radius: 12px; padding: 40px; text-align: center; position: relative; overflow: hidden; height: 650px; display: flex; align-items: center; justify-content: center; }
+    .main-image-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6)); transition: transform 0.4s; }
+    .main-image-wrap:hover img { transform: scale(1.1); }
+    .tag-badge { position: absolute; top: 20px; left: 20px; background: rgba(255,87,34,0.15); border: 1px solid var(--igf-orange); color: var(--igf-orange); font-family: 'Orbitron', sans-serif; font-size: 0.65rem; padding: 6px 12px; letter-spacing: 0.1em; border-radius: 4px; font-weight: 700; z-index: 10; }
+    .gallery-thumbs { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; }
+    .gallery-thumbs::-webkit-scrollbar { height: 4px; }
+    .gallery-thumbs::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 4px; }
+    .gallery-thumbs::-webkit-scrollbar-thumb { background: rgba(255,87,34,0.4); border-radius: 4px; }
+    .thumb { width: 80px; height: 80px; background: var(--bg-card); border: 1px solid rgba(255,87,34,0.2); border-radius: 8px; padding: 10px; cursor: none; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+    .thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .thumb:hover, .thumb.active { border-color: var(--igf-orange); background: rgba(255,87,34,0.1); }
+
+    /* INFO COL (CENTER) */
+    .pdp-info { display: flex; flex-direction: column; gap: 24px; }
+    .prod-title { font-family: 'Orbitron', sans-serif; font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 900; line-height: 1.1; color: var(--text-primary); text-transform: uppercase; }
+    .prod-brand { font-size: 0.85rem; color: var(--igf-amber); font-family: 'Orbitron', sans-serif; letter-spacing: 0.1em; margin-bottom: 10px; }
+    
+    .rating-wrap { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; }
+    .stars { color: #fbbf24; }
+    .review-count { color: var(--info); text-decoration: underline; cursor: none; }
+    
+    .price-section { margin-top: 10px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,87,34,0.1); }
+    .price-original { text-decoration: line-through; color: var(--text-muted); font-size: 1rem; margin-right: 12px; font-family: 'Orbitron', sans-serif; }
+    .price-current { font-size: 2.2rem; font-weight: 900; color: var(--igf-orange); font-family: 'Orbitron', sans-serif; }
+    .price-discount { background: rgba(74,222,128,0.15); color: var(--success); font-family: 'Orbitron', sans-serif; font-size: 0.75rem; padding: 4px 10px; border-radius: 4px; vertical-align: top; margin-left: 12px; }
+    
+    /* Simulated Flash Sale */
+    .flash-sale-banner { background: linear-gradient(90deg, rgba(232,50,26,0.2), transparent); border-left: 3px solid var(--igf-red); padding: 10px 16px; display: flex; align-items: center; gap: 16px; margin-top: 10px; border-radius: 0 4px 4px 0; }
+    .flash-sale-text { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: var(--igf-red); font-weight: 700; letter-spacing: 0.1em; }
+    .flash-timer { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; color: #fff; background: rgba(0,0,0,0.5); padding: 4px 8px; border-radius: 4px; }
+
+    .short-desc { font-size: 0.95rem; line-height: 1.7; color: var(--text-muted); }
+
+    /* AI REVIEW SUMMARY BOX */
+    .ai-summary-box { background: rgba(96,165,250,0.05); border: 1px solid rgba(96,165,250,0.2); border-radius: 8px; padding: 20px; position: relative; }
+    .ai-badge { position: absolute; top: -10px; right: 20px; background: linear-gradient(90deg, #60a5fa, #3b82f6); color: #fff; font-family: 'Orbitron', sans-serif; font-size: 0.55rem; padding: 3px 10px; border-radius: 12px; letter-spacing: 0.1em; font-weight: 700; }
+    .ai-summary-title { font-family: 'Orbitron', sans-serif; font-size: 0.75rem; color: var(--info); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .ai-summary-text { font-size: 0.82rem; color: var(--text-primary); line-height: 1.6; margin-bottom: 12px; }
+    .ai-pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 0.78rem; }
+    .ai-pros { color: var(--success); }
+    .ai-cons { color: var(--warning); }
+    .ai-pros ul, .ai-cons ul { padding-left: 16px; margin-top: 4px; color: var(--text-muted); }
+    .ai-pros ul li, .ai-cons ul li { margin-bottom: 4px; }
+
+    /* PURCHASE COL (RIGHT) */
+    .purchase-card { background: var(--bg-card); border: 1px solid var(--border-glow); border-radius: 12px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); margin-bottom: 24px; }
+    .stock-status { font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: 700; margin-bottom: 16px; }
+    .stock-in { color: var(--success); }
+    .stock-low { color: var(--warning); }
+    .stock-out { color: var(--igf-red); }
+
+    .qty-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .qty-label { font-size: 0.8rem; color: var(--text-muted); font-family: 'Syne', sans-serif; }
+    .qty-selector { display: flex; border: 1px solid rgba(255,87,34,0.3); border-radius: 4px; overflow: hidden; }
+    .qty-btn { background: rgba(255,87,34,0.1); border: none; color: #fff; width: 36px; height: 36px; cursor: none; transition: background 0.3s; }
+    .qty-btn:hover { background: rgba(255,87,34,0.3); }
+    .qty-input { width: 50px; background: transparent; border: none; text-align: center; color: #fff; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; outline: none; border-left: 1px solid rgba(255,87,34,0.3); border-right: 1px solid rgba(255,87,34,0.3); pointer-events: none; }
+
+    .action-btn { width: 100%; padding: 16px; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border: none; border-radius: 6px; cursor: none; transition: all 0.3s; margin-bottom: 12px; display: flex; justify-content: center; align-items: center; gap: 8px; }
+    .btn-cart { background: rgba(255,87,34,0.1); color: var(--igf-orange); border: 1px solid var(--igf-orange); }
+    .btn-cart:hover { background: rgba(255,87,34,0.25); }
+    .btn-buy { background: var(--igf-orange); color: #fff; }
+    .btn-buy:hover { box-shadow: 0 0 24px rgba(255,87,34,0.5); transform: translateY(-2px); }
+    
+    .secondary-actions { display: flex; gap: 10px; }
+    .sec-btn { flex: 1; padding: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-family: 'Syne', sans-serif; font-size: 0.75rem; border-radius: 4px; cursor: none; transition: all 0.3s; text-align: center; }
+    .sec-btn:hover { border-color: rgba(255,255,255,0.3); color: #fff; }
+    .sec-btn i { margin-right: 6px; }
+
+    /* DELIVERY & TRUST */
+    .delivery-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 24px; }
+    .delivery-title { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: var(--text-primary); margin-bottom: 16px; letter-spacing: 0.1em; }
+    .pin-checker { display: flex; margin-bottom: 16px; }
+    .pin-input { flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px 0 0 4px; padding: 10px 14px; color: #fff; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; outline: none; }
+    .pin-input:focus { border-color: var(--igf-orange); }
+    .pin-btn { background: var(--igf-orange); color: #fff; border: none; padding: 0 16px; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; border-radius: 0 4px 4px 0; cursor: none; transition: background 0.3s; }
+    .pin-btn:hover { background: #e64a19; }
+    .pin-result { font-size: 0.75rem; color: var(--success); margin-bottom: 16px; display: none; }
+    
+    .trust-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .trust-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.8rem; color: var(--text-muted); }
+    .trust-list i { color: var(--igf-amber); font-size: 1rem; margin-top: 2px; }
+
+    /* LONG SCROLL SECTIONS */
+    .pdp-section { grid-column: 1 / -1; padding: 60px 0; border-top: 1px solid rgba(255,87,34,0.15); margin-top: 20px; }
+    .pdp-section-title { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; color: #fff; margin-bottom: 40px; text-transform: uppercase; display: flex; align-items: center; gap: 16px; letter-spacing: 0.05em; }
+    .pdp-section-title::before { content: ''; display: block; width: 8px; height: 32px; background: var(--igf-orange); border-radius: 4px; box-shadow: 0 0 15px var(--igf-orange); }
+
+    /* DESCRIPTION TAB */
+    .desc-content { font-size: 0.95rem; line-height: 1.8; color: var(--text-muted); max-width: 900px; }
+    .features-list { margin-top: 24px; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+    .features-list li { background: rgba(255,87,34,0.03); border: 1px solid rgba(255,87,34,0.1); padding: 16px 20px; border-radius: 8px; display: flex; align-items: center; gap: 12px; font-size: 0.9rem; color: var(--text-primary); }
+    .features-list i { color: var(--igf-orange); }
+
+    /* SPECS TAB */
+    .specs-table { width: 100%; max-width: 900px; border-collapse: collapse; }
+    .specs-table td { padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .specs-label { width: 30%; font-family: 'Syne', sans-serif; font-weight: 600; color: var(--text-dim); background: rgba(255,255,255,0.02); }
+    .specs-val { color: var(--text-primary); }
+
+    /* REVIEWS TAB (Simulated) */
+    .reviews-header { display: flex; gap: 60px; margin-bottom: 40px; flex-wrap: wrap; }
+    .rating-big { display: flex; flex-direction: column; align-items: center; }
+    .rating-num { font-family: 'Orbitron', sans-serif; font-size: 4rem; font-weight: 900; color: var(--text-primary); line-height: 1; }
+    .rating-bars { flex: 1; max-width: 400px; display: flex; flex-direction: column; gap: 8px; }
+    .bar-row { display: flex; align-items: center; gap: 12px; font-size: 0.8rem; color: var(--text-muted); }
+    .bar-track { flex: 1; height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; }
+    .bar-fill { height: 100%; background: #fbbf24; border-radius: 4px; }
+    
+    .review-list { display: flex; flex-direction: column; gap: 24px; max-width: 900px; }
+    .review-item { padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .reviewer-name { font-weight: 700; color: var(--text-primary); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+    .verified-badge { font-size: 0.65rem; color: var(--success); background: rgba(74,222,128,0.1); padding: 2px 6px; border-radius: 10px; }
+    .review-date { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 10px; }
+    .review-text { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px; }
+    .review-photos { display: flex; gap: 10px; }
+    .review-photos img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); cursor: none; transition: border 0.3s; }
+    .review-photos img:hover { border-color: var(--igf-orange); }
+
+    /* SIMILAR CAROUSEL */
+    .similar-section { grid-column: 1 / -1; margin-top: 60px; padding-top: 60px; border-top: 1px solid rgba(255,87,34,0.15); }
+    .section-title { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; margin-bottom: 30px; text-transform: uppercase; }
+    .carousel-wrap { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; }
+    .carousel-wrap::-webkit-scrollbar { height: 6px; }
+    .carousel-wrap::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+    .carousel-wrap::-webkit-scrollbar-thumb { background: rgba(255,87,34,0.3); border-radius: 4px; }
+    
+    .similar-card { min-width: 240px; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 20px; text-decoration: none; display: flex; flex-direction: column; gap: 12px; transition: transform 0.3s, border 0.3s; cursor: none; }
+    .similar-card:hover { transform: translateY(-5px); border-color: var(--border-glow); }
+    .sim-img { height: 140px; width: 100%; object-fit: contain; }
+    .sim-title { font-size: 0.9rem; color: var(--text-primary); font-weight: 600; }
+    .sim-price { font-family: 'Orbitron', sans-serif; color: var(--igf-orange); font-size: 1.1rem; font-weight: 700; }
+
+    /* FOOTER STRIP */
+    .page-footer { text-align: center; padding: 20px; color: var(--text-dim); font-size: 0.75rem; border-top: 1px solid rgba(255,87,34,0.08); margin-top: 60px; }
+    .page-footer a { color: var(--igf-orange); text-decoration: none; }
+
+    /* TOAST */
+    #toast { position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%); background: rgba(255,87,34,0.9); color: #fff; padding: 12px 24px; border-radius: 30px; font-family: 'Syne', sans-serif; font-size: 0.85rem; z-index: 10000; transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; }
+    #toast.show { bottom: 30px; }
+
+  </style>
+</head>
+<body>
+
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+  <div class="grid-bg"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg class="nav-logo-icon" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Factory building -->
+      <rect x="18" y="28" width="64" height="36" rx="3" fill="#c0392b" stroke="#1a1a1a" stroke-width="3"/>
+      <rect x="24" y="20" width="12" height="12" rx="1" fill="#c0392b" stroke="#1a1a1a" stroke-width="2.5"/>
+      <rect x="44" y="16" width="12" height="16" rx="1" fill="#c0392b" stroke="#1a1a1a" stroke-width="2.5"/>
+      <rect x="64" y="20" width="12" height="12" rx="1" fill="#c0392b" stroke="#1a1a1a" stroke-width="2.5"/>
+      <!-- Smoke puff -->
+      <ellipse cx="70" cy="11" rx="5" ry="4" fill="#1a1a1a" opacity="0.8"/>
+      <ellipse cx="76" cy="8" rx="4" ry="3.5" fill="#1a1a1a" opacity="0.6"/>
+      <!-- Factory windows -->
+      <rect x="30" y="34" width="8" height="8" rx="1" fill="#1a1a1a" opacity="0.6"/>
+      <rect x="46" y="34" width="8" height="8" rx="1" fill="#1a1a1a" opacity="0.6"/>
+      <rect x="62" y="34" width="8" height="8" rx="1" fill="#1a1a1a" opacity="0.6"/>
+      <!-- Gamepad body -->
+      <rect x="12" y="54" width="76" height="40" rx="20" fill="#c0392b" stroke="#1a1a1a" stroke-width="3"/>
+      <!-- D-pad -->
+      <rect x="25" y="67" width="6" height="14" rx="1" fill="#1a1a1a"/>
+      <rect x="21" y="71" width="14" height="6" rx="1" fill="#1a1a1a"/>
+      <!-- ABXY buttons -->
+      <circle cx="69" cy="68" r="3.5" fill="#1a1a1a"/>
+      <circle cx="76" cy="74" r="3.5" fill="#1a1a1a"/>
+      <circle cx="62" cy="74" r="3.5" fill="#1a1a1a"/>
+      <!-- Center buttons -->
+      <rect x="44" y="72" width="5" height="3" rx="1" fill="#1a1a1a" opacity="0.7"/>
+      <rect x="51" y="72" width="5" height="3" rx="1" fill="#1a1a1a" opacity="0.7"/>
+    </svg>
+    <div class="nav-logo-text">
+      <span class="nav-logo-line1">INDIAN</span>
+      <span class="nav-logo-line2">GAME FACTORY</span>
+    </div>
+    </a>
+    
+    <div class="nav-actions">
+      <a href="index.html" class="nav-back"><i class="fa-solid fa-arrow-left"></i> Back to Store</a>
+      <a href="index.html#wishlist" class="nav-icon-btn" title="Wishlist">
+        <i class="fa-solid fa-heart"></i>
+        <span class="nav-badge" id="wishBadge">0</span>
+      </a>
+      <a href="index.html#cart" class="nav-icon-btn" title="Cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="nav-badge" id="cartBadge">0</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMBS -->
+  <div class="breadcrumbs">
+    <a href="index.html">Home</a> <span>/</span> 
+    <a href="index.html" id="bcCategory">Arcade</a> <span>/</span> 
+    <span style="color:var(--text-primary);" id="bcProduct">Product Title</span>
+  </div>
+
+  <!-- MAIN PDP -->
+  <main class="pdp-main">
+    
+    <!-- LEFT: GALLERY -->
+    <div class="pdp-gallery">
+      <div class="main-image-wrap" id="mainImageWrap">
+        <span class="tag-badge" id="pTag">BEST SELLER</span>
+        <img src="" id="pMainImg" alt="Product Image" />
+      </div>
+      <div class="gallery-thumbs" id="pThumbs">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+
+    <!-- CENTER: INFO -->
+    <div class="pdp-info">
+      <div>
+        <div class="prod-brand">INDIAN GAME FACTORY</div>
+        <h1 class="prod-title" id="pTitle">Product Title</h1>
+        
+        <div class="rating-wrap" style="margin-top:8px;">
+          <div class="stars">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+          </div>
+          <span style="color:var(--text-primary); font-weight:700;">4.7</span>
+          <span class="review-count" onclick="document.getElementById('section-reviews').scrollIntoView({behavior:'smooth'})">(<span id="pReviewCount">128</span> Reviews)</span>
+        </div>
+      </div>
+
+      <div class="price-section">
+        <div>
+          <span class="price-original" id="pPriceOld"></span>
+          <span class="price-current" id="pPriceCur"></span>
+          <span class="price-discount" id="pPriceDisc"></span>
+        </div>
+        <div class="flash-sale-banner" id="flashBanner">
+          <i class="fa-solid fa-bolt" style="color:var(--igf-red);"></i>
+          <span class="flash-sale-text">LIMITED TIME OFFER ENDS IN:</span>
+          <span class="flash-timer" id="flashTimer">04:23:59</span>
+        </div>
+      </div>
+
+      <div class="short-desc" id="pShortDesc"></div>
+
+      <!-- AI REVIEW SUMMARY -->
+      <div class="ai-summary-box">
+        <div class="ai-badge">AI POWERED</div>
+        <div class="ai-summary-title"><i class="fa-solid fa-robot"></i> Customers say...</div>
+        <div class="ai-summary-text" id="pAiText">Based on 128 verified reviews, customers highly praise the build quality and immersive experience, though a few noted the large floor space requirement.</div>
+        <div class="ai-pros-cons">
+          <div class="ai-pros">
+            <strong><i class="fa-solid fa-circle-check"></i> Pros</strong>
+            <ul id="pAiPros">
+              <li>Excellent build quality</li>
+              <li>High replay value</li>
+              <li>Stunning visual design</li>
+            </ul>
+          </div>
+          <div class="ai-cons">
+            <strong><i class="fa-solid fa-circle-xmark"></i> Cons</strong>
+            <ul id="pAiCons">
+              <li>Requires 220V power outlet</li>
+              <li>Heavy to relocate</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: PURCHASE & TRUST -->
+    <div class="pdp-purchase-col">
+      <div class="purchase-card">
+        <div class="stock-status stock-in" id="pStock"><i class="fa-solid fa-check"></i> In Stock (Ships in 48 hrs)</div>
+        
+        <div class="qty-wrap">
+          <span class="qty-label">Quantity:</span>
+          <div class="qty-selector">
+            <button class="qty-btn" onclick="changeQty(-1)"><i class="fa-solid fa-minus"></i></button>
+            <input type="text" class="qty-input" id="pQty" value="1" readonly />
+            <button class="qty-btn" onclick="changeQty(1)"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+
+        <button class="action-btn btn-cart" id="btnAddToCart">
+          <i class="fa-solid fa-cart-plus"></i> Add to Cart
+        </button>
+        <button class="action-btn btn-buy" onclick="location.href='payment.html'">
+          <i class="fa-solid fa-bolt"></i> Buy Now
+        </button>
+
+        <div class="secondary-actions">
+          <button class="sec-btn" id="btnWishlist"><i class="fa-regular fa-heart"></i> Wishlist</button>
+          <button class="sec-btn"><i class="fa-solid fa-code-compare"></i> Compare</button>
+        </div>
+      </div>
+
+      <div class="delivery-card">
+        <div class="delivery-title"><i class="fa-solid fa-truck-fast"></i> DELIVERY & SERVICES</div>
+        
+        <div class="pin-checker">
+          <input type="text" class="pin-input" id="pinInput" placeholder="Enter Pincode" maxlength="6" />
+          <button class="pin-btn" onclick="checkPin()">Check</button>
+        </div>
+        <div class="pin-result" id="pinResult"></div>
+
+        <ul class="trust-list">
+          <li><i class="fa-solid fa-shield-halved"></i> <div><strong>1 Year Warranty</strong><br>On-site hardware replacement support.</div></li>
+          <li><i class="fa-solid fa-rotate-left"></i> <div><strong>7 Day Replacement</strong><br>If delivered damaged or defective.</div></li>
+          <li><i class="fa-solid fa-lock"></i> <div><strong>Secure Payment</strong><br>SSL encrypted transactions via Razorpay.</div></li>
+          <li><i class="fa-solid fa-headset"></i> <div><strong>24/7 Support</strong><br>Dedicated account manager for enterprise buyers.</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- LONG SCROLL CONTENT -->
+    <section class="pdp-section" id="section-desc">
+      <h2 class="pdp-section-title">Product Description</h2>
+      <div class="desc-content" id="pFullDesc"></div>
+      
+      <h3 style="font-family:'Orbitron',sans-serif; margin-top:60px; margin-bottom:20px; font-size:1.4rem; color:var(--igf-orange); text-transform: uppercase;">Key Features & Capabilities</h3>
+      <ul class="features-list" id="pFeatures"></ul>
+    </section>
+
+    <!-- PROMO BANNER -->
+    <section class="pdp-section" style="background: linear-gradient(90deg, rgba(255,87,34,0.1) 0%, transparent 100%); padding: 40px; border-radius: 16px; border: 1px solid rgba(255,87,34,0.2); margin-bottom: 40px;">
+      <h2 style="font-family:'Orbitron',sans-serif; color:var(--igf-orange); font-size: 1.8rem; margin-bottom: 10px;">Why Choose Indian Game Factory?</h2>
+      <p style="color:var(--text-muted); max-width: 800px; font-size: 1rem; line-height: 1.6;">Our equipment is designed for maximum ROI. With industrial-grade components, remote tracking capabilities, and 24/7 robust support, we ensure your arcade operates flawlessly round the clock.</p>
+    </section>
+
+    <section class="pdp-section" id="section-specs">
+      <h2 class="pdp-section-title">Technical Specifications</h2>
+      <table class="specs-table">
+        <tbody id="pSpecsTable"></tbody>
+      </table>
+    </section>
+
+    <section class="pdp-section" id="section-reviews">
+      <h2 class="pdp-section-title">Customer Feedback</h2>
+      <div class="reviews-header">
+        <div class="rating-big">
+          <span class="rating-num">4.7</span>
+          <div class="stars" style="font-size:1.2rem; margin-top:8px;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+          <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Based on <span id="rTotal">128</span> reviews</div>
+        </div>
+        <div class="rating-bars" id="rBars">
+          <!-- Simulated via JS -->
+        </div>
+        <div>
+          <button class="action-btn btn-cart" style="width:auto; padding:12px 24px;">Write a Review</button>
+        </div>
+      </div>
+
+      <div class="review-list" id="rList">
+        <!-- Simulated via JS -->
+      </div>
+    </section>
+
+    <!-- SIMILAR PRODUCTS -->
+    <div class="similar-section">
+      <h2 class="pdp-section-title">Similar Products Recommendations</h2>
+      <div class="carousel-wrap" id="simCarousel">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <p>&copy; 2026 Indian Game Factory. <a href="#">Terms</a> | <a href="#">Privacy Policy</a></p>
+  </footer>
+
+  <div id="toast"></div>
+
+  <!-- LOAD DATA & LOGIC -->
+  <script src="assets/products-data.js"></script>
+  <script>
+    // --- CURSOR LOGIC ---
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      cursor.style.transform = `translate(${mouseX - 5}px, ${mouseY - 5}px)`;
+    });
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.15; ringY += (mouseY - ringY) * 0.15;
+      ring.style.transform = `translate(${ringX - 18}px, ${ringY - 18}px)`;
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+    document.querySelectorAll('a, button, .thumb, .review-count').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursor.style.transform = `translate(${mouseX-5}px, ${mouseY-5}px) scale(1.5)`; ring.style.transform = `translate(${ringX-18}px, ${ringY-18}px) scale(1.5)`; ring.style.borderColor = 'var(--neon-cyan)'; });
+      el.addEventListener('mouseleave', () => { cursor.style.transform = `translate(${mouseX-5}px, ${mouseY-5}px) scale(1)`; ring.style.transform = `translate(${ringX-18}px, ${ringY-18}px) scale(1)`; ring.style.borderColor = 'rgba(255,87,34,0.6)'; });
+    });
+
+    // --- DATA FETCHING & RENDERING ---
+    let currentProd = null;
+    let currentCat = null;
+    let qty = 1;
+
+    // A deterministic hash to generate stable random prices/stats based on product ID
+    function hashStr(str) {
+      let hash = 0;
+      for (let i=0; i<str.length; i++) { hash = str.charCodeAt(i) + ((hash << 5) - hash); }
+      return Math.abs(hash);
+    }
+
+    function initPDP() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const pid = urlParams.get('id');
+      
+      if(!pid || typeof CATEGORIES === 'undefined') {
+        document.querySelector('.pdp-main').innerHTML = '<h2 style="text-align:center; padding:100px;">Product not found. <a href="index.html" style="color:var(--igf-orange);">Return to Store</a></h2>';
+        return;
+      }
+
+      // Find product
+      for (const catKey in CATEGORIES) {
+        const cat = CATEGORIES[catKey];
+        const prod = cat.products.find(p => p.id === pid);
+        if (prod) { currentProd = prod; currentCat = cat; break; }
+      }
+
+      if(!currentProd) {
+        document.querySelector('.pdp-main').innerHTML = '<h2 style="text-align:center; padding:100px;">Product not found.</h2>';
+        return;
+      }
+
+      renderProduct();
+      renderSimilar();
+      updateBadges();
+      startFlashTimer();
+    }
+
+    function renderProduct() {
+      const p = currentProd;
+      const h = hashStr(p.id);
+      
+      // Breadcrumbs
+      document.getElementById('bcCategory').textContent = currentCat.name;
+      document.getElementById('bcProduct').textContent = p.name;
+      
+      // Info
+      document.getElementById('pTitle').textContent = p.name;
+      document.getElementById('pShortDesc').textContent = p.shortDesc;
+      document.getElementById('pFullDesc').textContent = p.fullDesc;
+      document.getElementById('pTag').textContent = p.tag || 'PREMIUM';
+      
+      if(p.tag === 'OUT OF STOCK') {
+        const stk = document.getElementById('pStock');
+        stk.className = 'stock-status stock-out';
+        stk.innerHTML = '<i class="fa-solid fa-xmark"></i> Out of Stock';
+      }
+
+      // Generate simulated pricing (e.g. 1L to 5L based on hash)
+      const basePrice = 50000 + (h % 500000);
+      const discountPct = 10 + (h % 25); // 10% to 34%
+      const currPrice = Math.round(basePrice * (1 - discountPct/100));
+      
+      document.getElementById('pPriceOld').textContent = 'Rs ' + basePrice.toLocaleString();
+      document.getElementById('pPriceCur').textContent = 'Rs ' + currPrice.toLocaleString();
+      document.getElementById('pPriceDisc').textContent = discountPct + '% OFF';
+
+      // Images (Simulate gallery by applying CSS filters to main image)
+      const mainImgEl = document.getElementById('pMainImg');
+      mainImgEl.src = p.image;
+      
+      const thumbHtml = `
+        <div class="thumb active" onclick="setMainImg(this, '${p.image}', 'none')"><img src="${p.image}" /></div>
+        <div class="thumb" onclick="setMainImg(this, '${p.image}', 'hue-rotate(90deg)')"><img src="${p.image}" style="filter:hue-rotate(90deg)" /></div>
+        <div class="thumb" onclick="setMainImg(this, '${p.image}', 'grayscale(100%)')"><img src="${p.image}" style="filter:grayscale(100%)" /></div>
+        <div class="thumb" onclick="setMainImg(this, '${p.image}', 'invert(100%)')"><img src="${p.image}" style="filter:invert(100%)" /></div>
+      `;
+      document.getElementById('pThumbs').innerHTML = thumbHtml;
+
+      // Features
+      if(p.features) {
+        document.getElementById('pFeatures').innerHTML = p.features.map(f => `<li><i class="fa-solid fa-bolt"></i> ${f}</li>`).join('');
+      }
+
+      // Specs
+      if(p.specs) {
+        document.getElementById('pSpecsTable').innerHTML = p.specs.map(s => `<tr><td class="specs-label">${s.label}</td><td class="specs-val">${s.val}</td></tr>`).join('');
+      }
+
+      // Reviews Simulation
+      const revCount = 45 + (h % 300);
+      document.getElementById('pReviewCount').textContent = revCount;
+      document.getElementById('rTotal').textContent = revCount;
+
+      const barsHtml = [5,4,3,2,1].map(star => {
+        let pct = star===5 ? 75 : (star===4 ? 15 : (star===3 ? 5 : 2));
+        if(star===1) pct = 3;
+        return `<div class="bar-row"><span>${star} <i class="fa-solid fa-star" style="color:#fbbf24;font-size:0.6rem;"></i></span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span>${pct}%</span></div>`;
+      }).join('');
+      document.getElementById('rBars').innerHTML = barsHtml;
+
+      const reviewsHtml = [
+        { n: 'Rajesh K.', d: '2 Weeks Ago', t: 'Excellent machine, brings a lot of crowd to our FEC. The build quality is solid metal as promised.' },
+        { n: 'Priya Verma', d: '1 Month Ago', t: 'Delivery took a bit longer than expected to Bangalore, but the installation team was very professional. Highly recommended.' },
+        { n: 'Amit S.', d: '3 Months Ago', t: 'Perfect addition to our indoor park. The ROI on this is fantastic. Kids love it.' }
+      ].map(r => `
+        <div class="review-item">
+          <div class="reviewer-name">${r.n} <span class="verified-badge"><i class="fa-solid fa-check-circle"></i> Verified Buyer</span></div>
+          <div class="stars" style="font-size:0.75rem; margin-bottom:4px;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+          <div class="review-date">${r.d}</div>
+          <div class="review-text">${r.t}</div>
+        </div>
+      `).join('');
+      document.getElementById('rList').innerHTML = reviewsHtml;
+
+      // Wishlist init
+      initWishlistBtn();
+      
+      // Cart Init
+      document.getElementById('btnAddToCart').onclick = function() {
+        let c = JSON.parse(localStorage.getItem('igf_cart')||'[]');
+        c.push({ id: p.id, name: p.name, image: p.image, price: currPrice, qty: qty });
+        localStorage.setItem('igf_cart', JSON.stringify(c));
+        toast('Added to Cart!');
+        updateBadges();
+      };
+    }
+
+    function setMainImg(thumbEl, src, filter) {
+      document.querySelectorAll('.thumb').forEach(el => el.classList.remove('active'));
+      thumbEl.classList.add('active');
+      const main = document.getElementById('pMainImg');
+      main.src = src;
+      main.style.filter = filter;
+    }
+
+    function changeQty(d) {
+      qty += d;
+      if(qty < 1) qty = 1;
+      if(qty > 10) qty = 10;
+      document.getElementById('pQty').value = qty;
+    }
+
+    // Tabs logic removed as sections are now long scrolling
+
+    function renderSimilar() {
+      // Pick 6 random products. Prioritize same category, pad with others if needed.
+      let others = currentCat.products.filter(p => p.id !== currentProd.id);
+      
+      if (others.length < 6) {
+        let allProducts = [];
+        for (let catKey in CATEGORIES) {
+          allProducts = allProducts.concat(CATEGORIES[catKey].products);
+        }
+        let filler = allProducts.filter(p => p.id !== currentProd.id && !others.some(o => o.id === p.id));
+        filler = filler.sort(() => 0.5 - Math.random()).slice(0, 6 - others.length);
+        others = others.concat(filler);
+      }
+      
+      others = others.sort(() => 0.5 - Math.random()).slice(0, 6);
+      
+      const html = others.map(p => {
+        const h = hashStr(p.id);
+        const pCur = Math.round((50000 + (h%500000)) * 0.85);
+        return `
+          <a href="product.html?id=${p.id}" class="similar-card">
+            <img src="${p.image}" class="sim-img" />
+            <div class="sim-title">${p.name}</div>
+            <div class="sim-price">Rs ${pCur.toLocaleString()}</div>
+          </a>
+        `;
+      }).join('');
+      document.getElementById('simCarousel').innerHTML = html;
+    }
+
+    function startFlashTimer() {
+      let time = 3600 * 4 + 1439; // 4h 23m 59s
+      setInterval(() => {
+        time--;
+        const h = String(Math.floor(time / 3600)).padStart(2, '0');
+        const m = String(Math.floor((time % 3600) / 60)).padStart(2, '0');
+        const s = String(time % 60).padStart(2, '0');
+        document.getElementById('flashTimer').textContent = `${h}:${m}:${s}`;
+      }, 1000);
+    }
+
+    function checkPin() {
+      const pin = document.getElementById('pinInput').value;
+      const res = document.getElementById('pinResult');
+      if(pin.length !== 6) { res.style.color = 'var(--igf-red)'; res.textContent = 'Enter valid 6 digit Pincode'; res.style.display='block'; return; }
+      res.style.color = 'var(--success)';
+      res.textContent = 'Delivery available! Estimated arrival: ' + new Date(Date.now() + 86400000*5).toLocaleDateString();
+      res.style.display = 'block';
+    }
+
+    function initWishlistBtn() {
+      const btn = document.getElementById('btnWishlist');
+      let w = JSON.parse(localStorage.getItem('igf_wish')||'[]');
+      const isWished = w.some(x => x.id === currentProd.id);
+      if(isWished) { btn.innerHTML = '<i class="fa-solid fa-heart" style="color:#ef4444;"></i> Wished'; btn.style.borderColor = '#ef4444'; }
+      
+      btn.onclick = function() {
+        w = JSON.parse(localStorage.getItem('igf_wish')||'[]');
+        const idx = w.findIndex(x => x.id === currentProd.id);
+        if(idx > -1) {
+          w.splice(idx, 1);
+          btn.innerHTML = '<i class="fa-regular fa-heart"></i> Wishlist';
+          btn.style.borderColor = 'rgba(255,255,255,0.1)';
+          toast('Removed from Wishlist');
+        } else {
+          w.push({ id: currentProd.id, name: currentProd.name, image: currentProd.image, cat: currentCat.name });
+          btn.innerHTML = '<i class="fa-solid fa-heart" style="color:#ef4444;"></i> Wished';
+          btn.style.borderColor = '#ef4444';
+          toast('Added to Wishlist!');
+        }
+        localStorage.setItem('igf_wish', JSON.stringify(w));
+        updateBadges();
+      };
+    }
+
+    function updateBadges() {
+      const cart = JSON.parse(localStorage.getItem('igf_cart') || '[]');
+      const wish = JSON.parse(localStorage.getItem('igf_wish') || '[]');
+      document.getElementById('cartBadge').textContent = cart.length;
+      document.getElementById('wishBadge').textContent = wish.length;
+    }
+
+    function toast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+    }
+
+    window.addEventListener('DOMContentLoaded', initPDP);
+  </script>
+</body>
+</html>

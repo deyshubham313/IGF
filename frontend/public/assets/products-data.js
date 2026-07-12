@@ -1,0 +1,1360 @@
+const CATEGORIES = {
+    'air-hockey': {
+    name: 'Air Hockey',
+    icon: 'assets/Air-Hockey.svg',
+    desc: 'High-speed competitive air hockey tables from HGR Amusement, India\'s leading arcade manufacturer. Features overhead LED score displays, robust industrial blowers, and custom graphic boards perfect for family entertainment centers.',
+    products: [
+      {
+        id: 'ah-01',
+        name: 'Super Air hockey',
+        image: 'assets/products/ah-super-air-hockey.png',
+        shortDesc: 'Premium commercial 7ft table with digital overhead score bridge and high speed blower.',
+        fullDesc: 'Super Air Hockey is HGR Amusement\'s flagship commercial model, engineered for high-traffic environments. It is built with high-quality density board, a scratch-resistant glossy laminate playing surface, and an heavy-duty blower motor. The overhead score bridge features bright LED digit displays and authentic arcade sound effects on every goal.',
+        specs: [
+          { label: 'Table Size', val: '7 ft (84 x 48 inches)' },
+          { label: 'Motor Power', val: '220V High Flow Industrial' },
+          { label: 'Payment', val: 'Coin / Token / Card' },
+          { label: 'Structure', val: 'Reinforced MDF & Steel Frame' }
+        ],
+        features: [
+          'High-power silent blower motor for perfect puck float',
+          'Overhead LED scoring bridge with goal light sensors',
+          'Tough, scratch-resistant polycarbonate playing surface',
+          'Attract mode sound system and theme music',
+          'Adjustable game timer and credit settings'
+        ],
+        tag: 'POPULAR'
+      },
+      {
+        id: 'ah-02',
+        name: 'Puck Carnival Air hockey',
+        image: 'assets/products/ah-puck-carnival.png',
+        shortDesc: 'Innovative multi-puck ticket redemption air hockey machine.',
+        fullDesc: 'The Puck Carnival Air Hockey introduces an exciting twist to the classic game. In multi-puck mode, up to 10 pucks can be released on the table simultaneously, causing frantic and thrilling gameplay. It includes ticket dispenser modules that reward players based on the scores they achieve, driving repeat gameplay.',
+        specs: [
+          { label: 'Table Size', val: '7.5 ft (90 x 50 inches)' },
+          { label: 'Game Type', val: 'Multi-Puck Ticket Redemption' },
+          { label: 'Payout', val: 'Dual Ticket Dispensers' },
+          { label: 'Blower System', val: 'Dual High Torque Air Pumps' }
+        ],
+        features: [
+          'Exciting multi-puck release mechanism',
+          'Equipped with dual ticket dispensers for redemption play',
+          'Stunning carnival themed side panel graphics',
+          'Edge-to-edge LED strip lighting with color shift',
+          'Digital electronic coin acceptor'
+        ],
+        tag: 'REDEMPTION'
+      },
+      {
+        id: 'ah-03',
+        name: 'Dazzling Air Hockey – Multi Puck',
+        image: 'assets/products/ah-dazzling.png',
+        shortDesc: 'Stunning premium design with multi-puck mode and high glow LED effects.',
+        fullDesc: 'Dazzling Air Hockey is the ultimate visual draw on any gaming floor. Incorporating high-glow LED border strips and full active side illumination, this machine features HGR\'s signature multi-puck mode. Standard tournament width allows for competitive and high-speed multi-puck matches.',
+        specs: [
+          { label: 'Table Size', val: '8 ft Tournament Standard' },
+          { label: 'Lighting', val: 'Multi-color Edge Glow LED' },
+          { label: 'Pucks', val: 'Supports up to 8 pucks simultaneously' },
+          { label: 'Power', val: '220V AC / 450W' }
+        ],
+        features: [
+          'Active light-up neon borders synchronized with game music',
+          'Sleek modern styling with premium metallic trim',
+          'Advanced sensors to track and count multiple active pucks',
+          'Configurable high/low ticket payout system',
+          'Durable powder-coated iron chassis'
+        ],
+        tag: 'BEST SELLER'
+      },
+      {
+        id: 'ah-04',
+        name: 'Aurora Air Hockey',
+        image: 'assets/products/ah-aurora.png',
+        shortDesc: 'Glowing LED cabinet with interactive light-up playing surface.',
+        fullDesc: 'The Aurora Air Hockey is a visually stunning table that features a complete light-up plexiglass playing deck. The puck glows under the table\'s custom UV and LED lights. Perfect for dark-theme gaming zones, bars, and premium FECs looking for a high-end centerpiece.',
+        specs: [
+          { label: 'Table Size', val: '7 ft (84 inches)' },
+          { label: 'Playing Surface', val: 'Illuminated Translucent Acrylic' },
+          { label: 'Lighting', val: 'Full Cabinet RGB + Under-bed UV' },
+          { label: 'Payment', val: 'Card System / Coins' }
+        ],
+        features: [
+          'Completely illuminated acrylic playing deck',
+          'Glowing puck and mallet accessories included',
+          'Spectacular light show on every goal scored',
+          'Premium surround-sound speakers with subwoofer',
+          'Fully customisable operator software settings'
+        ],
+        tag: 'NEW'
+      },
+      {
+        id: 'ah-05',
+        name: 'Octa Air Hockey',
+        image: 'assets/products/ah-octa.png',
+        shortDesc: 'Futuristic octagonal body structure for multi-directional angles.',
+        fullDesc: 'Octa Air Hockey features a unique octagonal body shape that creates unconventional puck bounce patterns. Perfect for regular players seeking a fresh challenge, the geometric angles allow for tricky bank shots and extremely dynamic defense strategies.',
+        specs: [
+          { label: 'Shape', val: 'Geometric Octagonal' },
+          { label: 'Dimensions', val: '80 x 80 inches' },
+          { label: 'Weight', val: '220 kg' },
+          { label: 'Blower', val: 'High Output Centrifugal Fan' }
+        ],
+        features: [
+          'Unique octagonal chassis for multi-directional bank shots',
+          'Scratch-resistant polished steel surface',
+          'Overhead LED display console',
+          'Sturdy angled iron legs for total stability',
+          'Ideal for both casual play and center floor attractions'
+        ],
+        tag: 'FUTURISTIC'
+      },
+      {
+        id: 'ah-06',
+        name: 'Aero X Air Hockey',
+        image: 'assets/products/ah-aero-x.png',
+        shortDesc: 'Modern frame design with double blower technology.',
+        fullDesc: 'Aero X Air Hockey utilizes dual high-torque blower fans to provide an incredibly smooth and fast air cushion. Featuring a slimline aerodynamic frame design and digital side scoring, this table provides tournament-level speed and precision.',
+        specs: [
+          { label: 'Frame', val: 'Aerodynamic Slim Profile' },
+          { label: 'Air Flow', val: 'Double Blower System' },
+          { label: 'Goal System', val: 'Auto Puck Return' },
+          { label: 'Warranty', val: '1 Year On-site Warranty' }
+        ],
+        features: [
+          'Dual heavy-duty blower motor configuration',
+          'Dynamic aerodynamic profile to maximize leg space',
+          'Precision laser goal sensors',
+          'Sound effects with volume settings',
+          'Hardened scratch-proof playing deck'
+        ],
+        tag: 'TOURNAMENT'
+      },
+      {
+        id: 'ah-07',
+        name: 'Air Hockey Space',
+        image: 'assets/products/ah-space.png',
+        shortDesc: 'Futuristic space themed cabinet with cosmic neon design.',
+        fullDesc: 'Air Hockey Space is designed with stunning cosmic themed graphics, outer-space artwork, and glowing cosmic decals. This highly interactive table is a major attraction for kids and families who love sci-fi themes.',
+        specs: [
+          { label: 'Theme', val: 'Cosmic / Space Odyssey' },
+          { label: 'Blower Power', val: '180W High Performance' },
+          { label: 'Material', val: 'Heavy Duty MDF Board' },
+          { label: 'Acceptor', val: 'Double Coin Entry' }
+        ],
+        features: [
+          'Stunning space and planetary art styling',
+          'Glowing fluorescent scoring display',
+          'Electronic voice announcer during play',
+          'Durable corner bumpers to protect children',
+          'Multi-mode game difficulty parameters'
+        ],
+        tag: 'KIDS FAVORITE'
+      },
+      {
+        id: 'ah-08',
+        name: 'Fast Track Air Hockey',
+        image: 'assets/products/ah-fast-track.png',
+        shortDesc: 'Rapid action scoring track designed for speed lovers.',
+        fullDesc: 'The Fast Track Air Hockey is built for speed. Featuring a polished high-speed stainless steel playfield and a direct airflow configuration, the puck speeds are unmatched. This is the choice of elite gaming cafes and esports centers.',
+        specs: [
+          { label: 'Playfield', val: 'Polished Stainless Steel' },
+          { label: 'Puck Speed', val: 'Pro League Level' },
+          { label: 'Chassis', val: 'Anodized Aluminium rails' },
+          { label: 'Timer', val: 'Configurable digital timer' }
+        ],
+        features: [
+          'Polished stainless steel bed for maximum puck velocity',
+          'Industrial grade anodized aluminium protective rails',
+          'High speed target goals with automatic score counters',
+          'Dual coin slots with smart fake coin recognition',
+          'Reinforced structural build to prevent table shifting'
+        ],
+        tag: 'PRO SPEED'
+      },
+      {
+        id: 'ah-09',
+        name: 'Air Hockey Small Kids',
+        image: 'assets/products/ah-small-kids.png',
+        shortDesc: 'Special kids-height model with cartoon styling.',
+        fullDesc: 'Designed specifically for younger children, this model is built lower to the ground with kid-friendly mallet sizes. Colorful cartoon decals and safe rounded plastic corners make it the perfect addition to softplay zones and daycare game corners.',
+        specs: [
+          { label: 'Height', val: '24 inches (lowered)' },
+          { label: 'Age Group', val: '3–8 years' },
+          { label: 'Blower', val: 'Low Noise Air Blower' },
+          { label: 'Mallet Size', val: 'Compact Child Size' }
+        ],
+        features: [
+          'Child-safe rounded safety bumpers',
+          'Bright, friendly cartoon-themed graphic wraps',
+          'Lowered deck height for easy toddler reach',
+          'Quiet blower motor for peaceful operations',
+          'Accepts smaller tokens and custom kiddy coins'
+        ],
+        tag: 'KIDS HEIGHT'
+      },
+      {
+        id: 'ah-10',
+        name: 'Air Hockey Lucky Hockey (Curve Top)',
+        image: 'assets/products/ah-lucky-curve.png',
+        shortDesc: 'Curved playing surface for unpredictable puck behavior.',
+        fullDesc: 'Lucky Hockey features a revolutionary curved playing surface that slopes upward toward the center. This creates highly dynamic and erratic puck movement, offering a unique physics challenge that turns typical air hockey matches into chaotic fun.',
+        specs: [
+          { label: 'Surface Profile', val: 'Curved Arc Top' },
+          { label: 'Game Physics', val: 'Variable Speed Gravity Play' },
+          { label: 'Material', val: 'Thermoformed Acrylic Deck' },
+          { label: 'Cabinet', val: 'Premium curved fiberglass' }
+        ],
+        features: [
+          'Unique curved slope design for unpredictable puck sliding',
+          'Dynamic gravity-assisted speed boosts',
+          'Illuminated neon curved archways',
+          'Soundboard with customizable referee calls',
+          'Advanced optical goal validation sensors'
+        ],
+        tag: 'INNOVATION'
+      }
+    ]
+  },
+  'bumper-cars': {
+    name: 'Bumper Cars',
+    icon: 'assets/Bumpers-Cars.svg',
+    desc: 'Premium battery-operated bumper cars from HGR Amusement, built with commercial-grade fiberglass shells, all-round rubber safety buffers, and dual joystick driving controls.',
+    products: [
+      {
+        id: 'bc-01',
+        name: 'Striking Car Batt Op.',
+        image: 'assets/products/bc-striking-car.png',
+        shortDesc: 'Heavy-duty striking bumper car with high safety rubber bumper.',
+        fullDesc: 'The Striking Car Battery Operated model is HGR Amusement\'s top-selling commercial bumper car. It is equipped with a high-capacity rechargeable battery pack, a robust 24V motor, and a heavy-duty inflatable rubber buffer ring that absorbs impact. Perfect for indoor FEC floors and shopping mall setups.',
+        specs: [
+          { label: 'Battery Type', val: '24V / 40Ah Heavy Duty' },
+          { label: 'Bumper Material', val: 'Inflatable PVC Rubber Tube' },
+          { label: 'Capacity', val: 'Up to 150 kg (Parent + Kid)' },
+          { label: 'Speed', val: 'Up to 6 km/h (Configurable)' }
+        ],
+        features: [
+          'High density fiberglass shell with glossy metallic finish',
+          'Surround rubber bumper tube with excellent shock absorption',
+          'Dynamic multi-channel sound speaker with SD slot',
+          'Operator remote control emergency stop system',
+          'Bright LED headlights and backlights'
+        ],
+        tag: 'BEST SELLER'
+      },
+      {
+        id: 'bc-02',
+        name: 'Battery Operated Bumper car',
+        image: 'assets/products/bc-battery-bumper.png',
+        shortDesc: 'Standard battery-powered commercial bumper car for flexible surfaces.',
+        fullDesc: 'This battery bumper car is built to run on various flat surfaces without requiring special steel floor grids. Made with an incredibly durable chassis, it is perfect for malls, outdoor parks, and temporary exhibition rentals. Runs up to 6 hours on a single charge.',
+        specs: [
+          { label: 'Run Time', val: '5–6 hours per full charge' },
+          { label: 'Motor Power', val: '24V / 250W Brushless' },
+          { label: 'Weight', val: '90 kg (empty)' },
+          { label: 'Charging Time', val: '6–8 hours' }
+        ],
+        features: [
+          'Flexible operation — runs on marble, concrete, or wood',
+          'Brushless motor for quiet and low-maintenance operation',
+          'Equipped with 3-point safety seatbelt',
+          'Interactive LED light wheels and body strips',
+          'Coin entry and timer display panel'
+        ],
+        tag: 'COMMERCIAL'
+      },
+      {
+        id: 'bc-03',
+        name: 'Battleship Drift',
+        image: 'assets/products/bc-new-model.png',
+        shortDesc: 'Exciting battleship themed drift car with dual controller levers.',
+        fullDesc: 'Battleship Drift Bumper Car features dual independent stick levers that control separate rear-wheel drive motors. This allows players to perform amazing 360-degree spins, sharp drifts, and realistic tank turns, offering an exciting, action-packed ride.',
+        specs: [
+          { label: 'Control Method', val: 'Dual Joystick Sticks' },
+          { label: 'Drift Capability', val: '360° Instant Tank Spin' },
+          { label: 'Body Style', val: 'Battleship Armour Hull' },
+          { label: 'Battery Capacity', val: '24V / 45Ah Lead-Acid' }
+        ],
+        features: [
+          'Battleship-inspired hull design with realistic details',
+          'Dual motor control for sharp drifting maneuverability',
+          'Integrated digital scoreboard on dashboard',
+          'Soundboard playing thrilling engine and combat sounds',
+          'Emergency auto-braking system'
+        ],
+        tag: 'THRIL RIDE'
+      },
+      {
+        id: 'bc-04',
+        name: 'Blaze Bumper Car',
+        image: 'assets/products/bc-blaze.png',
+        shortDesc: 'Sporty racer-styled battery bumper car with lightning decals.',
+        fullDesc: 'The Blaze Bumper Car features a sports car chassis layout, completed with aerodynamic wings and hot rod paint decals. This sleek model is highly popular among older kids and teenagers who love fast-paced competitive driving.',
+        specs: [
+          { label: 'Chassis Style', val: 'Sport Racer Aerodynamic' },
+          { label: 'Battery', val: '24V / 38Ah Rechargeable' },
+          { label: 'Wheelbase', val: 'Reinforced dual drive wheels' },
+          { label: 'Max Load', val: '120 kg' }
+        ],
+        features: [
+          'Aerodynamic racing car fiberglass casing',
+          'Flashing racing strip LEDs along the bumper skirt',
+          'Dual pressure sensors to detect wall impact',
+          'Leather-padded sports seat with seatbelt',
+          'Smart charger system included'
+        ],
+        tag: 'SPORTY'
+      },
+      {
+        id: 'bc-05',
+        name: 'Drift Bumper Car',
+        image: 'assets/products/bc-drift-bumper.png',
+        shortDesc: 'Professional grade high-drift model with slick rear wheels.',
+        fullDesc: 'The Drift Bumper Car is engineered specifically for drifting. It uses low-friction slick wheels on the rear axle and a high-torque front wheel drive. This enables drivers to initiate controlled slides around corners, providing the ultimate arcade racing thrill.',
+        specs: [
+          { label: 'Tires', val: 'Urethane Rear Slick Wheels' },
+          { label: 'Motor Type', val: 'High-torque Geared FWD' },
+          { label: 'Frame Structure', val: 'Tubular Steel Frame' },
+          { label: 'Power Supply', val: '24V High Output Pack' }
+        ],
+        features: [
+          'Special slick rear wheels for easy drift initialization',
+          'Heavy-duty tubular steel frame for maximum safety',
+          'Operator adjustable speed limits (slow/medium/pro)',
+          'Multi-tone horn and engine sound emulator',
+          'Excellent battery life under drift operations'
+        ],
+        tag: 'PRO DRIFT'
+      }
+    ]
+  },
+    'virtual-reality': {
+    name: 'Virtual Reality',
+    icon: 'assets/Virtual-Reality-Games.svg',
+    desc: 'Cutting-edge VR motion systems from HGR Amusement — 9D egg chairs, 360° flight platforms, multiplayer arenas, VR bikes, and full free-roam setups.',
+    products: [
+      { id:'vr-01', name:'9D VR 360 Simulator', image:'assets/products/vr-9d-360.png',
+        shortDesc:'Single-seat 9D VR pod with 360° rotation and motion effects.',
+        fullDesc:'Experience the ultimate solo VR adventure. The 9D VR 360 pod rotates a full 360° in sync with the virtual experience while delivering leg-tickling air effects and vibration feedback.',
+        specs:[{label:'Rotation',val:'360° Full Axis'},{label:'Effects',val:'Vibration + Air-flow + Leg tickle'},{label:'Headset',val:'High-res 4K VR'},{label:'Power',val:'220V / 1.5kW'}],
+        features:['Full 360-degree motorized rotation cockpit','Leg-tickling and airflow immersion effects','4K stereoscopic VR headset included','Self-service coin/token operated','Compact 2m² floor footprint'],
+        tag:'BEST SELLER' },
+
+      { id:'vr-02', name:'Double VR 360 Pod', image:'assets/products/vr-double-360.png',
+        shortDesc:'Twin-seat 360° VR pod for couples and friends.',
+        fullDesc:'Two riders share a single rotating cockpit that spins 360° together. Synchronized motion platform with shared VR scenes — perfect for couples, friends, or competitive sessions.',
+        specs:[{label:'Seats',val:'2 riders'},{label:'Rotation',val:'360° Synchronized'},{label:'Display',val:'Dual 4K VR headsets'},{label:'Content',val:'50+ scenes preloaded'}],
+        features:['Shared 360° rotation for 2 riders','Synchronized VR scenes for both seats','Vibration and airflow effects','Easy content update via USB','Attractive attract-mode display'],
+        tag:'POPULAR' },
+
+      { id:'vr-03', name:'Egg Type VR – 1 Player', image:'assets/products/vr-egg-1pl.png',
+        shortDesc:'Premium egg-shaped VR chair with full sensory effects.',
+        fullDesc:'The iconic egg-shape VR chair delivers a premium single-player immersive experience. Features vibration feedback synced to the virtual world, leg-tickling effects, and a cool air-flow system for maximum realism.',
+        specs:[{label:'Style',val:'Egg Chair Pod'},{label:'Effects',val:'Vibration + Airflow + Leg tickle'},{label:'Headset',val:'VR headset included'},{label:'Capacity',val:'1 player'}],
+        features:['Iconic egg-shape premium casing','Vibration platform synced with content','Leg-tickling mechanism for realism','Cool airflow system during action sequences','Plug-and-play installation'],
+        tag:'POPULAR' },
+
+      { id:'vr-04', name:'Egg Type VR – 2 Player', image:'assets/products/vr-egg-double.png',
+        shortDesc:'Double egg-shaped VR chair with shared motion platform.',
+        fullDesc:'The double egg VR brings the same premium experience as the single but for two players side-by-side on a shared vibration platform — ideal for families and friends.',
+        specs:[{label:'Style',val:'Double Egg Chair Pod'},{label:'Seats',val:'2 players'},{label:'Effects',val:'Vibration + Airflow + Leg tickle'},{label:'Content',val:'Shared or independent scenes'}],
+        features:['Premium double egg-shape design','Shared vibration and motion platform','Independent VR headsets per seat','Ideal for families and couples','High earning per sq.ft'],
+        tag:'NEW' },
+
+      { id:'vr-05', name:'VR 4-Seater Platform', image:'assets/products/vr-4-seater.png',
+        shortDesc:'4-player synchronized VR experience on a motion platform.',
+        fullDesc:'Four players sit on a dynamic motion platform that tilts, vibrates and shakes in sync with shared VR content. Ideal for family FECs, malls, and high-traffic entertainment zones.',
+        specs:[{label:'Seats',val:'4 players'},{label:'Motion',val:'6-DOF electric actuators'},{label:'Display',val:'4× VR headsets'},{label:'Content',val:'Roller coasters, space, ocean'}],
+        features:['6-DOF dynamic motion platform for 4 riders','Synchronized experience for all seats','Wide variety of content genres','Operator PC with simple content manager','Strong revenue per session'],
+        tag:'FAMILY' },
+
+      { id:'vr-06', name:'VR 6-Seater Platform', image:'assets/products/vr-6-seater.png',
+        shortDesc:'6-player synchronized VR cinema motion platform.',
+        fullDesc:'The largest seated VR platform from HGR, accommodating 6 players simultaneously on a dynamic 6-DOF electric motion base. Creates massive spectator appeal and generates exceptional revenue.',
+        specs:[{label:'Seats',val:'6 players'},{label:'Motion',val:'High-torque 6-DOF base'},{label:'Display',val:'6× 4K VR headsets'},{label:'Session Time',val:'5–8 minutes'}],
+        features:['Seats 6 players simultaneously for maximum throughput','6-DOF electric actuator motion base','Synchronized group experience','High attract display on external screen','Low staff requirement — self-service'],
+        tag:'HIGH CAPACITY' },
+
+      { id:'vr-07', name:'VR Big Space – 4 Player Arena', image:'assets/products/vr-big-space-4pl.png',
+        shortDesc:'Free-roam VR arena with 4 players and haptic gun controllers.',
+        fullDesc:'Players physically walk around a 12×12ft+ arena wearing lightweight VR headsets and carrying haptic gun controllers. Up to 4 players cooperate or compete in real-time multiplayer virtual missions.',
+        specs:[{label:'Players',val:'Up to 4 simultaneous'},{label:'Area',val:'12×12 ft minimum'},{label:'Controllers',val:'Haptic force-feedback guns'},{label:'Tracking',val:'Optical sensor anchors'}],
+        features:['True free-roam walk-around VR arena','Haptic feedback guns for physical immersion','High precision optical position tracking','Co-op and competitive multiplayer modes','Operator iPad management console'],
+        tag:'FREE-ROAM ARENA' },
+
+      { id:'vr-08', name:'VR Arena Showroom', image:'assets/products/vr-arena.png',
+        shortDesc:'Complete showroom-grade VR arena package.',
+        fullDesc:'A full packaged VR arena installation with dedicated gaming PCs, anchor sensor arrays, haptic controllers, and HGR operator software. Everything needed to open a premium VR zone.',
+        specs:[{label:'Package',val:'Turnkey VR Zone Setup'},{label:'Includes',val:'PCs + Sensors + Guns + Software'},{label:'Area',val:'15×15 ft recommended'},{label:'Content',val:'10+ game titles'}],
+        features:['Turnkey installation with all hardware included','Gaming PC workstations preloaded','10+ AAA-grade game titles included','Remote content update capability','Full staff training and support'],
+        tag:'TURNKEY' },
+
+      { id:'vr-09', name:'VR Car Racing Simulator', image:'assets/products/vr-car-racing.png',
+        shortDesc:'Full cockpit racing simulator with force-feedback steering.',
+        fullDesc:'Sit inside a real racing cockpit with bucket seat, pedals, and a force-feedback steering wheel. Paired with a VR headset for a fully immersive track racing experience at professional level.',
+        specs:[{label:'Controls',val:'Force-feedback wheel + pedals'},{label:'Seat',val:'Racing bucket seat'},{label:'Headset',val:'VR racing headset'},{label:'Content',val:'Multiple race tracks'}],
+        features:['Professional force-feedback racing wheel','Clutch, brake and accelerator pedals','Full VR headset racing immersion','Multiple race tracks and car models','Multiplayer link capability for races'],
+        tag:'RACING' },
+
+      { id:'vr-10', name:'GT6 Racing – 3 Screen', image:'assets/products/vr-gt6-racing.png',
+        shortDesc:'Triple-screen racing cockpit without VR for non-headset users.',
+        fullDesc:'The GT6 features a full racing cockpit with three large curved screens instead of a VR headset — ideal for players who prefer screen-based racing while still delivering a fully immersive experience.',
+        specs:[{label:'Screens',val:'3× HD curved monitors'},{label:'Controls',val:'Force-feedback wheel + pedals'},{label:'Resolution',val:'HD panoramic 3-screen view'},{label:'Content',val:'GT racing titles'}],
+        features:['Three curved screen panoramic view','No VR headset required — accessible for all ages','Professional race steering and pedals','GT-style interior detailing','Easy to operate and maintain'],
+        tag:'3-SCREEN' },
+
+      { id:'vr-11', name:'3-DOF 3-Screen Racing', image:'assets/products/vr-3dof-racing.png',
+        shortDesc:'Motion platform racing with 3 screens and 3-DOF movement.',
+        fullDesc:'Combines a 3-DOF (pitch, roll, heave) motion platform with a triple-screen cockpit for one of the most realistic racing simulations available without VR. Tilts and shakes with every turn.',
+        specs:[{label:'Motion',val:'3-DOF hydraulic platform'},{label:'Screens',val:'3× Full-HD curved'},{label:'Controls',val:'Force-feedback wheel'},{label:'G-Force Sim',val:'Realistic lateral tilt'}],
+        features:['3-DOF motion platform tilts with every corner','Triple curved screen panoramic cockpit','Realistic G-force lateral simulation','Force-feedback steering and pedals','High dwell time and repeat play'],
+        tag:'MOTION SIM' },
+
+      { id:'vr-12', name:'VR Bike – Dreamland', image:'assets/products/vr-bike-dreamland.png',
+        shortDesc:'Immersive VR motorcycle experience on a real motion bike.',
+        fullDesc:'Riders straddle a real motorcycle chassis that tilts left and right in sync with VR bike riding content. The Dreamland VR Bike is one of the highest earning compact VR attractions.',
+        specs:[{label:'Motion',val:'Left-right tilt mechanism'},{label:'Handlebars',val:'Real-feel resistance grips'},{label:'Content',val:'Track + offroad VR scenes'},{label:'Size',val:'Compact 2m²'}],
+        features:['Real motorcycle tilt motion synchronized to VR','Handlebar vibration feedback','Multiple track and offroad modes','Compact footprint for small spaces','Very high revenue per session'],
+        tag:'COMPACT' },
+
+      { id:'vr-13', name:'VR Bike – Oculeap', image:'assets/products/vr-bike-oculeap.png',
+        shortDesc:'Advanced VR bike with full body motion platform.',
+        fullDesc:'The Oculeap VR Bike takes motorcycle simulation further with a full-body motion platform that pitches forward and backward as well as leaning side to side for ultra-realistic riding physics.',
+        specs:[{label:'Motion',val:'Full-axis pitch + lean + heave'},{label:'Display',val:'4K VR headset'},{label:'Speed Sim',val:'Wind turbine speed effect'},{label:'Content',val:'Racing + exploration'}],
+        features:['Full-axis body motion platform (pitch, lean, heave)','Wind turbine effect on acceleration','4K VR headset with head tracking','Racing and scenic exploration content','Premium fiberglass styling'],
+        tag:'PREMIUM' },
+
+      { id:'vr-14', name:'UFO VR – 5 Player (Dreamland)', image:'assets/products/vr-ufo-5pl.png',
+        shortDesc:'Iconic UFO-shaped rotating VR platform for 5 players.',
+        fullDesc:'The UFO VR is an unmissable centerpiece attraction. Five players sit in a circular UFO structure that rotates as a group while experiencing synchronized VR content — an extraordinary visual draw.',
+        specs:[{label:'Shape',val:'UFO circular platform'},{label:'Seats',val:'5 players'},{label:'Rotation',val:'Group synchronized spin'},{label:'Content',val:'Space + adventure scenes'}],
+        features:['Iconic UFO-shape design — instant visual magnet','5 players share a rotating group experience','Synchronized VR content for all seats','External attraction mode display','Strong group booking revenue'],
+        tag:'ICON ATTRACTION' },
+
+      { id:'vr-15', name:'VR Shooting Game', image:'assets/products/vr-shooting.png',
+        shortDesc:'Standing VR shooting game with real gun props.',
+        fullDesc:'A compact standing VR shooting station where players hold a real prop gun with vibration feedback to shoot targets in an immersive virtual battle environment.',
+        specs:[{label:'Style',val:'Standing gun shooter'},{label:'Gun',val:'Haptic vibration prop'},{label:'Content',val:'Battle + zombie modes'},{label:'Size',val:'1m² footprint'}],
+        features:['Realistic prop gun with haptic vibration','Multiple battle and zombie game modes','Simple coin-operated start','Minimum space requirement','Great for corridors and small zones'],
+        tag:'SHOOTER' },
+
+      { id:'vr-16', name:'VR Gatling Gun', image:'assets/products/vr-gatling.png',
+        shortDesc:'Gatling-style multi-barrel gun VR shooting experience.',
+        fullDesc:'Players operate a heavy Gatling-style multi-barrel gun prop while battling waves of enemies in VR. The weight and rotation of the gun barrel makes the experience uniquely physical.',
+        specs:[{label:'Gun Prop',val:'Rotating Gatling barrel'},{label:'Content',val:'Alien + zombie wave modes'},{label:'Motor',val:'Electric barrel spin motor'},{label:'Headset',val:'4K VR'}],
+        features:['Full-size rotating Gatling gun prop','Electric motor spins barrels realistically','Vibration and recoil simulation','Intense wave-based shooting gameplay','Major floor attraction'],
+        tag:'HEAVY GUN' },
+
+      { id:'vr-17', name:'VR Space Wheel', image:'assets/products/vr-space-wheel.png',
+        shortDesc:'Rotating space-wheel VR experience with 360° spin.',
+        fullDesc:'Riders sit on a large spinning wheel structure that rotates in multiple axes while experiencing zero-gravity space simulation VR. One of the most thrilling group VR attractions available.',
+        specs:[{label:'Motion',val:'Multi-axis wheel rotation'},{label:'Seats',val:'4–6 on wheel'},{label:'Content',val:'Space + action scenes'},{label:'Height',val:'3.5m clearance required'}],
+        features:['Multi-axis rotating wheel structure','4-6 riders per session','Zero-gravity space simulation content','Major visual anchor for any floor','Strong safety harness system'],
+        tag:'THRILL' },
+
+      { id:'vr-18', name:'VR Cricket Simulator', image:'assets/products/vr-cricket.png',
+        shortDesc:'VR cricket batting experience with real bat prop.',
+        fullDesc:'Step up to the crease in virtual reality. Players hold a real bat prop and face live bowling simulations including fast bowlers, spinners, and fielding challenges — ideal for the Indian market.',
+        specs:[{label:'Prop',val:'Real bat with sensor'},{label:'Content',val:'Batting simulator scenes'},{label:'Modes',val:'Fast bowl + spin + fielding'},{label:'Players',val:'1 per session'}],
+        features:['Real bat prop with embedded sensor','Multiple bowling styles and difficulty levels','India-specific cricket content','Score tracking and leaderboard','Extremely popular in Indian FECs'],
+        tag:'INDIA SPECIAL' },
+
+      { id:'vr-19', name:'VR World Simulator', image:'assets/products/vr-world.png',
+        shortDesc:'Seated VR world exploration pod with wide content library.',
+        fullDesc:'A comfortable seated VR exploration pod offering access to a massive content library of world landmarks, underwater dives, aerial flights, and adventure scenes — suitable for all ages.',
+        specs:[{label:'Content',val:'50+ world experience scenes'},{label:'Seat',val:'Padded comfort chair'},{label:'Headset',val:'4K wide FOV VR'},{label:'Session',val:'5–10 minutes'}],
+        features:['50+ diverse world exploration scenes','4K wide field-of-view VR headset','Comfortable padded seat for all ages','Simple one-button session start','Family-friendly and age-inclusive content'],
+        tag:'FAMILY' }
+    ]
+  },
+  'trampoline-park': {
+    name: 'Trampoline Park',
+    icon: 'assets/Trampoline-Park.svg',
+    desc: 'Professional trampoline park layouts, designs, and hardware from Indian Game Factory — featuring CE and ASTM certified structural steel grids, high-density foam pits, wall-running zones, and commercial-grade safety padding for full-turnkey entertainment setups.',
+    products: [
+      {
+        id: 'tp-01',
+        name: 'Starter Trampoline Park (2000–4000 sq.ft)',
+        image: 'assets/products/tp-trampoline-1.jpg',
+        shortDesc: 'Starter turnkey park design including jump beds, safety padding, and foam pits.',
+        fullDesc: 'The Starter Trampoline Park package is optimized for entrepreneurs entering the active amusement space. This turnkey solution includes custom 3D layout planning, high-strength structural steel frame grids, commercial spring beds, a large safety foam pit with flame-retardant cubes, and comprehensive on-site installation by IGF engineers.',
+        specs: [
+          { label: 'Area Covered', val: '2,000 to 4,000 sq.ft' },
+          { label: 'Safety Standards', val: 'CE / ASTM / BIS Compliant' },
+          { label: 'Main Structure', val: 'Galvanized Steel Tube (3.0mm)' },
+          { label: 'Foam Pit', val: 'Flame-Retardant HR Foam Cubes' },
+          { label: 'Padding', val: '50mm PVC Safety Padding' },
+          { label: 'Installation', val: 'Turnkey On-Site Assembly' }
+        ],
+        features: [
+          'Galvanized steel pipe structural grids for high tensile load capacity',
+          'Heavy-duty 50mm safety padding over all frame edges and walls',
+          'High-density foam pit with certified fire-retardant foam cubes',
+          'Custom 3D layout design adapted to your ceiling height and floor plan',
+          'Spring beds tested to 400kg+ repeated load cycles',
+          'Complete operator safety training and manual included'
+        ],
+        tag: 'TURNKEY PACKAGE'
+      },
+      {
+        id: 'tp-02',
+        name: 'Pro Trampoline Park (4000–8000 sq.ft)',
+        image: 'assets/products/tp-trampoline-2.jpg',
+        shortDesc: 'Mid-tier professional park with wall runs, dodgeball zone, and multi-jump courts.',
+        fullDesc: 'The Pro Trampoline Park scales up the experience with dedicated dodgeball arenas, foam-padded wall-run lanes, slam-dunk zones, and interconnected multi-level jump courts. Ideal for mid-size family entertainment centers and standalone trampoline parks targeting the teen and young-adult audience.',
+        specs: [
+          { label: 'Area Covered', val: '4,000 to 8,000 sq.ft' },
+          { label: 'Safety Standards', val: 'CE / ASTM / BIS Compliant' },
+          { label: 'Zones Included', val: 'Jump + Dodgeball + Wall Run + Foam Pit' },
+          { label: 'Structure', val: 'Hot-Dip Galvanized Steel (3.5mm)' },
+          { label: 'Spring Beds', val: 'Commercial Grade 110-Spring Beds' },
+          { label: 'Capacity', val: 'Up to 100 simultaneous jumpers' }
+        ],
+        features: [
+          'Dedicated dodgeball arena with high-strength safety netting',
+          'Foam-padded wall-running lanes with angled ramp approach',
+          'Multiple interconnected jump courts at different heights',
+          'Slam-dunk zone with padded low-height basketball hoops',
+          'Digital capacity management system for safety compliance',
+          'Perimeter CCTV-ready steel framing with cable management'
+        ],
+        tag: 'PRO PACKAGE'
+      },
+      {
+        id: 'tp-03',
+        name: 'Elite Trampoline Park (8000+ sq.ft)',
+        image: 'assets/products/tp-trampoline-3.jpg',
+        shortDesc: 'Full-scale elite park with ninja warrior course, VR jump zone & climbing walls.',
+        fullDesc: 'The Elite Trampoline Park is a complete large-format active entertainment destination. It layers trampoline jumping with a Ninja Warrior obstacle circuit, a VR integration zone, rock-climbing walls, and a dedicated performance-stage jump area. Perfect for standalone parks, large FECs, and resort entertainment.',
+        specs: [
+          { label: 'Area Covered', val: '8,000 sq.ft and above' },
+          { label: 'Safety Standards', val: 'CE / ASTM / IATP Certified' },
+          { label: 'Zones Included', val: 'Jump + Ninja + Foam + Climb + VR Zone' },
+          { label: 'Structure', val: 'Heavy-Duty Galvanized Steel (4.0mm)' },
+          { label: 'Capacity', val: 'Up to 250 simultaneous jumpers' },
+          { label: 'Installation', val: '45–60 Day Full Build-Out' }
+        ],
+        features: [
+          'Ninja Warrior obstacle course with interchangeable challenge segments',
+          'VR integration zone with overhead harness tracks',
+          'Rock-climbing wall section with auto-belay safety systems',
+          'Performance jump stage with lighting and speaker system',
+          'Dedicated birthday/party room with viewing window',
+          'Full park management software and ticket/wristband system included'
+        ],
+        tag: 'ELITE FLAGSHIP'
+      },
+      {
+        id: 'tp-04',
+        name: 'Kids Trampoline Zone (800–2000 sq.ft)',
+        image: 'assets/products/tp-trampoline-4.jpg',
+        shortDesc: 'Compact colorful trampoline zone specifically designed for children under 12.',
+        fullDesc: 'The Kids Trampoline Zone is designed for younger children with lower jump heights, ultra-soft PVC padding, bright cartoon-themed artwork, and age-appropriate obstacle elements. Perfect as an add-on section within a larger FEC, mall play area, or indoor playground to serve the 2–12 age group safely.',
+        specs: [
+          { label: 'Area Covered', val: '800 to 2,000 sq.ft' },
+          { label: 'Age Group', val: '2 to 12 Years' },
+          { label: 'Jump Height', val: 'Reduced 40cm Bed Height' },
+          { label: 'Safety Standards', val: 'CE / BIS Kids Safety Certified' },
+          { label: 'Padding', val: '80mm Extra-Soft PVC (Child Safe)' },
+          { label: 'Theming', val: 'Custom Cartoon / Character Artwork' }
+        ],
+        features: [
+          'Low-height spring beds specially calibrated for lighter child weight',
+          'Extra-thick 80mm ultra-soft safety padding on all surfaces',
+          'Bright cartoon character themed wall art and structural panels',
+          'Dedicated toddler zone (under 3 years) with foam-only play area',
+          'Enclosed perimeter with adult supervision view windows',
+          'Slip-resistant grip socks included in entry pricing'
+        ],
+        tag: 'KIDS SPECIAL'
+      }
+    ]
+  },
+    'basketball-machines': {
+    name: 'Basketball Machines',
+    icon: 'assets/Basketball-Machine.svg',
+    desc: 'High-earning redemption basketball hoops from HGR Amusement, featuring motorized moving hoops, smart steel frames, ticket dispensers, and multiplayer link capability.',
+    products: [
+      {
+        id: 'bk-01',
+        name: 'Crazy Basket ball',
+        image: 'assets/products/bk-crazy-basketball.png',
+        shortDesc: 'Classic redemption basketball arcade with moving hoop option.',
+        fullDesc: 'Crazy Basketball is the ultimate arcade standard. In later stages of the game, the basketball hoop begins to move horizontally left and right, testing players\' precision. Equipped with bright LED backboard displays, ticket payout mechanisms, and rugged steel netting.',
+        specs: [
+          { label: 'Hoop Motion', val: 'Horizontal Motorized Rails' },
+          { label: 'Cabinet Build', val: 'Steel tubing & mesh panels' },
+          { label: 'Payment', val: 'Coin operated / RFID' },
+          { label: 'Tickets', val: 'Automatic ticket payout' }
+        ],
+        features: [
+          'Motorized left-to-right moving basket in advanced stages',
+          'Dynamic multi-colored LED backboard lights',
+          'Fully configurable ticket payout ratios',
+          'Supports linkage of up to 16 units for tournament play',
+          'Includes 5 heavy-duty basketballs'
+        ],
+        tag: 'HOT REDEMPTION'
+      },
+      {
+        id: 'bk-02',
+        name: 'NBA Basketball',
+        image: 'assets/products/bk-nba-basketball.png',
+        shortDesc: 'Premium basketball arcade with professional championship themes.',
+        fullDesc: 'Featuring a high-end metal frame and stadium-grade backboard glass, the NBA Basketball simulator brings the professional arena experience to the game room. Excellent audio system plays commentary, cheers, and theme music during high-score streaks.',
+        specs: [
+          { label: 'Backboard', val: 'Tempered Acrylic Stadium Glass' },
+          { label: 'Audio', val: 'Dual Stereo Speakers with Sub' },
+          { label: 'Sensors', val: 'Dual optical score sensors' },
+          { label: 'Dimensions', val: '95 x 38 x 98 inches' }
+        ],
+        features: [
+          'Championship stadium design styling',
+          'Championship buzzer and commentators sound effects',
+          'High precision optical infrared score counters',
+          'Foldable front tray for easy shipping and assembly',
+          'Sturdy solid iron ball return slide'
+        ],
+        tag: 'PREMIUM'
+      },
+      {
+        id: 'bk-03',
+        name: 'Basket Ball Show Time',
+        image: 'assets/products/bk-showtime.png',
+        shortDesc: 'High interactive model with digital display screen scoreboard.',
+        fullDesc: 'Basketball Show Time replaces the traditional backboard with a large interactive digital LCD display. The screen displays high-definition game graphics, animated score announcements, and a player leaderboard, creating a hybrid arcade-sports experience.',
+        specs: [
+          { label: 'Display Screen', val: '32-inch High-definition LCD' },
+          { label: 'Payment', val: 'Card Scanner / Coins' },
+          { label: 'Weight', val: '180 kg' },
+          { label: 'Construction', val: 'Fibreboard & sheet metal' }
+        ],
+        features: [
+          '32-inch digital scoreboard display with animations',
+          'Multiple unique mini-games built into the software',
+          'Online global scoreboard integration',
+          'Animated characters cheering on player hits',
+          'Configurable payout: tickets, tokens, or cards'
+        ],
+        tag: 'INTERACTIVE'
+      },
+      {
+        id: 'bk-04',
+        name: 'Basket ball Supreme',
+        image: 'assets/products/bk-supreme.png',
+        shortDesc: 'Solid steel construction built for heavy commercial use.',
+        fullDesc: 'Basketball Supreme is built like a tank. Featuring a thick steel frame, scratch-resistant steel powder-coating, and high-impact mesh barriers, it is engineered to withstand aggressive playing styles in heavy-footfall zones and major commercial malls.',
+        specs: [
+          { label: 'Steel Profile', val: 'Thick 2.5mm Iron Tubing' },
+          { label: 'Grid Netting', val: 'Anti-tangle thick steel mesh' },
+          { label: 'Buzzer', val: 'Heavy Duty Industrial Piezo' },
+          { label: 'Warranty', val: '2 Years Frame Warranty' }
+        ],
+        features: [
+          'Industrial structural steel build designed to endure high impact',
+          'Anti-rust coating suited for outdoor FEC environments',
+          'Extra-bright LED display showing score and time remaining',
+          'Equipped with industrial electronic coin coin-mech',
+          'Includes heavy-duty ground anchoring tabs'
+        ],
+        tag: 'HEAVY DUTY'
+      },
+      {
+        id: 'bk-05',
+        name: 'Super MVP4 Basketball',
+        image: 'assets/products/bk-super-mvp4.png',
+        shortDesc: 'Four-player linkage standard for multi-player matches.',
+        fullDesc: 'Super MVP4 is optimized for multiplayer tournaments. Standard hardware configuration includes out-of-the-box support for 4-player linkage. Players compete synchronously on a linked leaderboard, making it a major attraction for groups.',
+        specs: [
+          { label: 'Linking Cap', val: 'Up to 4 units default (expandable)' },
+          { label: 'Sound', val: 'Synchronized multiplayer voice' },
+          { label: 'Power', val: '220V / 300W per cabinet' },
+          { label: 'Balls Included', val: '7 balls per cabinet unit' }
+        ],
+        features: [
+          'Synchronized multiplayer link capabilities',
+          'Dynamic multi-player voice announcer',
+          'Stunning top marquee header board connecting all 4 units',
+          'Automatic winner ticket bonuses settings',
+          'High capacity ball storage cage'
+        ],
+        tag: 'TOURNAMENT'
+      }
+    ]
+  },
+  'bowling-alley': {
+    name: 'Bowling Alley',
+    icon: 'assets/Bowling-Alley.svg',
+    desc: 'Commercial bowling alley equipment from HGR Amusement, featuring professional synthetic lanes, high-speed string pinsetters, and cosmic LED lighting solutions.',
+    products: [
+      {
+        id: 'bw-01',
+        name: 'Professional Synthetic Bowling Alley',
+        image: 'assets/products/bw-bowling-1.jpg',
+        shortDesc: 'Premium commercial synthetic bowling lanes with automatic score panels.',
+        fullDesc: 'Our Professional Bowling Alley packages are built using high-strength synthetic lane laminate boards that require no oil maintenance. Features automated high-speed string pinsetter machines, overhead digital scoring screens, cosmic UV neon lanes, and electronic bumper systems for kiddy plays.',
+        specs: [
+          { label: 'Lane Surface', val: 'Low Maintenance Synthetic Laminate' },
+          { label: 'Pinsetter', val: 'Fast Action String Pinsetters' },
+          { label: 'Score System', val: 'Automatic 3D Score Console' },
+          { label: 'Lane Type', val: 'Cosmic UV Light-up Lane' }
+        ],
+        features: [
+          'Ultra-hard synthetic lane boards (zero wood polishing)',
+          'High-speed, low-maintenance string pinsetter machines',
+          'Cosmic UV lighting package with glow-in-the-dark effects',
+          'Overhead LCD display showing animated score summaries',
+          'Automated electronic bumper guides for kids'
+        ],
+        tag: 'TURNKEY SOLUTION'
+      }
+    ]
+  },
+  'kiddy-rides': {
+    name: 'Kiddy Rides',
+    icon: 'assets/Kiddy-Rides-Games.svg',
+    desc: 'Colorful and high-engagement kiddy rides from HGR Amusement, featuring high-gloss fiberglass bodies, music chips, and adjustable rocking timers.',
+    products: [
+      {
+        id: 'kr-01',
+        name: 'Rotational Carousel Ride',
+        image: 'assets/products/kr-horse-carousel-6p.jpg',
+        shortDesc: 'Luxury rotating kiddy carousel with glowing lighting.',
+        fullDesc: 'A gorgeous multi-seat kiddy carousel featuring beautifully crafted fiberglass horses and carriage seats. The carousel rotates smoothly while the horses slide vertically up and down, accompanied by magical carousel melodies and glowing warm-color LED bulbs.',
+        specs: [
+          { label: 'Capacity', val: '3–6 kids simultaneously' },
+          { label: 'Chassis', val: 'Heavy Rotary Gearbox' },
+          { label: 'Lighting', val: 'Warm Luxury LED Cabochon Bulbs' },
+          { label: 'Payment', val: 'Coin Entry Box' }
+        ],
+        features: [
+          'Luxury hand-polished glossy fiberglass horses',
+          'Warm retro cabochon bulb lighting sets',
+          'Vertical slide motion and smooth rotation gear',
+          'Built-in MP3 sound chip with SD card slot',
+          'Adjustable ride timers and volume dials'
+        ],
+        tag: 'MALL CLASSIC'
+      },
+      {
+        id: 'kr-02',
+        name: 'Mini Track Train Ride',
+        image: 'assets/products/kr-engine-train.png',
+        shortDesc: 'Coin-operated miniature train set on modular track loop.',
+        fullDesc: 'The Mini Track Train Ride consists of an electric locomotive and 3 passenger carriages riding on a modular track system. Perfect for central mall floors and outdoor theme zones, it can seat up to 12 children per trip with complete perimeter safety.',
+        specs: [
+          { label: 'Seats Count', val: '12 seats (4 carriages)' },
+          { label: 'Track Shape', val: 'Oval / Figure-8 / Customizable' },
+          { label: 'Drive Motor', val: '24V DC / 500W Electric' },
+          { label: 'Material', val: 'Fiberglass & Steel Rails' }
+        ],
+        features: [
+          'Locomotive with smoke effects and steam whistle audio',
+          'Easy-to-assemble modular steel track bars',
+          'Variable speed operator control panel',
+          'Safe low-voltage power supply track grids',
+          'Secure child safety bars on each carriage seat'
+        ],
+        tag: 'HIGH CAPACITY'
+      }
+    ]
+  },
+  'shooting-games': {
+    name: 'Shooting Games',
+    icon: 'assets/Shooting-Games.svg',
+    desc: 'Exciting video shooting and laser target games from HGR Amusement, featuring force-feedback realistic guns and high-definition visual boards.',
+    products: [
+      {
+        id: 'sg-01',
+        name: 'Laser Target Shooting Gallery',
+        image: 'assets/products/sg-galaxy-ranger-4pl.png',
+        shortDesc: 'Multiplayer laser gun gallery with reactive moving targets.',
+        fullDesc: 'Laser Target Shooting Gallery features a beautifully detailed mechanical backdrop representing a wild-west or alien landscape. Up to 4 players can shoot reactive targets simultaneously using safe infrared laser guns. Points are computed in real-time, dispensing redemption tickets.',
+        specs: [
+          { label: 'Players', val: 'Up to 4 players simultaneously' },
+          { label: 'Tech Type', val: 'Safe Class 1 Infrared Laser' },
+          { label: 'Targets', val: '12 mechanical reactive targets' },
+          { label: 'Payout', val: 'Integrated Ticket Dispenser' }
+        ],
+        features: [
+          'Mechanical moving targets that drop or rotate when hit',
+          'Laser guns with realistic force-feedback recoil motors',
+          'Large overhead digital leaderboard displays',
+          'Configurable high-score ticket payout multipliers',
+          'Soundboard playing dramatic shoot-out tracks'
+        ],
+        tag: 'COMPETITIVE'
+      }
+    ]
+  },
+  'gift-redemption': {
+    name: 'Gift Redemption',
+    icon: 'assets/Gift-Redemption.svg',
+    desc: 'High-earning crane crawlers and prize dispensers from HGR Amusement, featuring highly precise claw controllers, glowing prize display shelves, and POS integration.',
+    products: [
+      {
+        id: 'gr-01',
+        name: 'Redemption Counter Prize Management',
+        image: 'assets/products/gr-redemption-counter.png',
+        shortDesc: 'Full commercial redemption display counter with software POS.',
+        fullDesc: 'This is the complete package to set up a professional redemption prize station. Includes modular illuminated display cabinets, glass prize cases, and HGR\'s proprietary cloud-based POS software for scanning paper/electronic tickets, managing stock inventory, and logging prize trades.',
+        specs: [
+          { label: 'Shelving Type', val: 'Modular Anodized Alum + Glass' },
+          { label: 'Software POS', val: 'NexusRedeem Cloud Software license' },
+          { label: 'Peripherals', val: 'Barcode scanner + ticket counter' },
+          { label: 'Lighting', val: 'LED Cool-white spotlighting strips' }
+        ],
+        features: [
+          'Sleek modern display counter with glass shelving',
+          'Integrated cloud management software for prize stocks',
+          'High speed barcode scanner to read player tickets',
+          'Under-shelf LED illumination to show off premium prizes',
+          'Secure locked storage compartments'
+        ],
+        tag: 'FEC SYSTEM'
+      }
+    ]
+  },
+  'strength-based-games': {
+    name: 'Strength-Based Games',
+    icon: 'assets/Strength-based-Games.svg',
+    desc: 'Crowd-pulling boxing machines and mallet towers from HGR Amusement, featuring high-accuracy digital pressure sensors and dynamic LED displays.',
+    products: [
+      {
+        id: 'sb-01',
+        name: 'Muscular Power High Striker',
+        image: 'assets/products/sb-high-striker.png',
+        shortDesc: 'Modern electronic test-of-strength high striker tower.',
+        fullDesc: 'The Muscular Power High Striker is the ultimate arcade centerpiece. Players swing a padded rubber mallet onto a high-performance spring sensor. The tower\'s dynamic LED stack illuminates vertically based on impact force, culminating in a triumphant buzzer and bell sound on maximum strikes.',
+        specs: [
+          { label: 'Height', val: '4.5 meters (15 ft)' },
+          { label: 'Sensor Type', val: 'Piezoelectric Pressure Sensor' },
+          { label: 'Display', val: '100 Segment High-Glow LED Column' },
+          { label: 'Coin Slot', val: 'Dual Electronic Comparitor' }
+        ],
+        features: [
+          'High-accuracy pressure sensor board',
+          'Massive 15 ft tall light-up score tower',
+          'Padded rubber mallet with reinforced safety handle',
+          'Dynamic voice announcer taunting or cheering players',
+          'Accepts coin, token, and RFID card readers'
+        ],
+        tag: 'CROWD MAGNET'
+      }
+    ]
+  },
+  'inflatables': {
+    name: 'Inflatables',
+    icon: 'assets/Inflatables.svg',
+    desc: 'Heavy-duty commercial inflatable parks and bounce structures from HGR Amusement, crafted from double-stitched 0.55mm PVC tarpaulin with CE certification.',
+    products: [
+      {
+        id: 'inf-01',
+        name: 'Mega Inflatable Obstacle Course',
+        image: 'assets/products/inf-obstacle.png',
+        shortDesc: '15-meter double-stitched commercial PVC obstacle crawl course.',
+        fullDesc: 'A colossal 15-meter long inflatable obstacle course designed for FEC play rooms, outdoor lawns, and mall events. Players squeeze through tunnels, climb synthetic rock grips, dodge hanging pillars, and slides down a 3.5-meter slope. Made from industrial-grade 0.55mm Plato PVC.',
+        specs: [
+          { label: 'Dimensions', val: '50 x 12 x 15 ft (L x W x H)' },
+          { label: 'Material', val: '0.55mm Plato PVC Tarpaulin' },
+          { label: 'Seam Finish', val: 'Quadruple Stitched Stress Points' },
+          { label: 'Air Blower', val: 'Dual 2.0HP Certified Air Pumps' }
+        ],
+        features: [
+          'Fire-retardant, water-proof commercial PVC tarpaulin',
+          'Reinforced quadruple stitches on high-tension corners',
+          'Includes dual heavy-duty continuous air blower pumps',
+          'Quick-deflation zippers for easy pack-down',
+          'Meets international EN14960 safety standard guidelines'
+        ],
+        tag: 'CE CERTIFIED'
+      }
+    ]
+  },
+    'battery-operated-rides': {
+    name: 'Battery Operated Rides',
+    icon: 'assets/Battery-Operated-Rides.svg',
+    desc: 'Highly popular battery-powered bumper karts, animal crawlers, and character jeeps from HGR Amusement, featuring parent override remote control packs.',
+    products: [
+      {
+        id: 'bor-01',
+        name: 'Kids Electric Jeep Ride',
+        image: 'assets/products/bor-cat.jpeg',
+        shortDesc: 'Premium 4x4 kids electric jeep with parent remote and music player.',
+        fullDesc: 'A gorgeous scaled replica of an off-road 4x4 jeep, built with safe fiberglass and high durability plastic parts. Children can drive it themselves with a steering wheel and pedal, while parents can override control via a 2.4GHz remote controller. Equipped with LED headlights, realistic exhaust pipes, and a sound box.',
+        specs: [
+          { label: 'Drive Battery', val: '12V / 12Ah Sealed Lead-Acid' },
+          { label: 'Motor Power', val: 'Dual 45W Geared Drive Motors' },
+          { label: 'Override Control', val: '2.4GHz Digital Parent Remote' },
+          { label: 'Operation', val: 'Coin Mechanism timer box' }
+        ],
+        features: [
+          'Detailed off-road scaling with realistic exhaust pipes',
+          'Digital dashboard display showing battery percentage',
+          'Built-in audio player with USB, SD, and Bluetooth input',
+          'Spring shock suspension system for smooth mall rides',
+          'Smart automatic emergency brakes on pedal release'
+        ],
+        tag: 'BEST SELLER'
+      },
+      {
+        id: 'bor-02',
+        name: 'Battery Operated Chameleon',
+        image: 'assets/products/bor-chameleon.png',
+        shortDesc: 'Adorable color-changing chameleon ride for toddlers.',
+        fullDesc: 'The Chameleon Ride is an enchanting kiddy ride designed with multiple light-up chameleon skins that softly shift colors. It is built using top-grade fiberglass and includes child-friendly speed thresholds and seatbelts.',
+        specs: [
+          { label: 'Battery', val: '12V / 14Ah' },
+          { label: 'Motor', val: '24V / 120W' },
+          { label: 'Capacity', val: '50 kg' },
+          { label: 'Run Time', val: '4-5 hours' }
+        ],
+        features: [
+          'Soft color-changing LED shell effects',
+          'Safe lowered seat design',
+          'MP3 soundboard player integration',
+          'Automatic soft-start system',
+          'Heavy duty caster wheels'
+        ],
+        tag: 'KIDDY FAVORITE'
+      },
+      {
+        id: 'bor-03',
+        name: 'Battery Operated Crawler Excavator',
+        image: 'assets/products/bor-crawler-excavator.png',
+        shortDesc: 'Highly realistic battery crawler excavator with working sand bucket.',
+        fullDesc: 'Let kids feel like real construction operators! This model features a fully controllable mechanical digging arm and bucket. Operates on continuous rubber crawler tracks that can traverse mall tiles, concrete paths, and lawns smoothly.',
+        specs: [
+          { label: 'Control', val: 'Dual joystick arm levers' },
+          { label: 'Battery', val: '24V / 20Ah' },
+          { label: 'Crawler Type', val: 'Reinforced Rubber tracks' },
+          { label: 'Weight', val: '80 kg' }
+        ],
+        features: [
+          'Controllable robotic arm and bucket',
+          'Robust crawler tracks for excellent traction',
+          'Engine rumbling audio sound chips',
+          'Parental safety override remote',
+          'Glossy weather-resistant coat'
+        ],
+        tag: 'INTERACTIVE'
+      },
+      {
+        id: 'bor-04',
+        name: 'Battery Operated Excavator',
+        image: 'assets/products/bor-excavator.png',
+        shortDesc: 'Stationary sand and ball digger ride with rotating base.',
+        fullDesc: 'A fantastic interactive coin-timer attraction that allows children to operate a fully mechanical excavator arm. Ideal for indoor sandboxes, ball pits, and active play zones.',
+        specs: [
+          { label: 'Chassis', val: '360 degree manual rotation' },
+          { label: 'Action', val: 'Geared digger mechanics' },
+          { label: 'Power', val: '24V DC motor' },
+          { label: 'Safety', val: 'Enclosed steel housing' }
+        ],
+        features: [
+          'Working hydraulic-style geared arm',
+          'Supports sand, gravel, and play-ball picking',
+          'Sturdy steel safety barrier around base',
+          'Dual-handle controls',
+          'High profit margin for FECs'
+        ],
+        tag: 'REDEMPTION'
+      },
+      {
+        id: 'bor-05',
+        name: 'Battery Operated F1 Car',
+        image: 'assets/products/bor-f1-car.png',
+        shortDesc: 'Sleek scaled Formula 1 racing kart with digital speedometer.',
+        fullDesc: 'Bring racing thrill to kids! Equipped with low-profile tires, a formula-style steering wheel, dynamic racing sound effects, and customizable speed levels.',
+        specs: [
+          { label: 'Style', val: 'Formula 1 Aerodynamic Replica' },
+          { label: 'Battery', val: '24V / 28Ah' },
+          { label: 'Motors', val: 'Dual 150W motors' },
+          { label: 'Max Speed', val: '8 km/h' }
+        ],
+        features: [
+          'Aerodynamic F1 fiberglass casing',
+          'Working headlights and taillights',
+          'Preloaded racing sound theme tracks',
+          'Adjustable leather-padded sport seat',
+          'Digital LED dashboard gauges'
+        ],
+        tag: 'SPEED'
+      },
+      {
+        id: 'bor-06',
+        name: 'Battery Operated Helicopter',
+        image: 'assets/products/bor-helicopter.png',
+        shortDesc: 'Sky-themed kids ride with rotating propeller blades.',
+        fullDesc: 'This helicopter ride features rotating overhead rotors (fitted with soft foam edge bumpers for safety) and flight instrument lights, offering kids a fantastic air pilot experience.',
+        specs: [
+          { label: 'Rotor Type', val: 'Soft foam safe blades' },
+          { label: 'Drive', val: 'Electric rotary motor' },
+          { label: 'Battery', val: '12V / 12Ah' },
+          { label: 'Weight', val: '45 kg' }
+        ],
+        features: [
+          'Soft-foam rotating rotor blades',
+          'Cockpit steering wheel and joystick triggers',
+          'Immersive landing gear lighting layout',
+          'Adjustable rocking frequency timer',
+          'Customizable token payment acceptance'
+        ],
+        tag: 'KIDDY FAVORITE'
+      },
+      {
+        id: 'bor-07',
+        name: 'Battery Operated Mirage Chariot Bike',
+        image: 'assets/products/bor-mirage-chariot.png',
+        shortDesc: 'Exquisite chariot bike with stunning LED borders.',
+        fullDesc: 'The Mirage Chariot Bike combines standard bike riding with a futuristic chariot base, detailed with neon LED strip linings. It features excellent stability and runs perfectly on all flat commercial floors.',
+        specs: [
+          { label: 'Theme', val: 'Mirage Neon Chariot' },
+          { label: 'Battery', val: '24V / 30Ah' },
+          { label: 'Steering', val: 'Rigid stability design' },
+          { label: 'Run Time', val: '6 hours' }
+        ],
+        features: [
+          'High gloss premium metallic paint finishes',
+          'Stunning surround neon border lines',
+          'Interactive multi-button sound panel',
+          'Rear passenger safety seat support',
+          'Smooth acceleration throttle foot pedal'
+        ],
+        tag: 'FUTURE'
+      },
+      {
+        id: 'bor-08',
+        name: 'Battery Operated Motorcycle',
+        image: 'assets/products/bor-motorcycle.png',
+        shortDesc: 'Cruiser style kids motorcycle with rubber tires.',
+        fullDesc: 'A gorgeous scaled replica of a cruiser bike, built with real rubber air tires and high stability training wheels. Offers an authentic motorcycle riding experience for kids.',
+        specs: [
+          { label: 'Tires', val: 'Pneumatic Rubber Tires' },
+          { label: 'Battery', val: '12V / 10Ah' },
+          { label: 'Speed', val: 'Up to 5 km/h' },
+          { label: 'Frame', val: 'Heavy Duty Steel Chassis' }
+        ],
+        features: [
+          'Cruiser-styled fiberglass body plating',
+          'Auxiliary training wheels included',
+          'Soft leather seats for maximum comfort',
+          'Working accelerator handle grips',
+          'Immersive exhaust engine sound profiles'
+        ],
+        tag: 'BIKERS'
+      },
+      {
+        id: 'bor-09',
+        name: 'Battery Operated Panda',
+        image: 'assets/products/bor-panda.png',
+        shortDesc: 'Cute furry panda animal rider with plush upholstery.',
+        fullDesc: 'The Panda animal rider is an absolute mall favorite. It is covered in soft, high-quality plush fabric, and children drive it using a handle bar at a safe and gentle speed.',
+        specs: [
+          { label: 'Covering', val: 'Soft fire-resistant plush' },
+          { label: 'Speed', val: 'Safe 3 km/h (gentle walking)' },
+          { label: 'Battery', val: '12V / 14Ah' },
+          { label: 'Capacity', val: '75 kg (Adult + Kid)' }
+        ],
+        features: [
+          'Hygienic, easy-to-clean zippered plush covers',
+          'Soft walking speeds safe for indoor mall crowds',
+          'Surround light-up cheeks and body LEDs',
+          'MP3 soundboard for child melodies',
+          'Low-profile rubber bumper striping'
+        ],
+        tag: 'ANIMAL RIDE'
+      },
+      {
+        id: 'bor-10',
+        name: 'Battery Operated Phantom God',
+        image: 'assets/products/bor-phantom-god.png',
+        shortDesc: 'Futuristic sci-fi mech robot ride with interactive lasers.',
+        fullDesc: 'Step inside a sci-fi mech! The Phantom God Robot allows kids to sit inside a detailed robot cockpit, controlling steering and light-up laser blasters.',
+        specs: [
+          { label: 'Cockpit Style', val: 'Robot Mech Exoskeleton' },
+          { label: 'Controls', val: 'Dual trigger joysticks' },
+          { label: 'Battery', val: '24V / 40Ah' },
+          { label: 'Motors', val: 'Dual heavy-duty gearboxes' }
+        ],
+        features: [
+          'Highly detailed robotic exoskeleton styling',
+          'Interactive sound effects with laser firing triggers',
+          'Full 360-degree pivoting tank-steer drive',
+          'Vibrant neon panel lighting matrix',
+          'Operator override safety transmitter'
+        ],
+        tag: 'SCI-FI MECH'
+      },
+      {
+        id: 'bor-11',
+        name: 'Battery Operated Police Bike',
+        image: 'assets/products/bor-police-bike-dx.png',
+        shortDesc: 'Police themed patrol bike with working sirens.',
+        fullDesc: 'Let children patrol the FEC floor! Featuring authentic police decal wraps, flashing blue-red warning sirens, and a storage trunk behind the rider.',
+        specs: [
+          { label: 'Decals', val: 'Highway Patrol Cop Theme' },
+          { label: 'Sirens', val: 'Flashing Red & Blue LEDs' },
+          { label: 'Battery', val: '12V / 12Ah' },
+          { label: 'Weight', val: '40 kg' }
+        ],
+        features: [
+          'Vibrant cop siren horns and lights',
+          'Spacious rear toy box storage compartment',
+          'Stabilizing training caster wheels',
+          'Coin-entry activation and digital timer',
+          'Excellent battery efficiency'
+        ],
+        tag: 'PATROL'
+      },
+      {
+        id: 'bor-12',
+        name: 'Battery Operated Royal Deer Carriage',
+        image: 'assets/products/bor-royal-deer.png',
+        shortDesc: 'Magical fairytale deer carriage for prince and princess plays.',
+        fullDesc: 'A gorgeous fairytale carriage pulled by a beautifully sculpted gold-horned deer. This premium attraction seats up to two children and glows under hundreds of LED bulbs.',
+        specs: [
+          { label: 'Capacity', val: 'Double seater layout' },
+          { label: 'Deer Sculpture', val: 'Fiberglass with golden antlers' },
+          { label: 'Battery', val: '24V / 35Ah' },
+          { label: 'Lighting', val: 'Warm LED string layout' }
+        ],
+        features: [
+          'Fabulous fairytale design styling',
+          'Double bench seats with safety harness belts',
+          'Hundreds of glowing LED warm lights',
+          'Built-in fairytale audio sound chips',
+          'Parent remote override steering system'
+        ],
+        tag: 'ROYAL'
+      },
+      {
+        id: 'bor-13',
+        name: 'Battery Operated Sea Horse',
+        image: 'assets/products/bor-sea-horse.png',
+        shortDesc: 'Ocean themed kiddy ride with gentle rocking.',
+        fullDesc: 'A cute oceanic sea horse rider detailed with beautiful pastel scales and aquatic side fins. Rocks gently back and forth while driving forward.',
+        specs: [
+          { label: 'Theme', val: 'Ocean Odyssey Seahorse' },
+          { label: 'Drive', val: 'Eccentric forward rocking gear' },
+          { label: 'Battery', val: '12V / 12Ah' },
+          { label: 'Weight', val: '38 kg' }
+        ],
+        features: [
+          'Ocean sea horse shape molded from fiberglass',
+          'Soft eccentric rocking motion on flat floors',
+          'Vibrant light-up side fins and tail',
+          'Child friendly soft start acceleration',
+          'Credit timer display console'
+        ],
+        tag: 'OCEAN'
+      },
+      {
+        id: 'bor-14',
+        name: 'Battery Operated Sport Smily Car',
+        image: 'assets/products/bor-sport-smily-dx.png',
+        shortDesc: 'Cheerful smily face bumper car ride for toddlers.',
+        fullDesc: 'Features a cheerful smiling front face styling and rubber outer bumper tube, providing safe and delightful bumper play for very young children.',
+        specs: [
+          { label: 'Face Style', val: 'Smily Cartoon Face Molding' },
+          { label: 'Outer Bumper', val: 'Soft Shock Absorbing PVC Ring' },
+          { label: 'Battery', val: '12V / 15Ah' },
+          { label: 'Capacity', val: '40 kg' }
+        ],
+        features: [
+          'Vibrant cartoon facial details',
+          'Shock absorbing outer PVC bumper ring',
+          'Low-height steering wheel design',
+          'Fun interactive sound keys and musical horns',
+          'Parental remote controller emergency brakes'
+        ],
+        tag: 'TODDLER RIDE'
+      },
+      {
+        id: 'bor-15',
+        name: 'Battery Operated Sports Car',
+        image: 'assets/products/bor-sports-car.png',
+        shortDesc: 'Premium sports car scale model with scissor doors.',
+        fullDesc: 'A high-end sports car replica with vertical scissor doors, authentic sports car grill styling, chrome-accented rims, and a luxury leather interior.',
+        specs: [
+          { label: 'Doors', val: 'Hydraulic scissor action doors' },
+          { label: 'Interior', val: 'Soft padded leather seating' },
+          { label: 'Battery', val: '24V / 24Ah' },
+          { label: 'Motor', val: 'Dual 200W FWD motors' }
+        ],
+        features: [
+          'Awesome vertical scissor door lifts',
+          'Realistic metallic paint finishes',
+          'Digital media console with USB/Bluetooth',
+          'Responsive gas pedal throttle controls',
+          'Soft rubber-cushioned wheels'
+        ],
+        tag: 'SPORTS'
+      },
+      {
+        id: 'bor-16',
+        name: 'Battery Operated Tank',
+        image: 'assets/products/bor-tank.png',
+        shortDesc: 'Military themed mini tank ride with firing sounds.',
+        fullDesc: 'Let children command their own military vehicle! Featuring camouflage decals, a rotatable top turret, and interactive sound effects for canon fire.',
+        specs: [
+          { label: 'Body', val: 'Camo painted armored hull' },
+          { label: 'Turret', val: 'Rotatable turret barrel' },
+          { label: 'Battery', val: '24V / 28Ah' },
+          { label: 'Controls', val: 'Dual stick levers' }
+        ],
+        features: [
+          'Realistic military camouflage paint decals',
+          'Top mechanical turret with firing sounds',
+          'Dual joystick tank-steering mechanism',
+          'Bright searchlight headlights',
+          'Highly durable chassis builds'
+        ],
+        tag: 'COMMANDER'
+      },
+      {
+        id: 'bor-17',
+        name: 'Battery Operated Train',
+        image: 'assets/products/bor-train.png',
+        shortDesc: 'Trackless train engine ride with authentic whistle sounds.',
+        fullDesc: 'This battery operated trackless train locomotive is designed for indoor malls. It has classic train smoke stack visuals, colorful LED details, and real train audio whistles.',
+        specs: [
+          { label: 'Type', val: 'Trackless indoor locomotive' },
+          { label: 'Battery', val: '24V / 30Ah' },
+          { label: 'Smoke Stack', val: 'Vapor smoke puff simulator' },
+          { label: 'Capacity', val: '60 kg' }
+        ],
+        features: [
+          'Realistic train steam puff simulators',
+          'Authentic steam engine whistle sound boards',
+          'Vivid LED lighting outlining carriage lines',
+          'Non-slip solid rubber floor wheels',
+          'Credit token scanner interfaces'
+        ],
+        tag: 'TRAIN'
+      },
+      {
+        id: 'bor-18',
+        name: 'Battery Operated Tron Bike',
+        image: 'assets/products/bor-tron-bike.png',
+        shortDesc: 'Sci-fi styled light-cycle bike with massive hubless wheel glows.',
+        fullDesc: 'Inspired by futuristic sci-fi movies, this ride features massive hubless wheel layouts that glow vibrantly under internal LED strip rings, offering a jaw-dropping look.',
+        specs: [
+          { label: 'Style', val: 'Sci-Fi Hubless Light-Cycle' },
+          { label: 'Wheel Glow', val: 'Multi-ring addressable RGB strips' },
+          { label: 'Battery', val: '24V / 32Ah' },
+          { label: 'Motors', val: 'Brushless rear wheel hub motor' }
+        ],
+        features: [
+          'Sensational sci-fi hubless wheel structures',
+          'Addressable color-shifting LED panel strips',
+          'Aggressive forward racing rider stance',
+          'Direct-drive brushless motor for silent operation',
+          'Digital dashboard console displays'
+        ],
+        tag: 'TRON'
+      },
+      {
+        id: 'bor-19',
+        name: 'Battery Operated Twin Deer Car',
+        image: 'assets/products/bor-twin-deer.png',
+        shortDesc: 'Double deer carriage ride with romantic lighting.',
+        fullDesc: 'A beautifully styled double deer carriage, perfect for siblings and family photos. Features two beautifully molded deer figures pulling a vintage carriage cabinet.',
+        specs: [
+          { label: 'Deer Sculpture', val: 'Twin fiberglass deer molds' },
+          { label: 'Seat Capacity', val: '2-seater passenger cabin' },
+          { label: 'Battery', val: '24V / 38Ah' },
+          { label: 'Lighting', val: 'Vibrant neon edge glow strips' }
+        ],
+        features: [
+          'Twin elegantly sculpted fiberglass deer',
+          'Spacious double passenger canopy seatings',
+          'Vibrant neon border light fixtures',
+          'Adjustable speed and timer controls',
+          'Remote control emergency stop kits'
+        ],
+        tag: 'DEER CAR'
+      },
+      {
+        id: 'bor-20',
+        name: 'Battery Operated Vintage Car',
+        image: 'assets/products/bor-vintage-car.png',
+        shortDesc: 'Classic vintage model with warm gold highlights.',
+        fullDesc: 'A gorgeous scaled replica of a 1920s classic car. Detailed with retro headlamps, golden side rails, wire-spoke wheels, and a luxury vintage interior.',
+        specs: [
+          { label: 'Style', val: '1920s vintage classic replica' },
+          { label: 'Accents', val: 'Polished golden side rails' },
+          { label: 'Battery', val: '24V / 24Ah' },
+          { label: 'Seating', val: 'Double bench configuration' }
+        ],
+        features: [
+          'Beautiful vintage body detailing with wood finishes',
+          'Warm vintage headlamps and tail lamps',
+          'Double bench seats with safety seatbelts',
+          'Parental remote overrides',
+          'Gentle accelerator start curves'
+        ],
+        tag: 'RETRO'
+      },
+      {
+        id: 'bor-21',
+        name: 'Battery Operated Bullet Train',
+        image: 'assets/products/bor-bullet-train.jpeg',
+        shortDesc: 'Futuristic trackless bullet train engine.',
+        fullDesc: 'A gorgeous trackless train engine replica modeled after high-speed bullet trains. Features a streamlined aerodynamic fiberglass nose, LED accent strips, and digital horn chimes.',
+        specs: [
+          { label: 'Model', val: 'Bullet Train Aerodynamic Engine' },
+          { label: 'Battery', val: '24V / 35Ah' },
+          { label: 'Control', val: 'Steering Wheel + Foot Pedals' },
+          { label: 'Length', val: '120 cm' }
+        ],
+        features: [
+          'Streamlined high-speed bullet train casing',
+          'Futuristic blue-white LED strip highlights',
+          'Dynamic digital horn chime options',
+          'Highly robust solid rubber wheels',
+          'Double safety brakes on throttle release'
+        ],
+        tag: 'BULLET'
+      },
+      {
+        id: 'bor-22',
+        name: 'Battery Operated Yo-Yo Car',
+        image: 'assets/products/bor-yoyo-car.jpg',
+        shortDesc: 'Self-balancing interactive swing kart for kids.',
+        fullDesc: 'The Yo-Yo Car operates on self-balancing swing controls. Kids twist their bodies or handle bars to drift, spin, and sway, providing incredible active coordination exercises.',
+        specs: [
+          { label: 'Drive Physics', val: 'Self-balancing swing drift' },
+          { label: 'Battery', val: '12V / 12Ah' },
+          { label: 'Capacity', val: '50 kg' },
+          { label: 'Run Time', val: '4 hours' }
+        ],
+        features: [
+          'Self-balancing swing controls for active drifting',
+          'High density polyurethane wheels',
+          'Vibrant light-up wheel rings',
+          'Very low deck height for kid safety',
+          'High grip non-slip floor pedals'
+        ],
+        tag: 'SWING CAR'
+      }
+    ]
+  }
+};
+
+// Map product-card names to CATEGORIES keys
+const CARD_TO_CAT = {
+  'Air Hockey': 'air-hockey',
+  'Bumper Cars': 'bumper-cars',
+  'Virtual Reality': 'virtual-reality',
+  'Trampoline Park': 'trampoline-park',
+  'Basketball Machines': 'basketball-machines',
+  'Bowling Alley': 'bowling-alley',
+  'Kiddy Rides': 'kiddy-rides',
+  'Shooting Games': 'shooting-games',
+  'Gift Redemption': 'gift-redemption',
+  'Strength-Based Games': 'strength-based-games',
+  'Inflatables': 'inflatables',
+  'Battery Operated Rides': 'battery-operated-rides'
+};
+

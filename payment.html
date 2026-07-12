@@ -207,7 +207,7 @@
       <span class="nav-logo-line2" id="payNavLine2">GAME FACTORY</span>
     </div>
   </a>
-  <a href="index.html" class="nav-back">← Back to Site</a>
+  <a href="index.html" class="nav-back">â† Back to Site</a>
 </nav>
 
 <!-- SECURE STRIP -->
@@ -275,7 +275,7 @@
     <!-- ADDRESS -->
     <div class="form-section">
       <div class="form-section-title">
-        <div class="form-section-icon">📍</div>
+        <div class="form-section-icon">ðŸ“</div>
         Address Details
       </div>
       <div class="form-row">
@@ -314,6 +314,29 @@
         <label for="donorMessage">Message / Special Instructions</label>
         <textarea id="donorMessage" placeholder="Add any message or custom options request (optional)..."></textarea>
       </div>
+    </div>
+
+    <!-- COUPON CODE -->
+    <div class="form-section" id="couponSection" style="background:rgba(255,87,34,0.02);">
+      <div class="form-section-title">
+        <div class="form-section-icon">ðŸŽ</div>
+        Coupon / Promo Code
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <input type="text" id="payCouponInput" placeholder="Enter coupon code (e.g. IGF10)" style="flex:1;padding:11px 14px;border:1.5px solid rgba(255,87,34,0.25);border-radius:6px;font-family:'Orbitron',sans-serif;font-size:0.72rem;letter-spacing:0.1em;color:var(--text-primary);outline:none;background:rgba(255,87,34,0.02);text-transform:uppercase;" />
+        <button onclick="applyPayCoupon()" style="padding:11px 20px;background:rgba(255,87,34,0.15);border:1px solid rgba(255,87,34,0.3);color:var(--igf-orange);font-family:'Orbitron',sans-serif;font-size:0.6rem;letter-spacing:0.1em;border-radius:6px;cursor:none;transition:all 0.3s;" onmouseover="this.style.background='rgba(255,87,34,0.25)'" onmouseout="this.style.background='rgba(255,87,34,0.15)'">APPLY</button>
+      </div>
+      <div id="payCouponMsg" style="margin-top:10px;font-family:'Orbitron',sans-serif;font-size:0.58rem;letter-spacing:0.08em;display:none;"></div>
+      <div style="margin-top:8px;font-size:0.72rem;color:var(--text-muted);">Available codes: <span style="color:var(--igf-orange);font-family:'Orbitron',sans-serif;font-size:0.58rem;">IGF10 · NEXUS20 · WELCOME · PREMIUM15</span></div>
+      <div id="payDiscountRow" style="display:none;margin-top:12px;padding:12px 16px;background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.2);border-radius:6px;display:none;align-items:center;justify-content:space-between;">
+        <span style="font-size:0.82rem;color:#4ade80;">Discount Applied</span>
+        <span id="payDiscountAmt" style="font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;color:#4ade80;">-₹0</span>
+      </div>
+    </div>
+
+    <!-- TRACK ORDER LINK -->
+    <div style="padding:12px 32px;border-top:1px solid rgba(255,87,34,0.08);display:flex;align-items:center;justify-content:center;gap:8px;">
+      <a href="order-tracking.html" style="font-family:'Orbitron',sans-serif;font-size:0.6rem;letter-spacing:0.12em;color:var(--text-muted);text-decoration:none;border:1px solid rgba(255,87,34,0.15);padding:8px 18px;border-radius:4px;transition:all 0.3s;display:inline-flex;align-items:center;gap:6px;" onmouseover="this.style.borderColor='var(--igf-orange)';this.style.color='var(--igf-orange)'" onmouseout="this.style.borderColor='rgba(255,87,34,0.15)';this.style.color='var(--text-muted)'">📦 TRACK EXISTING ORDER</a>
     </div>
 
     <!-- PAY BUTTON -->
@@ -731,6 +754,34 @@ if(window.BroadcastChannel) {
   const bc = new BroadcastChannel('igf_admin');
   bc.onmessage = () => { location.reload(); };
 }
+// COUPON LOGIC
+const PAY_COUPONS = { IGF10:10, NEXUS20:20, WELCOME:5, PREMIUM15:15, IGF2026:12 };
+function applyPayCoupon() {
+  var inp = document.getElementById("payCouponInput"),
+      msg = document.getElementById("payCouponMsg"),
+      drow = document.getElementById("payDiscountRow"),
+      damt = document.getElementById("payDiscountAmt");
+  if(!inp || !msg) return;
+  var code = inp.value.trim().toUpperCase(), pct = PAY_COUPONS[code];
+  if(pct) {
+    msg.textContent = "✅ " + pct + "% discount applied!";
+    msg.style.color = "#4ade80";
+    msg.style.display = "block";
+    if(drow) drow.style.display = "flex";
+    if(damt) damt.textContent = "Saving " + pct + "%";
+    localStorage.setItem("igf_coupon", code);
+  } else {
+    msg.textContent = "❌ Invalid. Try: IGF10, NEXUS20, WELCOME";
+    msg.style.color = "#ef4444";
+    msg.style.display = "block";
+    if(drow) drow.style.display = "none";
+  }
+}
+(function(){
+  var s = localStorage.getItem("igf_coupon"), i = document.getElementById("payCouponInput");
+  if(s && i) i.value = s;
+})();
 </script>
 </body>
 </html>
+

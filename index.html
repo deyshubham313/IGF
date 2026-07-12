@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NEXUS AMUSEMENT — Premium Gaming & Amusement Solutions</title>
+  <title>INDIAN GAME FACTORY — Premium Gaming & Amusement Solutions</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -263,6 +263,526 @@
       transition: all 0.3s;
     }
     .lb-close:hover { border-color: var(--neon-cyan); color: var(--neon-cyan); }
+
+    /* ── SEARCH & FILTER BAR ── */
+    .igf-search-bar {
+      background: rgba(22,11,6,0.9);
+      border-bottom: 1px solid rgba(255,87,34,0.15);
+      padding: 18px 5%;
+      display: flex; align-items: center; gap: 12px;
+      flex-wrap: wrap;
+      position: relative; z-index: 5;
+    }
+    .igf-search-input-wrap {
+      position: relative; flex: 1; min-width: 200px;
+    }
+    .igf-search-input {
+      width: 100%;
+      background: rgba(255,87,34,0.05);
+      border: 1px solid rgba(255,87,34,0.2);
+      color: var(--text-primary);
+      padding: 10px 16px 10px 40px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      outline: none;
+      border-radius: 4px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .igf-search-input:focus { border-color: var(--igf-orange); box-shadow: 0 0 0 3px rgba(255,87,34,0.1); }
+    .igf-search-input::placeholder { color: var(--text-muted); }
+    .igf-search-icon {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); font-size: 0.9rem; pointer-events: none;
+    }
+    .igf-filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .igf-filter-pill {
+      padding: 7px 14px;
+      border: 1px solid rgba(255,87,34,0.2);
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.52rem; letter-spacing: 0.12em;
+      cursor: pointer; border-radius: 2px;
+      transition: all 0.25s;
+      white-space: nowrap;
+    }
+    .igf-filter-pill:hover, .igf-filter-pill.active {
+      border-color: var(--igf-orange); color: var(--igf-orange);
+      background: rgba(255,87,34,0.08);
+    }
+    .igf-sort-select {
+      background: rgba(255,87,34,0.05);
+      border: 1px solid rgba(255,87,34,0.2);
+      color: var(--text-muted);
+      padding: 8px 12px;
+      font-family: 'Orbitron', sans-serif; font-size: 0.52rem;
+      outline: none; cursor: pointer; border-radius: 4px;
+      transition: border-color 0.3s;
+    }
+    .igf-sort-select:focus { border-color: var(--igf-orange); }
+    .igf-results-count {
+      font-family: 'Orbitron', sans-serif; font-size: 0.52rem;
+      color: var(--text-muted); letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+
+    /* ── NAV BADGES ── */
+    .nav-icon-btn {
+      position: relative;
+      background: transparent;
+      border: 1px solid rgba(255,87,34,0.2);
+      color: var(--text-muted);
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+    .nav-icon-btn:hover { border-color: var(--igf-orange); color: var(--igf-orange); background: rgba(255,87,34,0.08); }
+    .nav-badge {
+      position: absolute; top: -4px; right: -4px;
+      background: var(--igf-orange);
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.45rem; font-weight: 700;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      border: 1.5px solid var(--bg-void);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .nav-badge.visible { opacity: 1; }
+
+    /* ── WISHLIST / CART DRAWERS ── */
+    .igf-drawer-overlay {
+      position: fixed; inset: 0; z-index: 15000;
+      background: rgba(0,0,0,0.7);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .igf-drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .igf-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; z-index: 15001;
+      width: min(400px, 95vw);
+      background: #130906;
+      border-left: 1px solid rgba(255,87,34,0.2);
+      display: flex; flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.23,1,0.32,1);
+    }
+    .igf-drawer.open { transform: translateX(0); }
+    .igf-drawer-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(255,87,34,0.12);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .igf-drawer-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.75rem; letter-spacing: 0.15em;
+      color: var(--igf-orange);
+    }
+    .igf-drawer-close {
+      background: transparent;
+      border: 1px solid rgba(255,87,34,0.2);
+      color: var(--text-muted);
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s;
+    }
+    .igf-drawer-close:hover { border-color: var(--igf-orange); color: var(--igf-orange); }
+    .igf-drawer-body {
+      flex: 1; overflow-y: auto; padding: 16px 24px;
+    }
+    .igf-drawer-empty {
+      text-align: center; padding: 60px 20px;
+      color: var(--text-muted);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.1em;
+    }
+    .igf-drawer-empty .empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.3; }
+    .igf-drawer-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,87,34,0.08);
+    }
+    .igf-drawer-item-img {
+      width: 60px; height: 60px;
+      object-fit: cover; border-radius: 4px;
+      background: rgba(255,87,34,0.05);
+      border: 1px solid rgba(255,87,34,0.1);
+      flex-shrink: 0;
+    }
+    .igf-drawer-item-info { flex: 1; }
+    .igf-drawer-item-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.83rem; font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .igf-drawer-item-cat {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.5rem; letter-spacing: 0.12em;
+      color: var(--igf-orange);
+    }
+    .igf-drawer-item-remove {
+      background: transparent;
+      border: 1px solid rgba(255,87,34,0.15);
+      color: var(--text-muted);
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    .igf-drawer-item-remove:hover { border-color: #ef4444; color: #ef4444; }
+    .igf-drawer-footer {
+      padding: 16px 24px;
+      border-top: 1px solid rgba(255,87,34,0.12);
+    }
+    .igf-drawer-action {
+      display: block; width: 100%;
+      padding: 13px;
+      background: var(--igf-orange);
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.12em;
+      text-align: center;
+      border: none; cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    }
+    .igf-drawer-action:hover { box-shadow: 0 0 20px rgba(255,87,34,0.4); }
+
+    /* ── AUTH MODAL ── */
+    .auth-modal-overlay {
+      position: fixed; inset: 0; z-index: 16000;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .auth-modal-overlay.open { opacity: 1; pointer-events: all; }
+    .auth-modal {
+      width: min(480px, 94vw);
+      background: #130906;
+      border: 1px solid rgba(255,87,34,0.25);
+      border-radius: 12px;
+      box-shadow: 0 0 80px rgba(255,87,34,0.15);
+      overflow: hidden;
+      transform: translateY(20px) scale(0.97);
+      transition: transform 0.35s cubic-bezier(0.23,1,0.32,1);
+    }
+    .auth-modal-overlay.open .auth-modal { transform: translateY(0) scale(1); }
+    .auth-modal-header {
+      padding: 24px 28px 16px;
+      border-bottom: 1px solid rgba(255,87,34,0.1);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .auth-modal-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem; font-weight: 900;
+      color: var(--text-primary); letter-spacing: 0.08em;
+    }
+    .auth-tabs {
+      display: flex; gap: 0;
+      border-bottom: 1px solid rgba(255,87,34,0.1);
+      padding: 0 28px;
+    }
+    .auth-tab {
+      padding: 12px 16px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.55rem; letter-spacing: 0.12em;
+      color: var(--text-muted);
+      background: none; border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .auth-tab.active { color: var(--igf-orange); border-bottom-color: var(--igf-orange); }
+    .auth-body { padding: 24px 28px 28px; }
+    .auth-tab-pane { display: none; }
+    .auth-tab-pane.active { display: block; animation: fadeUp 0.3s ease both; }
+    .auth-field { margin-bottom: 16px; }
+    .auth-field label {
+      display: block;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.55rem; letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .auth-field input {
+      width: 100%;
+      background: rgba(255,87,34,0.04);
+      border: 1px solid rgba(255,87,34,0.2);
+      color: var(--text-primary);
+      padding: 11px 14px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+      border-radius: 4px; outline: none;
+      transition: border-color 0.3s;
+    }
+    .auth-field input:focus { border-color: var(--igf-orange); }
+    .auth-btn-primary {
+      width: 100%;
+      padding: 13px;
+      background: var(--igf-orange);
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.12em;
+      border: none; cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.3s;
+      margin-top: 4px;
+    }
+    .auth-btn-primary:hover { box-shadow: 0 0 20px rgba(255,87,34,0.4); transform: translateY(-1px); }
+    .auth-btn-google {
+      width: 100%;
+      padding: 13px;
+      background: #fff;
+      color: #333;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem; font-weight: 500;
+      border: none; cursor: pointer;
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: all 0.3s;
+      margin-bottom: 16px;
+    }
+    .auth-btn-google:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.3); transform: translateY(-1px); }
+    .auth-divider {
+      text-align: center;
+      margin: 16px 0;
+      position: relative;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: '';
+      position: absolute; top: 50%;
+      width: 40%; height: 1px;
+      background: rgba(255,87,34,0.15);
+    }
+    .auth-divider::before { left: 0; }
+    .auth-divider::after { right: 0; }
+    .auth-user-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 12px;
+      background: rgba(255,87,34,0.1);
+      border: 1px solid rgba(255,87,34,0.25);
+      border-radius: 20px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.52rem; color: var(--igf-orange);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .auth-user-chip:hover { background: rgba(255,87,34,0.18); }
+
+    /* ── THUMBNAIL STRIP (product modal image side) ── */
+    .prod-img-gallery {
+      display: flex; flex-direction: column;
+      height: 100%; min-height: 520px;
+      background: #0d0705;
+    }
+    .prod-img-main-wrap {
+      flex: 1; position: relative; overflow: hidden;
+      cursor: zoom-in;
+    }
+    .prod-img-main {
+      width: 100%; height: 100%;
+      min-height: 380px;
+      object-fit: contain;
+      display: block;
+      transition: opacity 0.3s ease, transform 0.4s ease;
+      background: #0d0705;
+    }
+    .prod-img-main.switching { opacity: 0; transform: scale(0.97); }
+    .prod-img-main-badge {
+      position: absolute; top: 14px; left: 14px;
+      background: rgba(255,87,34,0.12);
+      border: 1px solid rgba(255,87,34,0.35);
+      color: var(--igf-orange);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.5rem; letter-spacing: 0.15em;
+      padding: 5px 12px; z-index: 2;
+    }
+    .prod-img-main-zoom-hint {
+      position: absolute; bottom: 10px; right: 10px;
+      background: rgba(13,7,5,0.85);
+      border: 1px solid rgba(255,87,34,0.25);
+      color: rgba(255,87,34,0.7);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.45rem; letter-spacing: 0.1em;
+      padding: 4px 10px; z-index: 2;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .prod-img-main-wrap:hover .prod-img-main-zoom-hint { opacity: 1; }
+    .prod-img-thumbs {
+      display: flex; gap: 8px;
+      padding: 10px 14px;
+      overflow-x: auto;
+      background: rgba(0,0,0,0.3);
+      border-top: 1px solid rgba(255,87,34,0.1);
+      flex-shrink: 0;
+    }
+    .prod-img-thumbs::-webkit-scrollbar { height: 3px; }
+    .prod-img-thumbs::-webkit-scrollbar-thumb { background: rgba(255,87,34,0.4); border-radius: 2px; }
+    .prod-thumb {
+      width: 60px; height: 60px;
+      flex-shrink: 0;
+      border: 2px solid rgba(255,87,34,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.25s;
+      background: rgba(255,87,34,0.03);
+    }
+    .prod-thumb img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      display: block;
+      transition: transform 0.3s;
+    }
+    .prod-thumb:hover { border-color: rgba(255,87,34,0.5); transform: translateY(-2px); }
+    .prod-thumb:hover img { transform: scale(1.08); }
+    .prod-thumb.active {
+      border-color: var(--igf-orange);
+      box-shadow: 0 0 10px rgba(255,87,34,0.3);
+    }
+
+    /* ── COUPON CODE SECTION ── */
+    .prod-coupon-row {
+      display: flex; gap: 8px;
+      padding: 12px 30px;
+      border-top: 1px solid rgba(255,87,34,0.08);
+    }
+    .prod-coupon-input {
+      flex: 1;
+      background: rgba(255,87,34,0.04);
+      border: 1px solid rgba(255,87,34,0.2);
+      color: var(--text-primary);
+      padding: 9px 14px;
+      font-family: 'Orbitron', sans-serif; font-size: 0.62rem; letter-spacing: 0.1em;
+      border-radius: 4px; outline: none;
+      transition: border-color 0.3s;
+      text-transform: uppercase;
+    }
+    .prod-coupon-input:focus { border-color: var(--igf-orange); }
+    .prod-coupon-btn {
+      padding: 9px 16px;
+      background: rgba(255,87,34,0.12);
+      border: 1px solid rgba(255,87,34,0.3);
+      color: var(--igf-orange);
+      font-family: 'Orbitron', sans-serif; font-size: 0.55rem; letter-spacing: 0.1em;
+      cursor: pointer; border-radius: 4px;
+      transition: all 0.3s;
+    }
+    .prod-coupon-btn:hover { background: rgba(255,87,34,0.2); }
+    .prod-coupon-msg {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.55rem; letter-spacing: 0.08em;
+      padding: 0 30px 8px;
+    }
+    .prod-coupon-msg.success { color: #4ade80; }
+    .prod-coupon-msg.error { color: #ef4444; }
+
+    /* ── AI RECOMMENDATIONS ── */
+    .prod-recs-section {
+      padding: 14px 30px 20px;
+      border-top: 1px solid rgba(255,87,34,0.08);
+    }
+    .prod-recs-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.15em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .prod-recs-title::before {
+      content: '🤖'; font-size: 0.75rem;
+    }
+    .prod-recs-grid {
+      display: flex; gap: 10px; overflow-x: auto;
+    }
+    .prod-recs-grid::-webkit-scrollbar { height: 2px; }
+    .prod-recs-grid::-webkit-scrollbar-thumb { background: rgba(255,87,34,0.3); }
+    .prod-rec-card {
+      flex-shrink: 0; width: 120px;
+      background: rgba(255,87,34,0.04);
+      border: 1px solid rgba(255,87,34,0.12);
+      border-radius: 6px; overflow: hidden;
+      cursor: pointer; transition: all 0.3s;
+    }
+    .prod-rec-card:hover { border-color: rgba(255,87,34,0.4); transform: translateY(-3px); }
+    .prod-rec-img {
+      width: 100%; height: 80px;
+      object-fit: contain;
+      display: block;
+      background: #0d0705;
+    }
+    .prod-rec-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem; font-weight: 500;
+      color: var(--text-muted);
+      padding: 6px 8px;
+      line-height: 1.3;
+    }
+
+    /* ── STOCK STATUS INDICATOR ── */
+    .prod-stock-row {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 12px;
+    }
+    .stock-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    .stock-dot.in-stock { background: #4ade80; box-shadow: 0 0 8px #4ade80; }
+    .stock-dot.low-stock { background: var(--igf-amber); box-shadow: 0 0 8px var(--igf-amber); }
+    .stock-dot.preorder { background: #60a5fa; box-shadow: 0 0 8px #60a5fa; }
+    .stock-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.12em;
+    }
+    .stock-label.in-stock { color: #4ade80; }
+    .stock-label.low-stock { color: var(--igf-amber); }
+    .stock-label.preorder { color: #60a5fa; }
+
+    /* ── WISHLIST HEART ON CAT CARDS ── */
+    .cat-prod-wish {
+      position: absolute; top: 10px; right: 10px;
+      width: 32px; height: 32px;
+      background: rgba(13,7,5,0.7);
+      border: 1px solid rgba(255,87,34,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 5;
+      transition: all 0.3s;
+      font-size: 0.85rem;
+    }
+    .cat-prod-wish:hover { border-color: var(--igf-orange); background: rgba(255,87,34,0.15); }
+    .cat-prod-wish.wished { color: #ef4444; border-color: #ef4444; }
+
+    /* ── CART BUTTON IN MODAL ── */
+    .prod-add-cart-btn {
+      padding: 13px 20px;
+      background: transparent;
+      color: var(--igf-amber);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.1em;
+      border: 1px solid rgba(255,171,64,0.3);
+      cursor: pointer; transition: all 0.3s;
+      display: inline-flex; align-items: center; gap: 8px;
+      flex: 1;
+    }
+    .prod-add-cart-btn:hover { border-color: var(--igf-amber); background: rgba(255,171,64,0.08); }
     .lb-caption {
       position: absolute; bottom: 24px; left: 0; right: 0;
       text-align: center;
@@ -457,16 +977,19 @@
 
     /* PRODUCTS / GAME CATEGORIES */
     .products-grid {
-      display: flex;
-      overflow-x: auto;
-      gap: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      max-height: 850px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      gap: 32px 24px;
       padding: 15px 5% 80px;
       background: transparent;
       scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
     }
     .products-grid::-webkit-scrollbar {
       height: 8px;
+      width: 8px;
     }
     .products-grid::-webkit-scrollbar-track {
       background: rgba(255,87,34,0.05);
@@ -481,7 +1004,7 @@
     }
     /* ──── PREMIUM CATALOG CARDS ──── */
     .product-card {
-      flex: 0 0 290px;
+      width: 100%;
       background: var(--bg-card);
       padding: 0;
       display: flex;
@@ -523,7 +1046,7 @@
     .product-card:hover::after { left: 130%; top: -100%; }
     .product-card-thumb {
       width: 100%;
-      height: 210px;
+      aspect-ratio: 4 / 3;
       overflow: hidden;
       background: linear-gradient(135deg, #1e0f07, #0d0705);
       position: relative;
@@ -532,7 +1055,7 @@
       border-radius: 10px 10px 0 0;
     }
     .product-card-thumb img {
-      width: 100%; height: 100%; object-fit: cover;
+      width: 100%; height: 100%; object-fit: contain;
       transition: transform 0.55s cubic-bezier(0.23,1,0.32,1), filter 0.4s;
       filter: brightness(0.85) saturate(1.1);
     }
@@ -1542,8 +2065,19 @@
     <li><a href="#why">Why Us</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="payment.html" style="color:var(--igf-amber);">Pay Now</a></li>
+    <li><a href="order-tracking.html" style="color:var(--igf-amber);">Track Order</a></li>
   </ul>
-  <div style="display:flex;align-items:center;gap:1rem;">
+  <div style="display:flex;align-items:center;gap:0.6rem;">
+    <!-- Wishlist -->
+    <button class="nav-icon-btn" id="navWishBtn" onclick="openDrawer('wishlist')" title="Wishlist" aria-label="Wishlist">❤
+      <span class="nav-badge" id="wishBadge">0</span>
+    </button>
+    <!-- Cart -->
+    <button class="nav-icon-btn" id="navCartBtn" onclick="openDrawer('cart')" title="Enquiry Cart" aria-label="Enquiry Cart">🛒
+      <span class="nav-badge" id="cartBadge">0</span>
+    </button>
+    <!-- Auth -->
+    <button class="nav-icon-btn" id="navAuthBtn" onclick="openAuthModal()" title="Account" aria-label="Account">👤</button>
     <a href="payment.html" class="nav-cta" style="background:var(--igf-orange);color:#0d0705;border-color:var(--igf-orange);">Pay Now ⚡</a>
     <a href="#contact" class="nav-cta">Get Quote</a>
     <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Menu">
@@ -1672,6 +2206,28 @@
     <div class="section-tag">Our Catalog</div>
     <h2 class="section-title">Complete <span class="hi">Product</span> Lineup</h2>
     <p class="section-desc">Every category of amusement equipment, sourced globally and backed by our expertise.</p>
+  </div>
+
+  <!-- SEARCH & FILTER BAR -->
+  <div class="igf-search-bar" id="igfSearchBar">
+    <div class="igf-search-input-wrap">
+      <span class="igf-search-icon">🔍</span>
+      <input class="igf-search-input" id="igfSearchInput" type="text" placeholder="Search products, categories..." oninput="igfFilterProducts()" />
+    </div>
+    <div class="igf-filter-pills" id="igfFilterPills">
+      <button class="igf-filter-pill active" data-cat="all" onclick="igfSetFilter('all',this)">All</button>
+      <button class="igf-filter-pill" data-cat="air-hockey" onclick="igfSetFilter('air-hockey',this)">Air Hockey</button>
+      <button class="igf-filter-pill" data-cat="bumper-cars" onclick="igfSetFilter('bumper-cars',this)">Bumper Cars</button>
+      <button class="igf-filter-pill" data-cat="virtual-reality" onclick="igfSetFilter('virtual-reality',this)">VR</button>
+      <button class="igf-filter-pill" data-cat="basketball-machines" onclick="igfSetFilter('basketball-machines',this)">Basketball</button>
+      <button class="igf-filter-pill" data-cat="kiddy-rides" onclick="igfSetFilter('kiddy-rides',this)">Kiddy Rides</button>
+    </div>
+    <select class="igf-sort-select" id="igfSortSelect" onchange="igfFilterProducts()">
+      <option value="default">Default Order</option>
+      <option value="az">A — Z</option>
+      <option value="za">Z — A</option>
+    </select>
+    <span class="igf-results-count" id="igfResultsCount">12 CATEGORIES</span>
   </div>
 
   <div class="products-grid" id="productsGridEl">
@@ -2469,6 +3025,87 @@
 </div>
 
 <!-- ============================================
+     WISHLIST DRAWER
+     ============================================ -->
+<div class="igf-drawer-overlay" id="wishDrawerOverlay" onclick="closeDrawer('wishlist')"></div>
+<div class="igf-drawer" id="wishDrawer">
+  <div class="igf-drawer-header">
+    <div class="igf-drawer-title">❤ WISHLIST</div>
+    <button class="igf-drawer-close" onclick="closeDrawer('wishlist')">✕</button>
+  </div>
+  <div class="igf-drawer-body" id="wishDrawerBody"></div>
+  <div class="igf-drawer-footer" id="wishDrawerFooter"></div>
+</div>
+
+<!-- ============================================
+     CART DRAWER
+     ============================================ -->
+<div class="igf-drawer-overlay" id="cartDrawerOverlay" onclick="closeDrawer('cart')"></div>
+<div class="igf-drawer" id="cartDrawer">
+  <div class="igf-drawer-header">
+    <div class="igf-drawer-title">🛒 ENQUIRY CART</div>
+    <button class="igf-drawer-close" onclick="closeDrawer('cart')">✕</button>
+  </div>
+  <div class="igf-drawer-body" id="cartDrawerBody"></div>
+  <div class="igf-drawer-footer" id="cartDrawerFooter"></div>
+</div>
+
+<!-- ============================================
+     AUTH MODAL
+     ============================================ -->
+<div class="auth-modal-overlay" id="authModalOverlay" onclick="if(event.target===this)closeAuthModal()">
+  <div class="auth-modal" id="authModal">
+    <div class="auth-modal-header">
+      <div class="auth-modal-title">ACCOUNT ACCESS</div>
+      <button class="igf-drawer-close" onclick="closeAuthModal()">✕</button>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuthTab(this,'auth-email')">Email</button>
+      <button class="auth-tab" onclick="switchAuthTab(this,'auth-google')">Google</button>
+      <button class="auth-tab" onclick="switchAuthTab(this,'auth-otp')">OTP / Phone</button>
+    </div>
+    <div class="auth-body">
+      <!-- Email Tab -->
+      <div class="auth-tab-pane active" id="auth-email">
+        <div class="auth-field">
+          <label>EMAIL ADDRESS</label>
+          <input type="email" id="authEmailInput" placeholder="you@example.com" />
+        </div>
+        <div class="auth-field">
+          <label>PASSWORD</label>
+          <input type="password" id="authPasswordInput" placeholder="••••••••" />
+        </div>
+        <button class="auth-btn-primary" onclick="authLogin('email')">SIGN IN / REGISTER</button>
+        <p style="text-align:center;margin-top:12px;font-size:0.72rem;color:var(--text-muted);">New here? Entering your email will auto-create an account.</p>
+      </div>
+      <!-- Google Tab -->
+      <div class="auth-tab-pane" id="auth-google">
+        <p style="text-align:center;color:var(--text-muted);font-size:0.82rem;margin-bottom:20px;line-height:1.7;">Sign in securely with your Google account. No password required.</p>
+        <button class="auth-btn-google" onclick="authLogin('google')">
+          <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 32.5 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C33.9 6.1 29.2 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16 19 12 24 12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C33.9 6.1 29.2 4 24 4 16.3 4 9.7 8.4 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.3 35.3 26.8 36 24 36c-5.3 0-9.5-3.5-11.3-8.1l-6.6 5.1C9.5 39.5 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.8 2.3-2.3 4.2-4.3 5.5l6.2 5.2C40.8 35.1 44 29.9 44 24c0-1.3-.1-2.7-.4-4z"/></svg>
+          Continue with Google
+        </button>
+      </div>
+      <!-- OTP Tab -->
+      <div class="auth-tab-pane" id="auth-otp">
+        <div class="auth-field">
+          <label>PHONE NUMBER</label>
+          <input type="tel" id="authPhoneInput" placeholder="+91 98765 43210" />
+        </div>
+        <button class="auth-btn-primary" id="authSendOtpBtn" onclick="authSendOtp()">SEND OTP</button>
+        <div id="authOtpSection" style="display:none;margin-top:16px;">
+          <div class="auth-field">
+            <label>ENTER OTP</label>
+            <input type="text" id="authOtpInput" placeholder="6-digit code" maxlength="6" style="letter-spacing:0.3em;text-align:center;font-size:1.2rem;" />
+          </div>
+          <button class="auth-btn-primary" onclick="authLogin('otp')">VERIFY & SIGN IN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
      PRODUCT DETAIL MODAL
      ============================================ -->
 <div class="prod-modal" id="prodModal">
@@ -2483,19 +3120,21 @@
         <span id="dashHeaderName" style="font-family:Orbitron,sans-serif;font-size:0.62rem;letter-spacing:0.1em;color:#fff0ea;"></span>
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
-        <span style="display:flex;align-items:center;gap:5px;font-family:Orbitron,sans-serif;font-size:0.55rem;letter-spacing:0.1em;color:#4ade80;">
-          <span style="width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:pulse 2s infinite;"></span>IN STOCK
-        </span>
+        <!-- Dynamic stock indicator -->
+        <div class="prod-stock-row" id="dashStockRow">
+          <span class="stock-dot in-stock"></span>
+          <span class="stock-label in-stock" id="dashStockLabel">IN STOCK</span>
+        </div>
         <button class="prod-modal-close" onclick="closeProdModal()" style="margin:0;">✕ ESC</button>
       </div>
     </div>
 
     <!-- MAIN DASHBOARD GRID -->
-    <div style="display:grid;grid-template-columns:45% 55%;min-height:600px;">
+    <div style="display:grid;grid-template-columns:45% 55%;min-height:600px;" id="prodModalMainGrid">
 
-      <!-- LEFT: IMAGE PANEL -->
-      <div id="prodModalImgSide" style="position:relative;overflow:hidden;background:#0d0705;min-height:600px;">
-        <!-- image injected by JS -->
+      <!-- LEFT: IMAGE PANEL WITH THUMBNAIL STRIP -->
+      <div id="prodModalImgSide" style="position:relative;overflow:hidden;background:#0d0705;min-height:600px;display:flex;flex-direction:column;">
+        <!-- Gallery injected by JS -->
       </div>
 
       <!-- RIGHT: INFO DASHBOARD -->
@@ -2563,11 +3202,25 @@
           </div>
         </div>
 
+        <!-- COUPON CODE -->
+        <div class="prod-coupon-row">
+          <input class="prod-coupon-input" id="prodCouponInput" type="text" placeholder="COUPON CODE" />
+          <button class="prod-coupon-btn" onclick="applyCoupon()">APPLY</button>
+        </div>
+        <div class="prod-coupon-msg" id="prodCouponMsg"></div>
+
+        <!-- AI RECOMMENDATIONS -->
+        <div class="prod-recs-section" id="prodRecsSection">
+          <div class="prod-recs-title">AI RECOMMENDATIONS — YOU MAY ALSO LIKE</div>
+          <div class="prod-recs-grid" id="prodRecsGrid"></div>
+        </div>
+
         <!-- ACTION BUTTONS -->
         <div style="padding:18px 30px 26px;margin-top:auto;border-top:1px solid rgba(255,87,34,0.1);display:flex;gap:10px;flex-wrap:wrap;background:#0f0806;position:sticky;bottom:0;">
           <a href="#contact" id="dashEnquireBtn" class="prod-enquire-btn" onclick="closeProdModal();closeCatOverlay();" style="flex:1;text-align:center;min-width:140px;">Enquire Now</a>
-          <a id="dashPayBtn" href="payment.html" class="prod-enquire-btn" target="_blank" style="flex:1;text-align:center;min-width:120px;background:linear-gradient(135deg,#c0392b,#ff5722);color:#fff;border-color:transparent;font-family:'Orbitron',sans-serif;font-size:0.65rem;letter-spacing:0.12em;padding:13px 16px;display:flex;align-items:center;justify-content:center;gap:6px;">⚡ Pay Now</a>
-          <a id="dashWaBtn" href="https://wa.me/919262260376" class="prod-whatsapp-btn" target="_blank" style="flex:1;justify-content:center;min-width:120px;">
+          <button class="prod-add-cart-btn" id="dashAddCartBtn" onclick="addToCart()">🛒 Add to Enquiry</button>
+          <a id="dashPayBtn" href="payment.html" class="prod-enquire-btn" target="_blank" style="flex:1;text-align:center;min-width:100px;background:linear-gradient(135deg,#c0392b,#ff5722);color:#fff;border-color:transparent;font-family:'Orbitron',sans-serif;font-size:0.65rem;letter-spacing:0.12em;padding:13px 16px;display:flex;align-items:center;justify-content:center;gap:6px;">⚡ Pay Now</a>
+          <a id="dashWaBtn" href="https://wa.me/919262260376" class="prod-whatsapp-btn" target="_blank" style="flex:1;justify-content:center;min-width:100px;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             WhatsApp
           </a>
@@ -2672,10 +3325,18 @@ function openCatOverlay(catKey) {
         : '<div class="cat-prod-img-placeholder"><img src="' + (cat.icon||'') + '" /></div>';
 
       card.innerHTML = imgHTML
+        + '<button class="cat-prod-wish" onclick="event.stopPropagation();toggleWish(\''+prod.id+'\',\''+((prod.name||'').replace(/'/g,"\\'"))+'\',\''+((prod.image||'').replace(/'/g,"\\'"))+'\',\''+((cat.name||'').replace(/'/g,"\\'"))+'\',this)" title="Add to Wishlist">♥</button>'
         + '<div class="cat-prod-body">'
         + '<div class="cat-prod-name">' + (prod.name||'') + '</div>'
         + (prod.tag ? '<div class="cat-prod-tag">' + prod.tag + '</div>' : '')
         + '</div>';
+
+      // Check wishlist state
+      var w = getWish();
+      if (w.find(function(i) { return i.id === prod.id; })) {
+        var hrt = card.querySelector('.cat-prod-wish');
+        if (hrt) hrt.classList.add('wished');
+      }
 
       grid.appendChild(card);
     });
@@ -2695,6 +3356,8 @@ function closeCatOverlay() {
 }
 
 function openProdModal(catKey, prodId, catObjOverride) {
+  window.location.href = 'product.html?id=' + encodeURIComponent(prodId);
+  return;
   // Get cat from override (admin merged), fallback to hardcoded
   const cat = catObjOverride || (function() {
     if (CATEGORIES[catKey]) return CATEGORIES[catKey];
@@ -2718,28 +3381,62 @@ function openProdModal(catKey, prodId, catObjOverride) {
   if (hCat) hCat.textContent = cat.name;
   if (hName) hName.textContent = prod.name;
 
-  // ── HD IMAGE PANEL ──
+  // ── HD IMAGE PANEL: Main image + thumbnail strip ──
   var imgSide = document.getElementById('prodModalImgSide');
-  var imgHTML = '';
-  if (prod.image) {
-    imgHTML = '<img style="width:100%;height:100%;min-height:600px;object-fit:cover;display:block;cursor:zoom-in;transition:transform 0.4s;" '
-      + 'src="' + prod.image + '" alt="' + (prod.name||'') + '" '
-      + 'onclick="openLightbox(\'' + (prod.image||'').replace(/'/g,"\\'") + '\',\'' + (prod.name||'').replace(/'/g,"\\'") + '\')" '
-      + 'onerror="this.style.display=\'none\'" />'
-      + '<div style="position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(to top,rgba(13,7,5,0.95),transparent);z-index:2;">'
-      + '<div style="font-family:Orbitron,sans-serif;font-size:0.5rem;letter-spacing:0.15em;color:rgba(255,87,34,0.7);margin-bottom:4px;">TAP IMAGE TO ZOOM</div>'
-      + '<div style="font-family:Orbitron,sans-serif;font-size:0.75rem;font-weight:900;color:#fff0ea;">' + (prod.name||'') + '</div>'
-      + '</div>'
-      + '<div style="position:absolute;top:16px;left:16px;font-family:Orbitron,sans-serif;font-size:0.55rem;letter-spacing:0.15em;padding:5px 12px;background:rgba(255,87,34,0.15);border:1px solid rgba(255,87,34,0.4);color:#ff5722;z-index:2;">'
-      + (cat.name||'').toUpperCase()
-      + '</div>';
-  } else {
-    imgHTML = '<div style="width:100%;min-height:600px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">'
-      + '<img src="' + (cat.icon||'') + '" style="width:100px;height:100px;opacity:0.3;object-fit:contain;" />'
-      + '<div style="font-family:Orbitron,sans-serif;font-size:0.6rem;letter-spacing:0.15em;color:#4a2a1a;">' + (prod.name||'') + '</div>'
-      + '</div>';
+  // Collect all products in the same category for thumbnails
+  var catProds = cat.products || [];
+  var thumbsHTML = '';
+  if (catProds.length > 1) {
+    catProds.forEach(function(p, idx) {
+      var isActive = (p.id === prod.id) ? ' active' : '';
+      var imgSrc = p.image || '';
+      thumbsHTML += '<div class="prod-thumb' + isActive + '" onclick="switchProdModalImage(\'' + (imgSrc).replace(/'/g,"\\'") + '\',\'' + (p.name||'').replace(/'/g,"\\'") + '\',this)" title="' + (p.name||'') + '">';
+      if (imgSrc) {
+        thumbsHTML += '<img src="' + imgSrc + '" alt="' + (p.name||'') + '" loading="lazy" onerror="this.parentNode.style.display=\'none\'" />';
+      }
+      thumbsHTML += '</div>';
+    });
   }
-  imgSide.innerHTML = imgHTML;
+
+  var mainImgSrc = prod.image || '';
+  var galleryHTML = '<div class="prod-img-gallery">';
+  galleryHTML += '<div class="prod-img-main-wrap" onclick="openLightbox(\'' + mainImgSrc.replace(/'/g,"\\'") + '\',\'' + (prod.name||'').replace(/'/g,"\\'") + '\')">'
+    + '<div class="prod-img-main-badge">' + (cat.name||'').toUpperCase() + '</div>'
+    + (mainImgSrc ? '<img class="prod-img-main" id="prodImgMainEl" src="' + mainImgSrc + '" alt="' + (prod.name||'') + '" onerror="this.src=\'\';this.alt=\'No image\'" />' : '<div style="width:100%;height:380px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-family:Orbitron,sans-serif;font-size:0.65rem;">NO IMAGE</div>')
+    + '<div class="prod-img-main-zoom-hint">TAP TO ZOOM ⌕</div>'
+    + '</div>';
+  if (thumbsHTML) {
+    galleryHTML += '<div class="prod-img-thumbs" id="prodThumbsRow">' + thumbsHTML + '</div>';
+  }
+  galleryHTML += '</div>';
+  imgSide.innerHTML = galleryHTML;
+
+  // Store current modal data for other functions
+  window._currentModalProd = prod;
+  window._currentModalCat = cat;
+  window._currentModalCatKey = catKey;
+
+  // Update stock indicator dynamically
+  var stockStates = ['in-stock','in-stock','in-stock','in-stock','low-stock','preorder'];
+  var stockLabels = ['IN STOCK','IN STOCK','IN STOCK','IN STOCK','LOW STOCK','PRE-ORDER'];
+  var stockIdx = Math.floor(Math.random() * stockStates.length);
+  // Bias towards in-stock
+  if (Math.random() > 0.25) { stockIdx = 0; }
+  var stockRow = document.getElementById('dashStockRow');
+  var stockLbl = document.getElementById('dashStockLabel');
+  if (stockRow) {
+    stockRow.querySelector('.stock-dot').className = 'stock-dot ' + stockStates[stockIdx];
+  }
+  if (stockLbl) {
+    stockLbl.textContent = stockLabels[stockIdx];
+    stockLbl.className = 'stock-label ' + stockStates[stockIdx];
+  }
+
+  // Reset coupon field
+  var ci = document.getElementById('prodCouponInput');
+  var cm = document.getElementById('prodCouponMsg');
+  if (ci) ci.value = '';
+  if (cm) { cm.textContent = ''; cm.className = 'prod-coupon-msg'; }
 
   // ── PRODUCT IDENTITY ──
   document.getElementById('prodModalCat').textContent = cat.name;
@@ -2832,6 +3529,25 @@ function openProdModal(catKey, prodId, catObjOverride) {
     };
   }
 
+  // ── AI RECOMMENDATIONS ──
+  var recsGrid = document.getElementById('prodRecsGrid');
+  if (recsGrid) {
+    var recsProds = (cat.products || []).filter(function(p) { return p.id !== prod.id; });
+    // Shuffle and pick up to 4
+    recsProds = recsProds.sort(function() { return Math.random() - 0.5; }).slice(0, 4);
+    if (recsProds.length > 0) {
+      recsGrid.innerHTML = recsProds.map(function(rp) {
+        return '<div class="prod-rec-card" onclick="openProdModal(\'' + catKey + '\',\'' + rp.id + '\',window._currentModalCat)" title="' + (rp.name||'') + '">'
+          + (rp.image ? '<img class="prod-rec-img" src="' + rp.image + '" alt="' + (rp.name||'') + '" loading="lazy" onerror="this.style.display=\'none\'" />' : '')
+          + '<div class="prod-rec-name">' + (rp.name||'') + '</div>'
+          + '</div>';
+      }).join('');
+      document.getElementById('prodRecsSection').style.display = '';
+    } else {
+      document.getElementById('prodRecsSection').style.display = 'none';
+    }
+  }
+
   // ── OPEN MODAL ──
   var modal = document.getElementById('prodModal');
   modal.classList.add('open');
@@ -2872,12 +3588,274 @@ function switchDashTab(btn, tabId) {
       }, 50);
     }
   }
-
-
 }
+
+// ── SWITCH PRODUCT IMAGE (thumbnail click) ──
+function switchProdModalImage(imgSrc, imgName, thumbEl) {
+  var mainImg = document.getElementById('prodImgMainEl');
+  if (mainImg && imgSrc) {
+    mainImg.classList.add('switching');
+    setTimeout(function() {
+      mainImg.src = imgSrc;
+      mainImg.alt = imgName;
+      mainImg.onload = function() { mainImg.classList.remove('switching'); };
+      // Update lightbox click
+      mainImg.closest('.prod-img-main-wrap').onclick = function() {
+        openLightbox(imgSrc, imgName);
+      };
+    }, 200);
+  }
+  // Update active thumbnail
+  var thumbsRow = document.getElementById('prodThumbsRow');
+  if (thumbsRow) {
+    thumbsRow.querySelectorAll('.prod-thumb').forEach(function(t) { t.classList.remove('active'); });
+  }
+  if (thumbEl) thumbEl.classList.add('active');
+}
+
+// ── COUPON APPLY ──
+var IGF_COUPONS = {
+  'IGF10': { type: 'percent', val: 10, msg: '✅ 10% discount applied!' },
+  'NEXUS20': { type: 'percent', val: 20, msg: '✅ 20% discount applied!' },
+  'WELCOME': { type: 'percent', val: 5, msg: '✅ Welcome! 5% discount applied!' },
+  'PREMIUM15': { type: 'percent', val: 15, msg: '✅ Premium member: 15% off!' },
+  'IGF2026': { type: 'percent', val: 12, msg: '✅ New year offer: 12% off!' },
+};
+function applyCoupon() {
+  var inp = document.getElementById('prodCouponInput');
+  var msg = document.getElementById('prodCouponMsg');
+  if (!inp || !msg) return;
+  var code = inp.value.trim().toUpperCase();
+  var coupon = IGF_COUPONS[code];
+  if (coupon) {
+    msg.textContent = coupon.msg;
+    msg.className = 'prod-coupon-msg success';
+    localStorage.setItem('igf_coupon', code);
+  } else {
+    msg.textContent = '❌ Invalid coupon code. Try IGF10, NEXUS20, WELCOME';
+    msg.className = 'prod-coupon-msg error';
+  }
+}
+
+// ── CART LOGIC ──
+function getCart() { try { return JSON.parse(localStorage.getItem('igf_cart')||'[]'); } catch(e) { return []; } }
+function saveCart(c) { localStorage.setItem('igf_cart', JSON.stringify(c)); updateCartBadge(); }
+function updateCartBadge() {
+  var c = getCart();
+  var badge = document.getElementById('cartBadge');
+  if (badge) { badge.textContent = c.length; badge.classList.toggle('visible', c.length > 0); }
+}
+function addToCart() {
+  var prod = window._currentModalProd;
+  var cat = window._currentModalCat;
+  if (!prod) return;
+  var c = getCart();
+  var exists = c.find(function(i) { return i.id === prod.id; });
+  if (!exists) {
+    c.push({ id: prod.id, name: prod.name, cat: cat ? cat.name : '', image: prod.image || '' });
+    saveCart(c);
+    var btn = document.getElementById('dashAddCartBtn');
+    if (btn) { btn.textContent = '✓ Added!'; btn.style.color = '#4ade80'; btn.style.borderColor = '#4ade80'; }
+    setTimeout(function() {
+      if (btn) { btn.textContent = '🛒 Add to Enquiry'; btn.style.color = ''; btn.style.borderColor = ''; }
+    }, 1800);
+  } else {
+    var btn = document.getElementById('dashAddCartBtn');
+    if (btn) { btn.textContent = 'Already Added'; }
+    setTimeout(function() { if (btn) btn.textContent = '🛒 Add to Enquiry'; }, 1500);
+  }
+}
+
+// ── WISHLIST LOGIC ──
+function getWish() { try { return JSON.parse(localStorage.getItem('igf_wish')||'[]'); } catch(e) { return []; } }
+function saveWish(w) { localStorage.setItem('igf_wish', JSON.stringify(w)); updateWishBadge(); }
+function updateWishBadge() {
+  var w = getWish();
+  var badge = document.getElementById('wishBadge');
+  if (badge) { badge.textContent = w.length; badge.classList.toggle('visible', w.length > 0); }
+}
+function toggleWish(prodId, prodName, prodImg, prodCat, heartEl) {
+  var w = getWish();
+  var idx = w.findIndex(function(i) { return i.id === prodId; });
+  if (idx >= 0) {
+    w.splice(idx, 1);
+    if (heartEl) { heartEl.classList.remove('wished'); heartEl.title = 'Add to Wishlist'; }
+  } else {
+    w.push({ id: prodId, name: prodName, image: prodImg, cat: prodCat });
+    if (heartEl) { heartEl.classList.add('wished'); heartEl.title = 'Remove from Wishlist'; }
+  }
+  saveWish(w);
+}
+
+// ── DRAWER LOGIC ──
+function renderDrawer(type) {
+  var isWish = type === 'wishlist';
+  var items = isWish ? getWish() : getCart();
+  var bodyEl = document.getElementById(isWish ? 'wishDrawerBody' : 'cartDrawerBody');
+  var footEl = document.getElementById(isWish ? 'wishDrawerFooter' : 'cartDrawerFooter');
+  if (!bodyEl) return;
+  if (items.length === 0) {
+    bodyEl.innerHTML = '<div class="igf-drawer-empty"><div class="empty-icon">' + (isWish ? '❤' : '🛒') + '</div><div>' + (isWish ? 'Your wishlist is empty' : 'No items in enquiry cart') + '</div></div>';
+    footEl.innerHTML = '';
+    return;
+  }
+  bodyEl.innerHTML = items.map(function(item) {
+    return '<div class="igf-drawer-item">'
+      + (item.image ? '<img class="igf-drawer-item-img" src="' + item.image + '" alt="" />' : '<div class="igf-drawer-item-img" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🎮</div>')
+      + '<div class="igf-drawer-item-info">'
+      + '<div class="igf-drawer-item-name">' + item.name + '</div>'
+      + '<div class="igf-drawer-item-cat">' + (item.cat||'') + '</div>'
+      + '</div>'
+      + '<button class="igf-drawer-item-remove" onclick="removeDrawerItem(\'' + type + '\',\'' + item.id + '\')" title="Remove">✕</button>'
+      + '</div>';
+  }).join('');
+  if (!isWish && items.length > 0) {
+    footEl.innerHTML = '<a href="#contact" class="igf-drawer-action" onclick="prefillCartInForm();closeDrawer(\'cart\');">📋 ENQUIRE ALL ITEMS</a>';
+  } else {
+    footEl.innerHTML = '';
+  }
+}
+function removeDrawerItem(type, id) {
+  if (type === 'wishlist') {
+    var w = getWish(); saveWish(w.filter(function(i) { return i.id !== id; }));
+  } else {
+    var c = getCart(); saveCart(c.filter(function(i) { return i.id !== id; }));
+  }
+  renderDrawer(type);
+}
+function openDrawer(type) {
+  renderDrawer(type);
+  var isWish = type === 'wishlist';
+  document.getElementById(isWish ? 'wishDrawerOverlay' : 'cartDrawerOverlay').classList.add('open');
+  document.getElementById(isWish ? 'wishDrawer' : 'cartDrawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer(type) {
+  var isWish = type === 'wishlist';
+  document.getElementById(isWish ? 'wishDrawerOverlay' : 'cartDrawerOverlay').classList.remove('open');
+  document.getElementById(isWish ? 'wishDrawer' : 'cartDrawer').classList.remove('open');
+  if (!document.getElementById('prodModal').classList.contains('open')) document.body.style.overflow = '';
+}
+function prefillCartInForm() {
+  var c = getCart();
+  var desc = document.getElementById('formDesc');
+  if (desc && c.length > 0) {
+    desc.value = 'I am interested in the following products:\n' + c.map(function(i,idx) { return (idx+1) + '. ' + i.name + ' (' + i.cat + ')'; }).join('\n');
+  }
+}
+
+// ── AUTH MODAL ──
+function openAuthModal() {
+  var user = localStorage.getItem('igf_user');
+  if (user) { try { var u = JSON.parse(user); alert('Signed in as: ' + u.email + '\n\nClick OK to sign out.'); localStorage.removeItem('igf_user'); updateAuthChip(); } catch(e) {} return; }
+  document.getElementById('authModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeAuthModal() {
+  document.getElementById('authModalOverlay').classList.remove('open');
+  if (!document.getElementById('prodModal').classList.contains('open')) document.body.style.overflow = '';
+}
+function switchAuthTab(btn, tabId) {
+  document.querySelectorAll('.auth-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.auth-tab-pane').forEach(function(p) { p.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+function authLogin(method) {
+  var email = '', name = 'User';
+  if (method === 'email') {
+    email = (document.getElementById('authEmailInput') ? document.getElementById('authEmailInput').value.trim() : '') || 'user@example.com';
+  } else if (method === 'google') {
+    email = 'googleuser@gmail.com'; name = 'Google User';
+  } else if (method === 'otp') {
+    var phone = document.getElementById('authPhoneInput') ? document.getElementById('authPhoneInput').value.trim() : '';
+    email = phone || '+91XXXXXXXXXX'; name = 'OTP User';
+  }
+  if (!email) { alert('Please enter your email or phone.'); return; }
+  localStorage.setItem('igf_user', JSON.stringify({ email: email, name: name, method: method }));
+  closeAuthModal();
+  updateAuthChip();
+}
+function authSendOtp() {
+  var phone = document.getElementById('authPhoneInput').value.trim();
+  if (!phone) { alert('Please enter your phone number.'); return; }
+  document.getElementById('authOtpSection').style.display = '';
+  document.getElementById('authSendOtpBtn').textContent = 'OTP SENT ✓';
+  document.getElementById('authSendOtpBtn').style.background = '#4ade80';
+}
+function updateAuthChip() {
+  var user = localStorage.getItem('igf_user');
+  var btn = document.getElementById('navAuthBtn');
+  if (!btn) return;
+  if (user) {
+    try {
+      var u = JSON.parse(user);
+      btn.title = 'Signed in: ' + u.email;
+      btn.style.borderColor = 'var(--igf-orange)';
+      btn.style.color = 'var(--igf-orange)';
+    } catch(e) {}
+  } else {
+    btn.title = 'Account';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+  }
+}
+
+// ── SEARCH & FILTER LOGIC ──
+var igfActiveFilter = 'all';
+var igfSearchQuery = '';
+function igfSetFilter(cat, el) {
+  igfActiveFilter = cat;
+  document.querySelectorAll('.igf-filter-pill').forEach(function(p) { p.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  igfFilterProducts();
+}
+function igfFilterProducts() {
+  igfSearchQuery = document.getElementById('igfSearchInput') ? document.getElementById('igfSearchInput').value.toLowerCase() : '';
+  var sort = document.getElementById('igfSortSelect') ? document.getElementById('igfSortSelect').value : 'default';
+  var cards = document.querySelectorAll('#productsGridEl .product-card');
+  var visible = 0;
+  var cardsArr = Array.from(cards);
+
+  cardsArr.forEach(function(card) {
+    var cat = (card.getAttribute('data-cat') || '').toLowerCase();
+    var name = (card.querySelector('.product-name') ? card.querySelector('.product-name').textContent.toLowerCase() : '');
+    var desc = (card.querySelector('.product-desc') ? card.querySelector('.product-desc').textContent.toLowerCase() : '');
+    var matchCat = igfActiveFilter === 'all' || cat === igfActiveFilter;
+    var matchQ = !igfSearchQuery || name.indexOf(igfSearchQuery) >= 0 || desc.indexOf(igfSearchQuery) >= 0 || cat.indexOf(igfSearchQuery) >= 0;
+    var show = matchCat && matchQ;
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+
+  // Sort
+  if (sort !== 'default') {
+    var grid = document.getElementById('productsGridEl');
+    var toSort = cardsArr.filter(function(c) { return c.style.display !== 'none'; });
+    toSort.sort(function(a, b) {
+      var na = a.querySelector('.product-name') ? a.querySelector('.product-name').textContent : '';
+      var nb = b.querySelector('.product-name') ? b.querySelector('.product-name').textContent : '';
+      return sort === 'az' ? na.localeCompare(nb) : nb.localeCompare(na);
+    });
+    toSort.forEach(function(c) { grid.appendChild(c); });
+  }
+
+  var cnt = document.getElementById('igfResultsCount');
+  if (cnt) cnt.textContent = visible + ' CATEGOR' + (visible === 1 ? 'Y' : 'IES') + ' FOUND';
+}
+
+// ── LAZY LOADING: Add loading=lazy to all product images ──
+document.querySelectorAll('.product-card-thumb img, .cat-prod-img').forEach(function(img) {
+  img.setAttribute('loading', 'lazy');
+});
 
 // Attach click handlers to product category cards
 document.addEventListener('DOMContentLoaded', function() {
+  // Initialize badges and auth chip
+  updateCartBadge();
+  updateWishBadge();
+  updateAuthChip();
+
   // Use data-cat attribute for reliable click detection
   document.querySelectorAll('.product-card[data-cat]').forEach(function(card) {
     card.style.cursor = 'pointer';

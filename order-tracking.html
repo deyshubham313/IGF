@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Tracking — Indian Game Factory</title>
+  <meta name="description" content="Track your Indian Game Factory order status, shipping updates, and download your invoice." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --igf-orange: #ff5722; --igf-red: #c0392b; --igf-amber: #ffab40;
+      --bg-void: #0d0705; --bg-deep: #120905; --bg-card: #1a0e08;
+      --border-glow: rgba(255,87,34,0.25); --text-primary: #fff0ea;
+      --text-muted: #8a6050; --text-dim: #4a2a1a;
+      --success: #4ade80; --warning: #fbbf24; --info: #60a5fa;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg-void); color: var(--text-primary); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; min-height: 100vh; cursor: none; }
+    .cursor { position: fixed; width: 10px; height: 10px; border-radius: 50%; background: var(--igf-orange); pointer-events: none; z-index: 9999; mix-blend-mode: screen; transition: transform 0.1s; }
+    .cursor-ring { position: fixed; width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,87,34,0.6); pointer-events: none; z-index: 9998; transition: transform 0.3s cubic-bezier(0.23,1,0.32,1); }
+    .grid-bg { position: fixed; inset: 0; z-index: 0; background-image: linear-gradient(rgba(255,87,34,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,87,34,0.04) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; }
+    .grid-bg::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255,87,34,0.06) 0%, transparent 60%); }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 5%; height: 72px; background: rgba(13,7,5,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,87,34,0.15); }
+    .nav-logo { display: flex; align-items: center; gap: 12px; font-family: 'Orbitron', sans-serif; font-weight: 900; text-decoration: none; line-height: 1.1; }
+    .nav-logo-line1 { color: #ff5722; font-size: 1.05rem; display: block; text-shadow: 0 0 16px rgba(255,87,34,0.7); }
+    .nav-logo-line2 { color: #fff0ea; font-size: 0.65rem; letter-spacing: 0.25em; opacity: 0.85; display: block; }
+    .nav-back { padding: 8px 20px; border: 1px solid rgba(255,87,34,0.3); background: transparent; color: var(--text-muted); font-family: 'Orbitron', sans-serif; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: none; transition: all 0.3s; text-decoration: none; }
+    .nav-back:hover { border-color: var(--igf-orange); color: var(--igf-orange); }
+
+    /* MAIN */
+    .main-wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 110px 5% 80px; }
+
+    /* PAGE HEADER */
+    .page-header { text-align: center; margin-bottom: 48px; }
+    .page-tag { display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 0.62rem; letter-spacing: 0.25em; color: var(--igf-orange); border-left: 2px solid var(--igf-orange); padding-left: 10px; margin-bottom: 12px; }
+    .page-title { font-family: 'Orbitron', sans-serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; color: var(--text-primary); margin-bottom: 10px; }
+    .page-sub { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+
+    /* SEARCH CARD */
+    .track-card { background: var(--bg-card); border: 1px solid var(--border-glow); border-radius: 12px; padding: 36px; margin-bottom: 32px; box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 30px rgba(255,87,34,0.04); }
+    .track-label { font-family: 'Orbitron', sans-serif; font-size: 0.58rem; letter-spacing: 0.18em; color: var(--text-muted); margin-bottom: 12px; }
+    .track-input-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .track-input { flex: 1; min-width: 200px; background: rgba(255,87,34,0.04); border: 1px solid rgba(255,87,34,0.2); color: var(--text-primary); padding: 13px 18px; font-family: 'Orbitron', sans-serif; font-size: 0.78rem; letter-spacing: 0.1em; border-radius: 6px; outline: none; transition: border-color 0.3s; text-transform: uppercase; }
+    .track-input:focus { border-color: var(--igf-orange); box-shadow: 0 0 0 3px rgba(255,87,34,0.1); }
+    .track-input::placeholder { color: var(--text-muted); text-transform: none; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; letter-spacing: 0; }
+    .track-btn { padding: 13px 28px; background: var(--igf-orange); color: #fff; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; letter-spacing: 0.12em; border: none; cursor: none; border-radius: 6px; transition: all 0.3s; white-space: nowrap; clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px)); }
+    .track-btn:hover { box-shadow: 0 0 24px rgba(255,87,34,0.5); transform: translateY(-2px); }
+    .demo-codes { margin-top: 14px; font-size: 0.75rem; color: var(--text-muted); }
+    .demo-code { display: inline-block; padding: 3px 10px; margin: 3px; background: rgba(255,87,34,0.08); border: 1px solid rgba(255,87,34,0.2); border-radius: 4px; font-family: 'Orbitron', sans-serif; font-size: 0.55rem; color: var(--igf-orange); cursor: pointer; transition: all 0.2s; }
+    .demo-code:hover { background: rgba(255,87,34,0.16); }
+
+    /* ORDER RESULT */
+    .order-result { display: none; }
+    .order-result.visible { display: block; animation: fadeUp 0.5s ease both; }
+    @keyframes fadeUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+
+    /* ORDER SUMMARY CARD */
+    .order-summary-card { background: var(--bg-card); border: 1px solid var(--border-glow); border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
+    .order-summary-header { padding: 20px 28px; background: linear-gradient(90deg, rgba(255,87,34,0.1), rgba(192,57,43,0.05)); border-bottom: 1px solid rgba(255,87,34,0.12); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .order-id-label { font-family: 'Orbitron', sans-serif; font-size: 0.55rem; letter-spacing: 0.18em; color: var(--text-muted); margin-bottom: 4px; }
+    .order-id-value { font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 700; color: var(--igf-orange); }
+    .order-status-badge { padding: 8px 18px; border-radius: 20px; font-family: 'Orbitron', sans-serif; font-size: 0.58rem; letter-spacing: 0.12em; font-weight: 700; }
+    .order-status-badge.confirmed { background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.4); color: var(--success); }
+    .order-status-badge.dispatched { background: rgba(96,165,250,0.15); border: 1px solid rgba(96,165,250,0.4); color: var(--info); }
+    .order-status-badge.delivered { background: rgba(74,222,128,0.2); border: 1px solid rgba(74,222,128,0.5); color: var(--success); }
+    .order-status-badge.processing { background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.35); color: var(--warning); }
+    .order-summary-body { padding: 24px 28px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; }
+    .order-info-item { }
+    .order-info-label { font-family: 'Orbitron', sans-serif; font-size: 0.5rem; letter-spacing: 0.14em; color: var(--text-dim); margin-bottom: 6px; }
+    .order-info-value { font-size: 0.88rem; color: var(--text-primary); font-weight: 500; }
+
+    /* TIMELINE */
+    .timeline-card { background: var(--bg-card); border: 1px solid var(--border-glow); border-radius: 12px; padding: 32px 28px; margin-bottom: 24px; }
+    .timeline-title { font-family: 'Orbitron', sans-serif; font-size: 0.65rem; letter-spacing: 0.18em; color: var(--igf-orange); margin-bottom: 32px; }
+    .timeline { position: relative; }
+    .timeline::before { content: ''; position: absolute; left: 18px; top: 0; bottom: 0; width: 2px; background: rgba(255,87,34,0.12); }
+    .timeline-step { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 32px; position: relative; }
+    .timeline-step:last-child { margin-bottom: 0; }
+    .timeline-dot-wrap { position: relative; flex-shrink: 0; width: 38px; display: flex; align-items: center; justify-content: center; }
+    .timeline-dot { width: 20px; height: 20px; border-radius: 50%; border: 3px solid rgba(255,87,34,0.2); background: var(--bg-void); position: relative; z-index: 1; transition: all 0.4s; }
+    .timeline-dot.done { background: var(--igf-orange); border-color: var(--igf-orange); box-shadow: 0 0 12px rgba(255,87,34,0.5); }
+    .timeline-dot.done::after { content: '✓'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: #fff; font-weight: 700; }
+    .timeline-dot.active { background: var(--igf-amber); border-color: var(--igf-amber); box-shadow: 0 0 16px rgba(255,171,64,0.6); animation: pulse 2s infinite; }
+    .timeline-dot.active::after { content: '◉'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: #fff; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+    .timeline-content { flex: 1; padding-top: 2px; }
+    .timeline-step-title { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; transition: color 0.4s; }
+    .timeline-step.done .timeline-step-title, .timeline-step.active .timeline-step-title { color: var(--text-primary); }
+    .timeline-step.pending .timeline-step-title { color: var(--text-muted); }
+    .timeline-step-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 6px; }
+    .timeline-step-date { font-family: 'Orbitron', sans-serif; font-size: 0.52rem; letter-spacing: 0.1em; }
+    .timeline-step.done .timeline-step-date { color: var(--igf-orange); }
+    .timeline-step.active .timeline-step-date { color: var(--igf-amber); }
+    .timeline-step.pending .timeline-step-date { color: var(--text-dim); }
+
+    /* INVOICE SECTION */
+    .invoice-card { background: var(--bg-card); border: 1px solid var(--border-glow); border-radius: 12px; padding: 28px; margin-bottom: 24px; }
+    .invoice-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    .invoice-title { font-family: 'Orbitron', sans-serif; font-size: 0.65rem; letter-spacing: 0.18em; color: var(--igf-orange); }
+    .invoice-actions { display: flex; gap: 10px; }
+    .invoice-btn { padding: 10px 20px; font-family: 'Orbitron', sans-serif; font-size: 0.58rem; letter-spacing: 0.1em; cursor: none; border-radius: 4px; transition: all 0.3s; }
+    .invoice-btn-primary { background: var(--igf-orange); color: #fff; border: none; }
+    .invoice-btn-primary:hover { box-shadow: 0 0 20px rgba(255,87,34,0.4); transform: translateY(-1px); }
+    .invoice-btn-outline { background: transparent; color: var(--text-muted); border: 1px solid rgba(255,87,34,0.25); }
+    .invoice-btn-outline:hover { border-color: var(--igf-orange); color: var(--igf-orange); }
+    .invoice-table { width: 100%; border-collapse: collapse; }
+    .invoice-table th { font-family: 'Orbitron', sans-serif; font-size: 0.52rem; letter-spacing: 0.12em; color: var(--text-dim); padding: 8px 12px; text-align: left; border-bottom: 1px solid rgba(255,87,34,0.12); }
+    .invoice-table td { padding: 12px; font-size: 0.85rem; color: var(--text-muted); border-bottom: 1px solid rgba(255,87,34,0.06); }
+    .invoice-table tr:last-child td { border-bottom: none; }
+    .invoice-table .total-row td { font-weight: 700; color: var(--igf-orange); font-family: 'Orbitron', sans-serif; font-size: 0.85rem; border-top: 1px solid rgba(255,87,34,0.2); }
+
+    /* CANCEL ORDER */
+    .cancel-section { background: rgba(239,68,68,0.04); border: 1px solid rgba(239,68,68,0.15); border-radius: 8px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .cancel-text { font-size: 0.82rem; color: var(--text-muted); }
+    .cancel-text strong { color: var(--text-primary); }
+    .cancel-btn { padding: 10px 20px; background: transparent; border: 1px solid rgba(239,68,68,0.35); color: #ef4444; font-family: 'Orbitron', sans-serif; font-size: 0.58rem; letter-spacing: 0.1em; cursor: none; border-radius: 4px; transition: all 0.3s; }
+    .cancel-btn:hover { background: rgba(239,68,68,0.1); border-color: #ef4444; }
+
+    /* NOTIFICATION OPT-IN */
+    .notify-card { background: rgba(255,87,34,0.04); border: 1px solid rgba(255,87,34,0.12); border-radius: 8px; padding: 20px 24px; margin-top: 16px; }
+    .notify-title { font-family: 'Orbitron', sans-serif; font-size: 0.6rem; letter-spacing: 0.15em; color: var(--igf-orange); margin-bottom: 10px; }
+    .notify-desc { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px; line-height: 1.6; }
+    .notify-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .notify-input { flex: 1; min-width: 160px; background: rgba(255,87,34,0.04); border: 1px solid rgba(255,87,34,0.2); color: var(--text-primary); padding: 9px 14px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; border-radius: 4px; outline: none; }
+    .notify-input:focus { border-color: var(--igf-orange); }
+    .notify-sub-btn { padding: 9px 18px; background: rgba(255,87,34,0.15); border: 1px solid rgba(255,87,34,0.3); color: var(--igf-orange); font-family: 'Orbitron', sans-serif; font-size: 0.55rem; letter-spacing: 0.1em; cursor: pointer; border-radius: 4px; transition: all 0.3s; white-space: nowrap; }
+    .notify-sub-btn:hover { background: rgba(255,87,34,0.25); }
+
+    /* FOOTER STRIP */
+    .page-footer { text-align: center; padding: 20px; color: var(--text-dim); font-size: 0.75rem; border-top: 1px solid rgba(255,87,34,0.08); }
+    .page-footer a { color: var(--igf-orange); text-decoration: none; }
+
+    /* PRINT STYLES */
+    @media print {
+      body { background: #fff; color: #111; cursor: default; }
+      .cursor, .cursor-ring, .grid-bg, nav, .track-card, .cancel-section, .notify-card, .invoice-actions, .page-footer { display: none !important; }
+      .main-wrap { padding-top: 20px; }
+      .order-result { display: block !important; }
+      .order-summary-card, .timeline-card, .invoice-card { border: 1px solid #ddd; border-radius: 0; background: #fff; box-shadow: none; }
+      .order-summary-header { background: #f5f5f5; }
+      .order-id-value, .invoice-title, .timeline-title { color: #c0392b !important; }
+      .timeline-dot.done { background: #c0392b !important; border-color: #c0392b !important; box-shadow: none; }
+      .order-info-value, .timeline-step-title, .invoice-table td { color: #333 !important; }
+    }
+
+    @media (max-width: 600px) {
+      .track-card { padding: 24px 18px; }
+      .timeline-card { padding: 24px 18px; }
+      .invoice-card { padding: 20px 16px; }
+      .order-summary-body { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg class="nav-logo-icon" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Factory building -->
+      <rect x="18" y="28" width="64" height="36" rx="3" fill="#c0392b" stroke="#1a1a1a" stroke-width="3"/>
+      <rect x="24" y="20" width="12" height="12" rx="1" fill="#c0392b" stroke="#1a1a1a" stroke-width="2.5"/>
+      <rect x="44" y="16" width="12" height="16" rx="1" fill="#c0392b" stroke="#1a1a1a" stroke-width="2.5"/>
+      <rect x="64" y="20" width="12" height="12" rx="1" fill="#c0392b" stroke="#1a1a1a" stroke-width="2.5"/>
+      <!-- Smoke puff -->
+      <ellipse cx="70" cy="11" rx="5" ry="4" fill="#1a1a1a" opacity="0.8"/>
+      <ellipse cx="76" cy="8" rx="4" ry="3.5" fill="#1a1a1a" opacity="0.6"/>
+      <!-- Factory windows -->
+      <rect x="30" y="34" width="8" height="8" rx="1" fill="#1a1a1a" opacity="0.6"/>
+      <rect x="46" y="34" width="8" height="8" rx="1" fill="#1a1a1a" opacity="0.6"/>
+      <rect x="62" y="34" width="8" height="8" rx="1" fill="#1a1a1a" opacity="0.6"/>
+      <!-- Gamepad body -->
+      <rect x="12" y="54" width="76" height="40" rx="20" fill="#c0392b" stroke="#1a1a1a" stroke-width="3"/>
+      <!-- D-pad -->
+      <rect x="25" y="67" width="6" height="14" rx="1" fill="#1a1a1a"/>
+      <rect x="21" y="71" width="14" height="6" rx="1" fill="#1a1a1a"/>
+      <!-- ABXY buttons -->
+      <circle cx="69" cy="68" r="3.5" fill="#1a1a1a"/>
+      <circle cx="76" cy="74" r="3.5" fill="#1a1a1a"/>
+      <circle cx="62" cy="74" r="3.5" fill="#1a1a1a"/>
+      <!-- Center buttons -->
+      <rect x="44" y="72" width="5" height="3" rx="1" fill="#1a1a1a" opacity="0.7"/>
+      <rect x="51" y="72" width="5" height="3" rx="1" fill="#1a1a1a" opacity="0.7"/>
+    </svg>
+    <div class="nav-logo-text">
+      <span class="nav-logo-line1">INDIAN</span>
+      <span class="nav-logo-line2">GAME FACTORY</span>
+    </div>
+  </a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<!-- MAIN -->
+<div class="main-wrap">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-tag">ORDER MANAGEMENT</div>
+    <h1 class="page-title">Track Your Order</h1>
+    <p class="page-sub">Enter your Order ID to get real-time status, delivery updates and download your invoice.</p>
+  </div>
+
+  <!-- SEARCH CARD -->
+  <div class="track-card">
+    <div class="track-label">ENTER ORDER ID</div>
+    <div class="track-input-row">
+      <input class="track-input" id="trackInput" type="text" placeholder="e.g. IGF-2026-001" />
+      <button class="track-btn" onclick="trackOrder()">TRACK ORDER →</button>
+    </div>
+    <div class="demo-codes">
+      Try demo orders:
+      <span class="demo-code" onclick="fillDemo('IGF-2026-001')">IGF-2026-001</span>
+      <span class="demo-code" onclick="fillDemo('IGF-2026-042')">IGF-2026-042</span>
+      <span class="demo-code" onclick="fillDemo('IGF-2026-088')">IGF-2026-088</span>
+      <span class="demo-code" onclick="fillDemo('IGF-2026-125')">IGF-2026-125</span>
+    </div>
+  </div>
+
+  <!-- ORDER RESULT -->
+  <div class="order-result" id="orderResult">
+
+    <!-- ORDER SUMMARY -->
+    <div class="order-summary-card" id="orderSummaryCard">
+      <div class="order-summary-header">
+        <div>
+          <div class="order-id-label">ORDER ID</div>
+          <div class="order-id-value" id="displayOrderId">—</div>
+        </div>
+        <div class="order-status-badge" id="displayStatusBadge">—</div>
+      </div>
+      <div class="order-summary-body">
+        <div class="order-info-item">
+          <div class="order-info-label">PRODUCT</div>
+          <div class="order-info-value" id="displayProduct">—</div>
+        </div>
+        <div class="order-info-item">
+          <div class="order-info-label">ORDER DATE</div>
+          <div class="order-info-value" id="displayDate">—</div>
+        </div>
+        <div class="order-info-item">
+          <div class="order-info-label">DELIVERY ETA</div>
+          <div class="order-info-value" id="displayEta">—</div>
+        </div>
+        <div class="order-info-item">
+          <div class="order-info-label">SHIPPING TO</div>
+          <div class="order-info-value" id="displayCity">—</div>
+        </div>
+        <div class="order-info-item">
+          <div class="order-info-label">AMOUNT</div>
+          <div class="order-info-value" id="displayAmount">—</div>
+        </div>
+        <div class="order-info-item">
+          <div class="order-info-label">TRACKING #</div>
+          <div class="order-info-value" id="displayTracking">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELIVERY TIMELINE -->
+    <div class="timeline-card">
+      <div class="timeline-title">DELIVERY TIMELINE</div>
+      <div class="timeline" id="orderTimeline"></div>
+    </div>
+
+    <!-- INVOICE -->
+    <div class="invoice-card" id="invoiceCard">
+      <div class="invoice-header">
+        <div class="invoice-title">🧾 INVOICE / ORDER RECEIPT</div>
+        <div class="invoice-actions">
+          <button class="invoice-btn invoice-btn-outline" onclick="window.print()">🖨 Print</button>
+          <button class="invoice-btn invoice-btn-primary" onclick="downloadInvoice()">⬇ Download Invoice</button>
+        </div>
+      </div>
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>PRODUCT / SERVICE</th>
+            <th>QTY</th>
+            <th>UNIT PRICE</th>
+            <th>TOTAL</th>
+          </tr>
+        </thead>
+        <tbody id="invoiceBody"></tbody>
+      </table>
+    </div>
+
+    <!-- CANCEL ORDER -->
+    <div class="cancel-section" id="cancelSection">
+      <div class="cancel-text">
+        <strong>Need to cancel?</strong> Cancellations are accepted within 24 hours of order placement. Contact our team for support.
+      </div>
+      <button class="cancel-btn" onclick="requestCancel()">REQUEST CANCELLATION</button>
+    </div>
+
+    <!-- NOTIFICATION OPT-IN -->
+    <div class="notify-card">
+      <div class="notify-title">📱 GET DELIVERY ALERTS</div>
+      <div class="notify-desc">Subscribe to receive SMS and email updates whenever your order status changes.</div>
+      <div class="notify-row">
+        <input class="notify-input" id="notifyEmail" type="email" placeholder="Email address" />
+        <input class="notify-input" id="notifyPhone" type="tel" placeholder="Phone (+91...)" />
+        <button class="notify-sub-btn" onclick="subscribeNotify()">SUBSCRIBE</button>
+      </div>
+    </div>
+
+  </div><!-- end order-result -->
+
+</div><!-- end main-wrap -->
+
+<footer class="page-footer">
+  <p>© 2026 <a href="index.html">Indian Game Factory</a>. All rights reserved. &nbsp;|&nbsp; <a href="tel:+919262260376">+91 92622 60376</a></p>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor'), ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx-5+'px'; cursor.style.top=my-5+'px'; });
+  (function animRing(){ rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.left=rx-18+'px'; ring.style.top=ry-18+'px'; requestAnimationFrame(animRing); })();
+  document.querySelectorAll('a,button').forEach(el => {
+    el.addEventListener('mouseenter', ()=>{ cursor.style.transform='scale(2.5)'; });
+    el.addEventListener('mouseleave', ()=>{ cursor.style.transform='scale(1)'; });
+  });
+
+  // Demo orders data
+  var DEMO_ORDERS = {
+    'IGF-2026-001': {
+      id: 'IGF-2026-001', product: 'Aurora Air Hockey Table', status: 'delivered',
+      statusLabel: 'DELIVERED', statusClass: 'delivered',
+      date: '5 Jun 2026', eta: '25 Jun 2026', actualDelivery: '23 Jun 2026',
+      city: 'Mumbai, Maharashtra', amount: '₹2,45,000', tracking: 'DELHIVERY-8873421',
+      steps: [
+        { title: 'Order Placed', desc: 'Order received & payment confirmed.', date: '5 Jun 2026 — 10:34 AM', state: 'done' },
+        { title: 'Order Confirmed', desc: 'Our team has reviewed and confirmed your order.', date: '6 Jun 2026 — 9:00 AM', state: 'done' },
+        { title: 'Production Started', desc: 'Equipment is being prepared at our facility.', date: '7 Jun 2026 — 11:20 AM', state: 'done' },
+        { title: 'Quality Check', desc: 'Passed all safety and performance checks.', date: '15 Jun 2026 — 3:40 PM', state: 'done' },
+        { title: 'Dispatched', desc: 'Shipped via Delhivery Freight to Mumbai.', date: '18 Jun 2026 — 8:00 AM', state: 'done' },
+        { title: 'Delivered', desc: 'Successfully delivered and installation scheduled.', date: '23 Jun 2026 — 2:15 PM', state: 'done' }
+      ],
+      items: [
+        { name: 'Aurora Air Hockey Table — 7ft Commercial', qty: 1, price: '₹2,20,000', total: '₹2,20,000' },
+        { name: 'Installation & Setup (Turnkey)', qty: 1, price: '₹15,000', total: '₹15,000' },
+        { name: 'Freight Charges (Mumbai)', qty: 1, price: '₹8,000', total: '₹8,000' },
+        { name: 'GST @18%', qty: '-', price: '-', total: '₹2,000', isGst: true },
+      ],
+      total: '₹2,45,000'
+    },
+    'IGF-2026-042': {
+      id: 'IGF-2026-042', product: 'Battleship Drift Bumper Car × 4', status: 'dispatched',
+      statusLabel: 'IN TRANSIT', statusClass: 'dispatched',
+      date: '18 Jun 2026', eta: '5 Jul 2026', city: 'Bengaluru, Karnataka',
+      amount: '₹6,80,000', tracking: 'BLUEDART-44921XY',
+      steps: [
+        { title: 'Order Placed', desc: 'Order received & payment confirmed.', date: '18 Jun 2026 — 4:10 PM', state: 'done' },
+        { title: 'Order Confirmed', desc: 'Team reviewed and confirmed your bulk order.', date: '19 Jun 2026 — 10:00 AM', state: 'done' },
+        { title: 'Production Started', desc: '4 units are being assembled at our facility.', date: '20 Jun 2026', state: 'done' },
+        { title: 'Quality Check', desc: 'Each unit tested individually.', date: '26 Jun 2026', state: 'done' },
+        { title: 'Dispatched', desc: 'Shipped via Blue Dart Freight — in transit to Bengaluru.', date: '27 Jun 2026 — 7:00 AM', state: 'active' },
+        { title: 'Delivery', desc: 'Expected by 5 Jul 2026.', date: 'Est. 5 Jul 2026', state: 'pending' }
+      ],
+      items: [
+        { name: 'Battleship Drift Bumper Car (24V)', qty: 4, price: '₹1,60,000', total: '₹6,40,000' },
+        { name: 'Installation & Setup', qty: 1, price: '₹20,000', total: '₹20,000' },
+        { name: 'Freight Charges (Bengaluru)', qty: 1, price: '₹12,000', total: '₹12,000' },
+        { name: 'GST @18%', qty: '-', price: '-', total: '₹8,000', isGst: true },
+      ],
+      total: '₹6,80,000'
+    },
+    'IGF-2026-088': {
+      id: 'IGF-2026-088', product: 'VR Simulator Package (6-Seater)', status: 'processing',
+      statusLabel: 'PROCESSING', statusClass: 'processing',
+      date: '24 Jun 2026', eta: '15 Jul 2026', city: 'Delhi, NCR',
+      amount: '₹4,20,000', tracking: 'Pending Assignment',
+      steps: [
+        { title: 'Order Placed', desc: 'Order received & payment confirmed.', date: '24 Jun 2026 — 1:30 PM', state: 'done' },
+        { title: 'Order Confirmed', desc: 'Team reviewing your VR order specifications.', date: '25 Jun 2026', state: 'active' },
+        { title: 'Production', desc: 'Configuration and calibration will begin.', date: 'Est. 28 Jun 2026', state: 'pending' },
+        { title: 'Quality Check', desc: 'Full simulation testing.', date: 'Est. 7 Jul 2026', state: 'pending' },
+        { title: 'Dispatch', desc: 'Specialized freight for VR equipment.', date: 'Est. 10 Jul 2026', state: 'pending' },
+        { title: 'Delivery', desc: 'Delivery + expert installation in Delhi.', date: 'Est. 15 Jul 2026', state: 'pending' }
+      ],
+      items: [
+        { name: 'VR 6-Seater Motion Simulator', qty: 1, price: '₹3,80,000', total: '₹3,80,000' },
+        { name: 'Installation & Calibration', qty: 1, price: '₹25,000', total: '₹25,000' },
+        { name: 'Freight (Delhi)', qty: 1, price: '₹10,000', total: '₹10,000' },
+        { name: 'GST @18%', qty: '-', price: '-', total: '₹5,000', isGst: true },
+      ],
+      total: '₹4,20,000'
+    },
+    'IGF-2026-125': {
+      id: 'IGF-2026-125', product: 'Kiddy Rides — Assorted Package × 8', status: 'confirmed',
+      statusLabel: 'CONFIRMED', statusClass: 'confirmed',
+      date: '26 Jun 2026', eta: '20 Jul 2026', city: 'Hyderabad, Telangana',
+      amount: '₹3,60,000', tracking: 'Not Yet Assigned',
+      steps: [
+        { title: 'Order Placed', desc: 'Order received & payment confirmed.', date: '26 Jun 2026 — 11:00 AM', state: 'done' },
+        { title: 'Order Confirmed', desc: 'Your assorted package has been confirmed.', date: '26 Jun 2026 — 3:45 PM', state: 'done' },
+        { title: 'Production', desc: '8 units being assembled.', date: 'Est. 28 Jun 2026', state: 'pending' },
+        { title: 'Quality Check', desc: 'Safety checks for all kiddy rides.', date: 'Est. 8 Jul 2026', state: 'pending' },
+        { title: 'Dispatch', desc: 'Freight to Hyderabad.', date: 'Est. 13 Jul 2026', state: 'pending' },
+        { title: 'Delivery', desc: 'Delivery + installation at your venue.', date: 'Est. 20 Jul 2026', state: 'pending' }
+      ],
+      items: [
+        { name: 'Kiddy Rides — Assorted Package (8 units)', qty: 8, price: '₹40,000', total: '₹3,20,000' },
+        { name: 'Installation & Setup (per unit)', qty: 8, price: '₹3,000', total: '₹24,000' },
+        { name: 'Freight (Hyderabad)', qty: 1, price: '₹10,000', total: '₹10,000' },
+        { name: 'GST @18%', qty: '-', price: '-', total: '₹6,000', isGst: true },
+      ],
+      total: '₹3,60,000'
+    }
+  };
+
+  function fillDemo(id) {
+    document.getElementById('trackInput').value = id;
+    trackOrder();
+  }
+
+  function trackOrder() {
+    var id = document.getElementById('trackInput').value.trim().toUpperCase();
+    var order = DEMO_ORDERS[id];
+    var resultEl = document.getElementById('orderResult');
+
+    if (!order) {
+      alert('Order not found. Try: IGF-2026-001, IGF-2026-042, IGF-2026-088, or IGF-2026-125');
+      return;
+    }
+
+    // Populate summary
+    document.getElementById('displayOrderId').textContent = order.id;
+    document.getElementById('displayProduct').textContent = order.product;
+    document.getElementById('displayDate').textContent = order.date;
+    document.getElementById('displayEta').textContent = order.actualDelivery || order.eta;
+    document.getElementById('displayCity').textContent = order.city;
+    document.getElementById('displayAmount').textContent = order.amount;
+    document.getElementById('displayTracking').textContent = order.tracking;
+
+    var badge = document.getElementById('displayStatusBadge');
+    badge.textContent = order.statusLabel;
+    badge.className = 'order-status-badge ' + order.statusClass;
+
+    // Populate timeline
+    var timelineEl = document.getElementById('orderTimeline');
+    timelineEl.innerHTML = order.steps.map(function(step) {
+      return '<div class="timeline-step ' + step.state + '">'
+        + '<div class="timeline-dot-wrap"><div class="timeline-dot ' + step.state + '"></div></div>'
+        + '<div class="timeline-content">'
+        + '<div class="timeline-step-title">' + step.title + '</div>'
+        + '<div class="timeline-step-desc">' + step.desc + '</div>'
+        + '<div class="timeline-step-date">' + step.date + '</div>'
+        + '</div></div>';
+    }).join('');
+
+    // Populate invoice
+    var invoiceBody = document.getElementById('invoiceBody');
+    invoiceBody.innerHTML = order.items.map(function(item, i) {
+      return '<tr' + (item.isGst ? ' style="color:var(--text-muted);"' : '') + '>'
+        + '<td>' + (item.isGst ? '' : (i+1)) + '</td>'
+        + '<td>' + item.name + '</td>'
+        + '<td>' + item.qty + '</td>'
+        + '<td>' + item.price + '</td>'
+        + '<td>' + item.total + '</td>'
+        + '</tr>';
+    }).join('')
+    + '<tr class="total-row"><td colspan="4" style="text-align:right;padding-right:16px;">GRAND TOTAL</td><td>' + order.total + '</td></tr>';
+
+    // Hide cancel if delivered
+    var cancelSection = document.getElementById('cancelSection');
+    if (order.status === 'delivered') {
+      cancelSection.style.display = 'none';
+    } else {
+      cancelSection.style.display = '';
+    }
+
+    // Show result
+    resultEl.classList.add('visible');
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function downloadInvoice() {
+    var id = document.getElementById('displayOrderId').textContent;
+    // For demo: open print dialog focused on invoice section
+    window.print();
+  }
+
+  function requestCancel() {
+    var id = document.getElementById('displayOrderId').textContent;
+    var confirmed = confirm('Request cancellation for order ' + id + '?\n\nOur team will contact you within 2 hours to process your cancellation.');
+    if (confirmed) {
+      alert('Cancellation request submitted for ' + id + '.\n\nRef: CANCEL-' + Date.now() + '\nOur team will call you at the registered number.');
+    }
+  }
+
+  function subscribeNotify() {
+    var email = document.getElementById('notifyEmail').value.trim();
+    var phone = document.getElementById('notifyPhone').value.trim();
+    if (!email && !phone) { alert('Please enter at least an email or phone number.'); return; }
+    localStorage.setItem('igf_notify', JSON.stringify({ email, phone, orderId: document.getElementById('displayOrderId').textContent }));
+    alert('✅ Subscribed!\n\nYou will receive delivery alerts via ' + (email ? 'email' : '') + (email && phone ? ' and ' : '') + (phone ? 'SMS' : '') + '.');
+  }
+
+  // Allow Enter key
+  document.getElementById('trackInput').addEventListener('keydown', function(e) { if (e.key === 'Enter') trackOrder(); });
+</script>
+</body>
+</html>
