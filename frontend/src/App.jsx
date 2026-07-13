@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+// Trigger Vercel rebuild to apply env variables
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import './index.css';
 import { CartProvider } from './context/CartContext';
